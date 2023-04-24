@@ -31,18 +31,23 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
     { label: 'URL', key: 'config.url' },
   ];
 
-  const getValue = (key: string, error: any) => {
-    const keys = key.split('.');
-    let value = error;
-    keys.forEach((k) => {
-      value = value && value[k];
-    });
+  const hasChildrenOrLongValue = (value: any) => {
+    return (
+      typeof value === 'object' ||
+      (typeof value === 'string' && value.length > 50)
+    );
+  };
 
-    if (typeof value === 'object') {
-      const expandableDetails = useDetails({ closeOnOutsideClick: false });
+  const renderValueWithChevron = (
+    value: any,
+    renderValue: (value: any) => JSX.Element
+  ) => {
+    const expandableDetails = useDetails({ closeOnOutsideClick: false });
 
-      return (
+    return (
+      <>
         <Details {...expandableDetails.getDetailsProps()}>
+          {renderValue(value)}
           <Link
             as="summary"
             sx={{
@@ -57,15 +62,44 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
               <ChevronRightIcon size={16} />
             )}
           </Link>
-          {expandableDetails.open &&
-            Object.entries(value).map(([childKey, childValue], index) => (
-              <div key={index}>
-                <Text as="pre" color="default.fg" sx={{ display: 'inline' }}>
-                  {'  '}
-                </Text>
-                <Text as="pre" color="default.fg" sx={{ display: 'inline' }}>
-                  {childKey}:
-                </Text>{' '}
+        </Details>
+      </>
+    );
+  };
+
+  const getValue = (key: string, error: any) => {
+    const keys = key.split('.');
+    let value = error;
+    keys.forEach((k) => {
+      value = value && value[k];
+    });
+
+    if (typeof value === 'object') {
+      const children = (
+        <>
+          {Object.entries(value).map(([childKey, childValue], index) => (
+            <div key={index}>
+              <Text as="pre" color="default.fg" sx={{ display: 'inline' }}>
+                {'  '}
+              </Text>
+              <Text as="pre" color="default.fg" sx={{ display: 'inline' }}>
+                {childKey}:
+              </Text>{' '}
+              {typeof childValue === 'string' && childValue.length > 50 ? (
+                renderValueWithChevron(childValue, (val) => (
+                  <Text
+                    as="pre"
+                    color="danger.fg"
+                    sx={{
+                      display: 'inline',
+                      whiteSpace: 'normal',
+                      overflowWrap: 'anywhere',
+                    }}
+                  >
+                    {val}
+                  </Text>
+                ))
+              ) : (
                 <Text
                   as="pre"
                   color="danger.fg"
@@ -77,49 +111,32 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                 >
                   {childValue as string}
                 </Text>
-              </div>
-            ))}
-        </Details>
+              )}
+            </div>
+          ))}
+        </>
       );
+
+      return hasChildrenOrLongValue(value)
+        ? renderValueWithChevron(value, () => children)
+        : children;
     }
 
-    if (value.length > 50) {
-      const expandableDetails = useDetails({ closeOnOutsideClick: false });
-
-      return (
-        <Details {...expandableDetails.getDetailsProps()}>
-          <Link
-            as="summary"
-            sx={{
-              textDecoration: 'none',
-              cursor: 'pointer',
-              display: 'inline',
-            }}
-          >
-            {expandableDetails.open ? (
-              <ChevronDownIcon size={16} />
-            ) : (
-              <ChevronRightIcon size={16} />
-            )}
-          </Link>
-          {expandableDetails.open && (
-            <Text
-              as="pre"
-              color="danger.fg"
-              sx={{
-                display: 'inline',
-                whiteSpace: 'normal',
-                overflowWrap: 'anywhere',
-              }}
-            >
-              {value}
-            </Text>
-          )}
-        </Details>
-      );
-    }
-
-    return (
+    return typeof value === 'string' && value.length > 50 ? (
+      renderValueWithChevron(value, (val) => (
+        <Text
+          as="pre"
+          color="danger.fg"
+          sx={{
+            display: 'inline',
+            whiteSpace: 'normal',
+            overflowWrap: 'anywhere',
+          }}
+        >
+          {val}
+        </Text>
+      ))
+    ) : (
       <Text
         as="pre"
         color="danger.fg"
@@ -177,7 +194,7 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
             <Popover relative open={open} caret="top">
               <Popover.Content
                 sx={{
-                  width: ['100%', '75%', '50%'],
+                  width: '300px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',

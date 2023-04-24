@@ -8,14 +8,55 @@ import {
   useDetails,
   Details,
 } from '@primer/react';
-import { MarkdownViewer } from '@primer/react/drafts';
 
 interface BlankStateSystemErrorProps {
   httpError?: any;
 }
 
 function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
-  const { getDetailsProps } = useDetails({ closeOnOutsideClick: true });
+  const { getDetailsProps } = useDetails({ closeOnOutsideClick: false });
+
+  const errorList = [
+    { key: 'message', label: 'Message' },
+    { key: 'code', label: 'Code' },
+    { key: 'stack', label: 'Stack' },
+    { key: 'config.method', label: 'Method' },
+    { key: 'config.headers.Authorization', label: 'Authorization' },
+    { key: 'config.baseURL', label: 'Base URL' },
+    { key: 'config.url', label: 'URL' },
+  ];
+
+  const getValue = (key: string, error: any) => {
+    const keys = key.split('.');
+    let value = error;
+    keys.forEach((k) => {
+      value = value && value[k];
+    });
+    return value;
+  };
+
+  const renderExpandableText = (text: string) => {
+    const expandableDetails = useDetails({ closeOnOutsideClick: false });
+
+    return (
+      <Details {...expandableDetails.getDetailsProps()}>
+        <Text as="pre" color={'default.fg'}>
+          {text.slice(0, 50)}
+        </Text>
+        <Link as="summary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+          ...
+        </Link>
+        <Text
+          as="pre"
+          color={'default.fg'}
+          sx={{ display: expandableDetails.open ? 'inline' : 'none' }}
+        >
+          {text.slice(50)}
+        </Text>
+      </Details>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -46,17 +87,52 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
           </Button>
         </Box>
         {httpError && (
-          <Box
-            className="blankslate-action"
-            sx={{
-              width: '100%',
-            }}
-          >
+          <Box className="blankslate-action">
             <Details {...getDetailsProps()}>
               <Link as="summary">Learn more</Link>
-              <Text as="pre" sx={{ marginTop: 2 }} color="danger.fg">
-                {httpError.message}
-              </Text>
+
+              <Box
+                sx={{
+                  // maxWidth: '300px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  flexWrap: 'wrap',
+                  marginTop: 3,
+                  padding: '16px',
+                  border: '1px solid',
+                  borderColor: 'danger.fg',
+                  borderRadius: '6px',
+                }}
+              >
+                {errorList.map((errorItem) => {
+                  const value = getValue(errorItem.key, httpError);
+                  if (!value) return null;
+                  return (
+                    <Box
+                      key={errorItem.key}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexWrap: 'wrap',
+                        marginBottom: 2,
+                      }}
+                    >
+                      <Text as="pre" color={'default.fg'}>
+                        {errorItem.label}: {''}
+                      </Text>
+                      {value.length > 50 ? (
+                        renderExpandableText(value)
+                      ) : (
+                        <Text as="pre" color="danger.fg">
+                          {value}
+                        </Text>
+                      )}
+                    </Box>
+                  );
+                })}
+              </Box>
             </Details>
           </Box>
         )}

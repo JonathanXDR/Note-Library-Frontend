@@ -1,4 +1,8 @@
-import { AlertIcon } from '@primer/octicons-react';
+import {
+  AlertIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+} from '@primer/octicons-react';
 import {
   Box,
   Button,
@@ -44,7 +48,11 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
           {text.slice(0, 50)}
         </Text>
         <Link as="summary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-          ...
+          {expandableDetails.open ? (
+            <ChevronDownIcon size={16} />
+          ) : (
+            <ChevronRightIcon size={16} />
+          )}
         </Link>
         <Text
           as="pre"
@@ -93,7 +101,6 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
 
               <Box
                 sx={{
-                  // maxWidth: '300px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',

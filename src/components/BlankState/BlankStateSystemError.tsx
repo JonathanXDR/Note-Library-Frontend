@@ -13,80 +13,42 @@ interface BlankStateSystemErrorProps {
   httpError?: any;
 }
 
-function truncateToken(token: string, maxLength: number) {
-  if (token.length > maxLength) {
-    return token.slice(0, maxLength) + '...';
-  }
-  return token;
-}
-
-function getValue(key: string, error: any) {
-  const keys = key.split('.');
-  let value = error;
-  keys.forEach((k) => {
-    value = value && value[k];
-  });
-  if (key === 'config.headers.Authorization' && value) {
-    return truncateToken(value, 100);
-  }
-  return value;
-}
-
 function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
   const { open, setOpen } = useDetails({ closeOnOutsideClick: false });
 
-  const errorList = [
-    { label: 'Message', key: 'message' },
-    { label: 'Code', key: 'code' },
-    { label: 'Stack', key: 'stack' },
-    { label: 'Method', key: 'config.method' },
-    { label: 'Headers', key: 'config.headers' },
-    { label: 'Base URL', key: 'config.baseURL' },
-    { label: 'URL', key: 'config.url' },
-  ];
-
-  const renderErrorTree = () => {
-    return (
-      <TreeView>
-        {errorList.map((errorItem) => {
-          const value = getValue(errorItem.key, httpError);
-          if (!value) return null;
-
-          const isExpandable = typeof value === 'object' || value.length > 50;
-
-          return (
-            <TreeView.Item
-              key={errorItem.key}
-              id={errorItem.key}
-              expanded={isExpandable}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <Text as="pre">{errorItem.label}: </Text>
-                {isExpandable ? (
-                  <TreeView.SubTree>
-                    <TreeView.Item id={`${errorItem.key}-value`}>
-                      <Text as="pre" color="danger.fg">
-                        {value}
-                      </Text>
-                    </TreeView.Item>
-                  </TreeView.SubTree>
-                ) : (
-                  <Text as="pre" color="danger.fg">
-                    {value}
-                  </Text>
-                )}
-              </Box>
-            </TreeView.Item>
-          );
-        })}
-      </TreeView>
-    );
+  const renderErrorTree = (key: string, value: any, idPrefix: string = '') => {
+    if (value && typeof value === 'object') {
+      return (
+        <TreeView.Item key={idPrefix} id={`error-${idPrefix}`} expanded={true}>
+          <Text as="pre">{key}: </Text>
+          <TreeView.SubTree>
+            {Object.entries(value).map(([subKey, subValue], index) => {
+              const newIdPrefix = idPrefix
+                ? `${idPrefix}-${index}`
+                : `${index}`;
+              return renderErrorTree(subKey, subValue, newIdPrefix);
+            })}
+          </TreeView.SubTree>
+        </TreeView.Item>
+      );
+    } else {
+      return (
+        <TreeView.Item key={idPrefix} id={`error-${idPrefix}`} expanded={false}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+            }}
+          >
+            <Text as="pre">{key}: </Text>
+            <Text as="pre" color="danger.fg">
+              {value}
+            </Text>
+          </Box>
+        </TreeView.Item>
+      );
+    }
   };
 
   return (
@@ -134,7 +96,14 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                 onRetry={() => window.location.reload()}
                 onDismiss={() => setOpen(false)}
               >
-                {renderErrorTree()}
+                <Box
+                  sx={{
+                    maxHeight: '50vh',
+                    overflowY: 'auto',
+                  }}
+                >
+                  {renderErrorTree('', httpError)}
+                </Box>
               </TreeView.ErrorDialog>
             )}
           </Box>

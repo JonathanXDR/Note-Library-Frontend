@@ -1,13 +1,16 @@
-import { AlertIcon } from '@primer/octicons-react';
+import { AlertIcon, CheckIcon, CopyIcon } from '@primer/octicons-react';
 import {
   Box,
   Button,
   Heading,
+  IconButton,
   Link,
   Text,
+  Tooltip,
   TreeView,
   useDetails,
 } from '@primer/react';
+import { useState } from 'react';
 
 interface BlankStateSystemErrorProps {
   httpError?: any;
@@ -15,6 +18,7 @@ interface BlankStateSystemErrorProps {
 
 function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
   const { open, setOpen } = useDetails({ closeOnOutsideClick: false });
+  const [copied, setCopied] = useState<string | null>(null);
 
   const renderErrorTree = (key: string, value: any, idPrefix: string = '') => {
     if (value && typeof value === 'object') {
@@ -46,31 +50,76 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
           <Box
             sx={{
               display: 'flex',
+              justifyContent: 'space-between',
               alignItems: 'center',
-              flexWrap: 'wrap',
             }}
           >
-            <Text
-              as="pre"
+            <Box
               sx={{
-                wordBreak: 'break-word',
-                whiteSpace: 'pre-wrap',
-                overflowWrap: 'break-word',
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
               }}
             >
-              {key}:{' '}
-            </Text>
-            <Text
-              as="pre"
-              color="danger.fg"
+              <Text
+                as="pre"
+                sx={{
+                  wordBreak: 'break-word',
+                  whiteSpace: 'pre-wrap',
+                  overflowWrap: 'break-word',
+                }}
+              >
+                {key}:{' '}
+              </Text>
+              <Text
+                as="pre"
+                color="danger.fg"
+                sx={{
+                  wordBreak: 'break-word',
+                  whiteSpace: 'pre-wrap',
+                  overflowWrap: 'break-word',
+                }}
+              >
+                {String(value)}
+              </Text>
+            </Box>
+            <Tooltip
+              aria-label={copied === idPrefix ? 'Copied!' : 'Copy'}
+              direction="w"
               sx={{
-                wordBreak: 'break-word',
-                whiteSpace: 'pre-wrap',
-                overflowWrap: 'break-word',
+                // margin: '8px',
+                display: 'none',
+                alignSelf: 'flex-start',
+                animation: 'fade-in 200ms both;',
               }}
             >
-              {String(value)}
-            </Text>
+              <IconButton
+                aria-label="Copy"
+                icon={copied === idPrefix ? CheckIcon : CopyIcon}
+                // size="small"
+                // onClick={() => copyToClipboard()}
+                sx={{
+                  transition: '80ms cubic-bezier(0.33, 1, 0.68, 1)',
+                  transitionProperty:
+                    'color,background-color,box-shadow,border-color',
+                  color: copied === idPrefix ? 'success.fg' : '',
+                  borderColor: copied === idPrefix ? 'success.emphasis' : '',
+                  boxShadow:
+                    copied === idPrefix
+                      ? '0 0 0 0.2em rgba(52,208,88,.4)'
+                      : 'none',
+
+                  '&:hover': {
+                    color: copied === idPrefix ? 'success.fg' : '',
+                    borderColor: copied === idPrefix ? 'success.emphasis' : '',
+
+                    '& svg': {
+                      fill: copied === idPrefix ? 'success.fg' : '',
+                    },
+                  },
+                }}
+              />
+            </Tooltip>
           </Box>
         </TreeView.Item>
       );
@@ -125,7 +174,12 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                 <Box
                   sx={{
                     maxHeight: '50vh',
-                    overflowY: 'auto',
+                    overflow: 'auto',
+                    msOverflowStyle: 'none',
+                    scrollbarWidth: 'none',
+                    '::-webkit-scrollbar': {
+                      display: 'none',
+                    },
                   }}
                 >
                   <TreeView>{renderErrorTree('Error', httpError)}</TreeView>

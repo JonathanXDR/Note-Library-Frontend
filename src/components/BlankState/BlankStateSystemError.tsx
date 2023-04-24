@@ -10,6 +10,7 @@ import {
   Link,
   Text,
   useDetails,
+  Popover,
   Details,
 } from '@primer/react';
 
@@ -18,7 +19,7 @@ interface BlankStateSystemErrorProps {
 }
 
 function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
-  const { getDetailsProps } = useDetails({ closeOnOutsideClick: false });
+  const { open, setOpen } = useDetails({ closeOnOutsideClick: false });
 
   const errorList = [
     { key: 'message', label: 'Message' },
@@ -44,23 +45,26 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
 
     return (
       <Details {...expandableDetails.getDetailsProps()}>
-        <Text as="pre" color={'default.fg'}>
-          {text.slice(0, 50)}
+        <Text
+          as="pre"
+          color={'danger.fg'}
+          sx={{
+            whiteSpace: 'normal',
+            overflowWrap: 'anywhere',
+          }}
+        >
+          {text}
         </Text>
-        <Link as="summary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+        <Link
+          as="summary"
+          sx={{ textDecoration: 'none', cursor: 'pointer', display: 'inline' }}
+        >
           {expandableDetails.open ? (
             <ChevronDownIcon size={16} />
           ) : (
             <ChevronRightIcon size={16} />
           )}
         </Link>
-        <Text
-          as="pre"
-          color={'default.fg'}
-          sx={{ display: expandableDetails.open ? 'inline' : 'none' }}
-        >
-          {text.slice(50)}
-        </Text>
       </Details>
     );
   };
@@ -96,11 +100,19 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
         </Box>
         {httpError && (
           <Box className="blankslate-action">
-            <Details {...getDetailsProps()}>
-              <Link as="summary">Learn more</Link>
+            <Link
+              onClick={() => setOpen(!open)}
+              sx={{
+                cursor: 'pointer',
+              }}
+            >
+              Learn more
+            </Link>
 
-              <Box
+            <Popover relative open={open} caret="top">
+              <Popover.Content
                 sx={{
+                  width: '300px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
@@ -108,9 +120,12 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                   flexWrap: 'wrap',
                   marginTop: 3,
                   padding: '16px',
-                  border: '1px solid',
                   borderColor: 'danger.fg',
-                  borderRadius: '6px',
+                  textAlign: 'left',
+                  '&:before': {
+                    borderColor:
+                      'transparent transparent rgb(248, 81, 73) !important',
+                  },
                 }}
               >
                 {errorList.map((errorItem) => {
@@ -126,21 +141,28 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                         marginBottom: 2,
                       }}
                     >
-                      <Text as="pre" color={'default.fg'}>
+                      <Text as="pre" color="default.fg">
                         {errorItem.label}: {''}
                       </Text>
                       {value.length > 50 ? (
                         renderExpandableText(value)
                       ) : (
-                        <Text as="pre" color="danger.fg">
+                        <Text
+                          as="pre"
+                          color="danger.fg"
+                          sx={{
+                            whiteSpace: 'normal',
+                            overflowWrap: 'anywhere',
+                          }}
+                        >
                           {value}
                         </Text>
                       )}
                     </Box>
                   );
                 })}
-              </Box>
-            </Details>
+              </Popover.Content>
+            </Popover>
           </Box>
         )}
       </Box>

@@ -20,6 +20,18 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
   const { open, setOpen } = useDetails({ closeOnOutsideClick: false });
   const [copied, setCopied] = useState<string | null>(null);
 
+  const copyToClipboard = async (text: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(id);
+      setTimeout(() => {
+        setCopied(null);
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
   const renderErrorTree = (key: string, value: any, idPrefix: string = '') => {
     if (value && typeof value === 'object') {
       return (
@@ -97,7 +109,7 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                 aria-label="Copy"
                 icon={copied === idPrefix ? CheckIcon : CopyIcon}
                 // size="small"
-                // onClick={() => copyToClipboard()}
+                onClick={() => copyToClipboard(String(value), idPrefix)}
                 sx={{
                   transition: '80ms cubic-bezier(0.33, 1, 0.68, 1)',
                   transitionProperty:

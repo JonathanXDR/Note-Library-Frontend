@@ -1,21 +1,35 @@
-import {
-  AlertIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from '@primer/octicons-react';
+import { AlertIcon } from '@primer/octicons-react';
 import {
   Box,
   Button,
   Heading,
   Link,
   Text,
+  TreeView,
   useDetails,
-  Popover,
-  Details,
 } from '@primer/react';
 
 interface BlankStateSystemErrorProps {
   httpError?: any;
+}
+
+function truncateToken(token: string, maxLength: number) {
+  if (token.length > maxLength) {
+    return token.slice(0, maxLength) + '...';
+  }
+  return token;
+}
+
+function getValue(key: string, error: any) {
+  const keys = key.split('.');
+  let value = error;
+  keys.forEach((k) => {
+    value = value && value[k];
+  });
+  if (key === 'config.headers.Authorization' && value) {
+    return truncateToken(value, 100);
+  }
+  return value;
 }
 
 function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
@@ -31,123 +45,39 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
     { label: 'URL', key: 'config.url' },
   ];
 
-  const hasChildrenOrLongValue = (value: any) => {
+  const renderErrorTree = () => {
     return (
-      typeof value === 'object' ||
-      (typeof value === 'string' && value.length > 50)
-    );
-  };
+      <TreeView>
+        {errorList.map((errorItem) => {
+          const value = getValue(errorItem.key, httpError);
+          if (!value) return null;
 
-  const renderValueWithChevron = (
-    value: any,
-    renderValue: (value: any) => JSX.Element
-  ) => {
-    const expandableDetails = useDetails({ closeOnOutsideClick: false });
+          const isExpandable = typeof value === 'object' || value.length > 50;
 
-    return (
-      <>
-        <Details {...expandableDetails.getDetailsProps()}>
-          {renderValue(value)}
-          <Link
-            as="summary"
-            sx={{
-              textDecoration: 'none',
-              cursor: 'pointer',
-              display: 'inline',
-            }}
-          >
-            {expandableDetails.open ? (
-              <ChevronDownIcon size={16} />
-            ) : (
-              <ChevronRightIcon size={16} />
-            )}
-          </Link>
-        </Details>
-      </>
-    );
-  };
-
-  const getValue = (key: string, error: any) => {
-    const keys = key.split('.');
-    let value = error;
-    keys.forEach((k) => {
-      value = value && value[k];
-    });
-
-    if (typeof value === 'object') {
-      const children = (
-        <>
-          {Object.entries(value).map(([childKey, childValue], index) => (
-            <div key={index}>
-              <Text as="pre" color="default.fg" sx={{ display: 'inline' }}>
-                {'  '}
-              </Text>
-              <Text as="pre" color="default.fg" sx={{ display: 'inline' }}>
-                {childKey}:
-              </Text>{' '}
-              {typeof childValue === 'string' && childValue.length > 50 ? (
-                renderValueWithChevron(childValue, (val) => (
-                  <Text
-                    as="pre"
-                    color="danger.fg"
-                    sx={{
-                      display: 'inline',
-                      whiteSpace: 'normal',
-                      overflowWrap: 'anywhere',
-                    }}
-                  >
-                    {val}
-                  </Text>
-                ))
+          return (
+            <TreeView.Item
+              key={errorItem.key}
+              id={errorItem.key}
+              expanded={isExpandable}
+            >
+              <Text as="pre">{errorItem.label}:</Text>
+              {isExpandable ? (
+                <TreeView.SubTree>
+                  <TreeView.Item id={`${errorItem.key}-value`}>
+                    <Text as="pre" color="danger.fg">
+                      {value}
+                    </Text>
+                  </TreeView.Item>
+                </TreeView.SubTree>
               ) : (
-                <Text
-                  as="pre"
-                  color="danger.fg"
-                  sx={{
-                    display: 'inline',
-                    whiteSpace: 'normal',
-                    overflowWrap: 'anywhere',
-                  }}
-                >
-                  {childValue as string}
+                <Text as="pre" color="danger.fg">
+                  {value}
                 </Text>
               )}
-            </div>
-          ))}
-        </>
-      );
-
-      return hasChildrenOrLongValue(value)
-        ? renderValueWithChevron(value, () => children)
-        : children;
-    }
-
-    return typeof value === 'string' && value.length > 50 ? (
-      renderValueWithChevron(value, (val) => (
-        <Text
-          as="pre"
-          color="danger.fg"
-          sx={{
-            display: 'inline',
-            whiteSpace: 'normal',
-            overflowWrap: 'anywhere',
-          }}
-        >
-          {val}
-        </Text>
-      ))
-    ) : (
-      <Text
-        as="pre"
-        color="danger.fg"
-        sx={{
-          display: 'inline',
-          whiteSpace: 'normal',
-          overflowWrap: 'anywhere',
-        }}
-      >
-        {value}
-      </Text>
+            </TreeView.Item>
+          );
+        })}
+      </TreeView>
     );
   };
 
@@ -190,48 +120,14 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
             >
               Learn more
             </Link>
-
-            <Popover relative open={open} caret="top">
-              <Popover.Content
-                sx={{
-                  width: '300px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                  flexWrap: 'wrap',
-                  marginTop: 3,
-                  padding: '16px',
-                  borderColor: 'danger.fg',
-                  textAlign: 'left',
-                  '&:before': {
-                    borderColor:
-                      'transparent transparent rgb(248, 81, 73) !important',
-                  },
-                }}
+            {open && (
+              <TreeView.ErrorDialog
+                title="Error Details"
+                onRetry={() => window.location.reload()}
               >
-                {errorList.map((errorItem) => {
-                  const value = getValue(errorItem.key, httpError);
-                  if (!value) return null;
-                  return (
-                    <Box
-                      key={errorItem.key}
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexWrap: 'wrap',
-                        marginBottom: 2,
-                      }}
-                    >
-                      <Text as="pre" color="default.fg">
-                        {errorItem.label}: {''}
-                      </Text>
-                      {value}
-                    </Box>
-                  );
-                })}
-              </Popover.Content>
-            </Popover>
+                {renderErrorTree()}
+              </TreeView.ErrorDialog>
+            )}
           </Box>
         )}
       </Box>

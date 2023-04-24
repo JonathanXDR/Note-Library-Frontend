@@ -60,20 +60,28 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
               id={errorItem.key}
               expanded={isExpandable}
             >
-              <Text as="pre">{errorItem.label}:</Text>
-              {isExpandable ? (
-                <TreeView.SubTree>
-                  <TreeView.Item id={`${errorItem.key}-value`}>
-                    <Text as="pre" color="danger.fg">
-                      {value}
-                    </Text>
-                  </TreeView.Item>
-                </TreeView.SubTree>
-              ) : (
-                <Text as="pre" color="danger.fg">
-                  {value}
-                </Text>
-              )}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <Text as="pre">{errorItem.label}: </Text>
+                {isExpandable ? (
+                  <TreeView.SubTree>
+                    <TreeView.Item id={`${errorItem.key}-value`}>
+                      <Text as="pre" color="danger.fg">
+                        {value}
+                      </Text>
+                    </TreeView.Item>
+                  </TreeView.SubTree>
+                ) : (
+                  <Text as="pre" color="danger.fg">
+                    {value}
+                  </Text>
+                )}
+              </Box>
             </TreeView.Item>
           );
         })}
@@ -124,6 +132,7 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
               <TreeView.ErrorDialog
                 title="Error Details"
                 onRetry={() => window.location.reload()}
+                onDismiss={() => setOpen(false)}
               >
                 {renderErrorTree()}
               </TreeView.ErrorDialog>

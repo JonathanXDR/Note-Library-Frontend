@@ -19,6 +19,9 @@ interface BlankStateSystemErrorProps {
 function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
   const { open, setOpen } = useDetails({ closeOnOutsideClick: false });
   const [copied, setCopied] = useState<string | null>(null);
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(
+    {}
+  );
 
   const copyToClipboard = async (text: string, id: string) => {
     try {
@@ -32,16 +35,30 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
     }
   };
 
+  const handleExpansionChange = (id: string, expanded: boolean) => {
+    setExpandedItems((prevExpandedItems) => ({
+      ...prevExpandedItems,
+      [id]: expanded,
+    }));
+  };
+
   const renderErrorTree = (key: string, value: any, idPrefix: string = '') => {
     if (value && typeof value === 'object') {
+      const itemId = `error-${idPrefix}`;
       return (
-        <TreeView.Item key={idPrefix} id={`error-${idPrefix}`} expanded={true}>
+        <TreeView.Item
+          key={idPrefix}
+          id={itemId}
+          expanded={expandedItems[itemId] ?? false}
+          onExpandedChange={(expanded) =>
+            handleExpansionChange(itemId, expanded)
+          }
+        >
           <Text
             as="pre"
             sx={{
-              wordBreak: 'break-word',
-              whiteSpace: 'pre-wrap',
-              overflowWrap: 'break-word',
+              whiteSpace: 'initial',
+              overflowWrap: 'anywhere',
             }}
           >
             {key}:{' '}
@@ -57,8 +74,16 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
         </TreeView.Item>
       );
     } else {
+      const itemId = `error-${idPrefix}`;
       return (
-        <TreeView.Item key={idPrefix} id={`error-${idPrefix}`} expanded={false}>
+        <TreeView.Item
+          key={idPrefix}
+          id={itemId}
+          expanded={expandedItems[itemId] ?? false}
+          onExpandedChange={(expanded) =>
+            handleExpansionChange(itemId, expanded)
+          }
+        >
           <Box
             sx={{
               display: 'flex',
@@ -76,9 +101,8 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
               <Text
                 as="pre"
                 sx={{
-                  wordBreak: 'break-word',
-                  whiteSpace: 'pre-wrap',
-                  overflowWrap: 'break-word',
+                  whiteSpace: 'initial',
+                  overflowWrap: 'anywhere',
                 }}
               >
                 {key}:{' '}
@@ -87,9 +111,8 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                 as="pre"
                 color="danger.fg"
                 sx={{
-                  wordBreak: 'break-word',
-                  whiteSpace: 'pre-wrap',
-                  overflowWrap: 'break-word',
+                  whiteSpace: 'initial',
+                  overflowWrap: 'anywhere',
                 }}
               >
                 {String(value)}
@@ -99,7 +122,7 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
               aria-label={copied === idPrefix ? 'Copied!' : 'Copy'}
               direction="w"
               sx={{
-                // margin: '8px',
+                margin: '3px',
                 display: 'none',
                 alignSelf: 'flex-start',
                 animation: 'fade-in 200ms both;',

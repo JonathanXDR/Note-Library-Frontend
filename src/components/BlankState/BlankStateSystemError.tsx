@@ -22,13 +22,13 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
   const { open, setOpen } = useDetails({ closeOnOutsideClick: false });
 
   const errorList = [
-    { key: 'message', label: 'Message' },
-    { key: 'code', label: 'Code' },
-    { key: 'stack', label: 'Stack' },
-    { key: 'config.method', label: 'Method' },
-    { key: 'config.headers.Authorization', label: 'Authorization' },
-    { key: 'config.baseURL', label: 'Base URL' },
-    { key: 'config.url', label: 'URL' },
+    { label: 'Message', key: 'message' },
+    { label: 'Code', key: 'code' },
+    { label: 'Stack', key: 'stack' },
+    { label: 'Method', key: 'config.method' },
+    { label: 'Headers', key: 'config.headers' },
+    { label: 'Base URL', key: 'config.baseURL' },
+    { label: 'URL', key: 'config.url' },
   ];
 
   const getValue = (key: string, error: any) => {
@@ -37,35 +37,100 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
     keys.forEach((k) => {
       value = value && value[k];
     });
-    return value;
-  };
 
-  const renderExpandableText = (text: string) => {
-    const expandableDetails = useDetails({ closeOnOutsideClick: false });
+    if (typeof value === 'object') {
+      const expandableDetails = useDetails({ closeOnOutsideClick: false });
+
+      return (
+        <Details {...expandableDetails.getDetailsProps()}>
+          <Link
+            as="summary"
+            sx={{
+              textDecoration: 'none',
+              cursor: 'pointer',
+              display: 'inline',
+            }}
+          >
+            {expandableDetails.open ? (
+              <ChevronDownIcon size={16} />
+            ) : (
+              <ChevronRightIcon size={16} />
+            )}
+          </Link>
+          {expandableDetails.open &&
+            Object.entries(value).map(([childKey, childValue], index) => (
+              <div key={index}>
+                <Text as="pre" color="default.fg" sx={{ display: 'inline' }}>
+                  {'  '}
+                </Text>
+                <Text as="pre" color="default.fg" sx={{ display: 'inline' }}>
+                  {childKey}:
+                </Text>{' '}
+                <Text
+                  as="pre"
+                  color="danger.fg"
+                  sx={{
+                    display: 'inline',
+                    whiteSpace: 'normal',
+                    overflowWrap: 'anywhere',
+                  }}
+                >
+                  {childValue as string}
+                </Text>
+              </div>
+            ))}
+        </Details>
+      );
+    }
+
+    if (value.length > 50) {
+      const expandableDetails = useDetails({ closeOnOutsideClick: false });
+
+      return (
+        <Details {...expandableDetails.getDetailsProps()}>
+          <Link
+            as="summary"
+            sx={{
+              textDecoration: 'none',
+              cursor: 'pointer',
+              display: 'inline',
+            }}
+          >
+            {expandableDetails.open ? (
+              <ChevronDownIcon size={16} />
+            ) : (
+              <ChevronRightIcon size={16} />
+            )}
+          </Link>
+          {expandableDetails.open && (
+            <Text
+              as="pre"
+              color="danger.fg"
+              sx={{
+                display: 'inline',
+                whiteSpace: 'normal',
+                overflowWrap: 'anywhere',
+              }}
+            >
+              {value}
+            </Text>
+          )}
+        </Details>
+      );
+    }
 
     return (
-      <Details {...expandableDetails.getDetailsProps()}>
-        <Text
-          as="pre"
-          color={'danger.fg'}
-          sx={{
-            whiteSpace: 'normal',
-            overflowWrap: 'anywhere',
-          }}
-        >
-          {text}
-        </Text>
-        <Link
-          as="summary"
-          sx={{ textDecoration: 'none', cursor: 'pointer', display: 'inline' }}
-        >
-          {expandableDetails.open ? (
-            <ChevronDownIcon size={16} />
-          ) : (
-            <ChevronRightIcon size={16} />
-          )}
-        </Link>
-      </Details>
+      <Text
+        as="pre"
+        color="danger.fg"
+        sx={{
+          display: 'inline',
+          whiteSpace: 'normal',
+          overflowWrap: 'anywhere',
+        }}
+      >
+        {value}
+      </Text>
     );
   };
 
@@ -112,7 +177,7 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
             <Popover relative open={open} caret="top">
               <Popover.Content
                 sx={{
-                  width: '300px',
+                  width: ['100%', '75%', '50%'],
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
@@ -144,20 +209,7 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                       <Text as="pre" color="default.fg">
                         {errorItem.label}: {''}
                       </Text>
-                      {value.length > 50 ? (
-                        renderExpandableText(value)
-                      ) : (
-                        <Text
-                          as="pre"
-                          color="danger.fg"
-                          sx={{
-                            whiteSpace: 'normal',
-                            overflowWrap: 'anywhere',
-                          }}
-                        >
-                          {value}
-                        </Text>
-                      )}
+                      {value}
                     </Box>
                   );
                 })}

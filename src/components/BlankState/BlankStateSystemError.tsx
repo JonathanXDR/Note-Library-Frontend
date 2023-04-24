@@ -20,7 +20,16 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
     if (value && typeof value === 'object') {
       return (
         <TreeView.Item key={idPrefix} id={`error-${idPrefix}`} expanded={true}>
-          <Text as="pre">{key}: </Text>
+          <Text
+            as="pre"
+            sx={{
+              wordBreak: 'break-word',
+              whiteSpace: 'pre-wrap',
+              overflowWrap: 'break-word',
+            }}
+          >
+            {key}:{' '}
+          </Text>
           <TreeView.SubTree>
             {Object.entries(value).map(([subKey, subValue], index) => {
               const newIdPrefix = idPrefix
@@ -41,9 +50,26 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
               flexWrap: 'wrap',
             }}
           >
-            <Text as="pre">{key}: </Text>
-            <Text as="pre" color="danger.fg">
-              {value}
+            <Text
+              as="pre"
+              sx={{
+                wordBreak: 'break-word',
+                whiteSpace: 'pre-wrap',
+                overflowWrap: 'break-word',
+              }}
+            >
+              {key}:{' '}
+            </Text>
+            <Text
+              as="pre"
+              color="danger.fg"
+              sx={{
+                wordBreak: 'break-word',
+                whiteSpace: 'pre-wrap',
+                overflowWrap: 'break-word',
+              }}
+            >
+              {String(value)}
             </Text>
           </Box>
         </TreeView.Item>
@@ -102,7 +128,7 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
                     overflowY: 'auto',
                   }}
                 >
-                  {renderErrorTree('', httpError)}
+                  <TreeView>{renderErrorTree('Error', httpError)}</TreeView>
                 </Box>
               </TreeView.ErrorDialog>
             )}

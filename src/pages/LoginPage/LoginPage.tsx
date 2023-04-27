@@ -40,6 +40,10 @@ const LoginPage = () => {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    setSignInIsDisabled(!username.trim() || !password.trim());
+  }, [username, password]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await handleLoginSubmit(username, password, navigate);
@@ -105,26 +109,24 @@ const LoginPage = () => {
             </Heading>
           </Box>
 
-          <Box>
-            <Flash variant="danger" hidden={!error}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingX: 2,
-                }}
-              >
-                Incorrect username or password.
-                <IconButton
-                  variant="invisible"
-                  aria-label="Close flash"
-                  icon={XIcon}
-                  onClick={() => setError(false)}
-                />
-              </Box>
-            </Flash>
-          </Box>
+          <Flash variant="danger" hidden={!error}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingX: 2,
+              }}
+            >
+              Incorrect username or password.
+              <IconButton
+                variant="invisible"
+                aria-label="Close flash"
+                icon={XIcon}
+                onClick={() => setError(false)}
+              />
+            </Box>
+          </Flash>
 
           <Box
             as={'form'}

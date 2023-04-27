@@ -17,7 +17,12 @@ import {
   Text,
   TextInput,
 } from '@primer/react';
-import { AlertIcon, MarkGithubIcon, XIcon } from '@primer/octicons-react';
+import {
+  AlertIcon,
+  MarkGithubIcon,
+  StopIcon,
+  XIcon,
+} from '@primer/octicons-react';
 import { User } from '../../types/user.interface';
 import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
 import { users } from '../../services/http.service';
@@ -212,7 +217,6 @@ const SettingsPage = () => {
               </FormControl.Label>
               <TextInput
                 type="text"
-                validationStatus="error"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter firstname"
                 sx={{
@@ -240,7 +244,6 @@ const SettingsPage = () => {
               </FormControl.Label>
               <TextInput
                 type="text"
-                validationStatus="error"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter lastname"
                 sx={{
@@ -436,6 +439,66 @@ const SettingsPage = () => {
             Old password isn't valid
           </Flash>
 
+          <Flash variant="danger">
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'baseline',
+                paddingX: 2,
+              }}
+            >
+              <Text
+                sx={{
+                  marginRight: 3,
+                }}
+              >
+                <StopIcon />
+              </Text>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'center',
+                }}
+              >
+                <Text
+                  sx={{
+                    fontWeight: 'bold',
+                  }}
+                >
+                  The following inputs have errors:
+                </Text>
+                <Box>
+                  {/* Dynamically show all Input Titles, which the validation failed */}
+                  <Text
+                    sx={{
+                      textDecoration: 'Underline',
+                    }}
+                  >
+                    Last name
+                  </Text>
+                  ,{' '}
+                  <Text
+                    sx={{
+                      textDecoration: 'Underline',
+                    }}
+                  >
+                    ZIP code
+                  </Text>
+                  ,{' '}
+                  <Text
+                    sx={{
+                      textDecoration: 'Underline',
+                    }}
+                  >
+                    email address
+                  </Text>
+                </Box>
+              </Box>
+            </Box>
+          </Flash>
+
           <Box as={'form'} onSubmit={handleSubmit}>
             <FormControl
               required
@@ -453,7 +516,7 @@ const SettingsPage = () => {
               <TextInput
                 type="text"
                 // loading={true}
-                // validationStatus="error"
+
                 onChange={(e) => setUsername(e.target.value)}
                 sx={{
                   width: '100%',
@@ -476,7 +539,6 @@ const SettingsPage = () => {
               </FormControl.Label>
               <TextInput
                 type="text"
-                // validationStatus="error"
                 onChange={(e) => setPassword(e.target.value)}
                 sx={{
                   width: '100%',
@@ -499,7 +561,6 @@ const SettingsPage = () => {
               </FormControl.Label>
               <TextInput
                 type="password"
-                // validationStatus="error"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 sx={{
                   width: '100%',
@@ -514,12 +575,21 @@ const SettingsPage = () => {
                 fontSize: '12px',
               }}
             >
-              Make sure it's at least 15 characters OR at least 8 characters
-              including a number and a lowercase letter.{' '}
-              <Link href="https://docs.github.com/articles/creating-a-strong-password">
-                Learn more
-              </Link>
-              .
+              <Text as="p">
+                Make sure it's{' '}
+                {/* add red color & bold text if validation of password failed. else add green color */}
+                <Text>at least 15 characters</Text> OR{' '}
+                {/* add red color & bold text if validation of password failed. else add green color */}
+                <Text>at least 8 characters</Text>{' '}
+                {/* add red color & bold text if validation of password failed. else add green color */}
+                <Text>including a number</Text>{' '}
+                {/* add red color & bold text if validation of password failed. else add green color */}
+                <Text>and a lowercase letter</Text>.{' '}
+                <Link href="https://docs.github.com/articles/creating-a-strong-password">
+                  Learn more
+                </Link>
+                .
+              </Text>
             </Text>
             <FormControl
               required
@@ -612,7 +682,7 @@ const SettingsPage = () => {
                   <TextInput
                     type="text"
                     // loading={true}
-                    // validationStatus="error"
+
                     onChange={(e) => setUsername(e.target.value)}
                     sx={{
                       width: '100%',
@@ -640,7 +710,6 @@ const SettingsPage = () => {
                   </FormControl.Label>
                   <TextInput
                     type="text"
-                    // validationStatus="error"
                     onChange={(e) => setPassword(e.target.value)}
                     sx={{
                       width: '100%',
@@ -657,7 +726,6 @@ const SettingsPage = () => {
                   <FormControl.Label>Confirm your password:</FormControl.Label>
                   <TextInput
                     type="password"
-                    // validationStatus="error"
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     sx={{
                       width: '100%',

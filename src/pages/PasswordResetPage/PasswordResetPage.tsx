@@ -20,15 +20,13 @@ import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 
 const PasswordResetPage = () => {
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isValid, setIsValid] = useState(false);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  const [resetPasswordIsDisabled, setResetPasswordIsDisabled] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -41,10 +39,19 @@ const PasswordResetPage = () => {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    setIsValid(
+      !!username.trim() &&
+        !!password.trim() &&
+        !!confirmPassword.trim() &&
+        password === confirmPassword
+    );
+  }, [username, password]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await handleLoginSubmit(username, password, navigate);
-    setError(result.error);
+    navigate('/login');
   };
 
   if (loading) {
@@ -213,7 +220,7 @@ const PasswordResetPage = () => {
                 Enter your new password
               </FormControl.Label>
               <TextInput
-                type="text"
+                type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter password"
                 sx={{
@@ -277,7 +284,7 @@ const PasswordResetPage = () => {
                 <Button
                   type="submit"
                   variant="primary"
-                  disabled={resetPasswordIsDisabled}
+                  disabled={!isValid}
                   block
                 >
                   Reset password

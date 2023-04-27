@@ -13,7 +13,11 @@ import {
   TextInput,
 } from '@primer/react';
 import { StopIcon, XIcon } from '@primer/octicons-react';
-import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
+import {
+  handleLoginSubmit,
+  handleCheckToken,
+  // handleCreateAccountSubmit,
+} from '../../utils/auth.util';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './SignUpPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
@@ -26,9 +30,13 @@ const SignUpPage = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [age, setAge] = useState(0);
+  const [gender, setGender] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [createAccountIsDisabled, setCreateAccountIsDisabled] = useState(true);
+  const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -41,10 +49,28 @@ const SignUpPage = () => {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    setIsValid(
+      !!username.trim() &&
+        !!firstName.trim() &&
+        !!lastName.trim() &&
+        !!password.trim() &&
+        !!confirmPassword.trim() &&
+        password === confirmPassword
+    );
+  }, [username, firstName, lastName, password, confirmPassword]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await handleLoginSubmit(username, password, navigate);
-    setError(result.error);
+    // const result = await handleCreateAccountSubmit(
+    //   username,
+    //   password,
+    //   firstName,
+    //   lastName,
+    //   age,
+    //   gender
+    // );
+    navigate('/login');
   };
 
   if (loading) {
@@ -197,7 +223,9 @@ const SignUpPage = () => {
               <TextInput
                 type="text"
                 loading={true}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
                 placeholder="Enter username"
                 sx={{
                   marginTop: 1,
@@ -233,7 +261,9 @@ const SignUpPage = () => {
                 </FormControl.Label>
                 <TextInput
                   type="text"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   placeholder="Enter firstname"
                   sx={{
                     marginTop: 1,
@@ -260,7 +290,9 @@ const SignUpPage = () => {
                 </FormControl.Label>
                 <TextInput
                   type="text"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                  }}
                   placeholder="Enter lastname"
                   sx={{
                     marginTop: 1,
@@ -419,12 +451,7 @@ const SignUpPage = () => {
               </Text>
             </Text>
             <FormControl required>
-              <Button
-                type="submit"
-                variant="primary"
-                block
-                disabled={createAccountIsDisabled}
-              >
+              <Button type="submit" variant="primary" block disabled={!isValid}>
                 Create account
               </Button>
             </FormControl>

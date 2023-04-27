@@ -21,13 +21,12 @@ import LoginFooter from '../../components/Footer/LoginFooter';
 
 const LoginPage = () => {
   const [error, setError] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const [signInIsDisabled, setSignInIsDisabled] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -41,7 +40,7 @@ const LoginPage = () => {
   }, [navigate]);
 
   useEffect(() => {
-    setSignInIsDisabled(!username.trim() || !password.trim());
+    setIsValid(!!username.trim() && !!password.trim());
   }, [username, password]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -193,7 +192,7 @@ const LoginPage = () => {
                 <Button
                   type="submit"
                   variant="primary"
-                  disabled={signInIsDisabled}
+                  disabled={!isValid}
                   block
                 >
                   Sign in

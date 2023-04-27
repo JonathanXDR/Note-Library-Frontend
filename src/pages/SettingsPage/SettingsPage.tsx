@@ -63,12 +63,6 @@ const SettingsPage = () => {
     fetchCurrentUser();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const result = await handleLoginSubmit(username, password, navigate);
-    setError(result.error);
-  };
-
   if (loading && !currentUser) {
     return <LoadingSpinner />;
   }
@@ -143,7 +137,7 @@ const SettingsPage = () => {
                     color: 'fg.default',
                   }}
                 >
-                  {currentUser?.firstname} {currentUser?.lastname}{' '}
+                  {currentUser?.firstName} {currentUser?.lastName}{' '}
                   <Text
                     sx={{
                       color: 'fg.muted',
@@ -499,7 +493,10 @@ const SettingsPage = () => {
             </Box>
           </Flash>
 
-          <Box as={'form'} onSubmit={handleSubmit}>
+          <Box
+            as={'form'}
+            // onSubmit={handleUpdatePasswordSubmit}
+          >
             <FormControl
               required
               sx={{
@@ -671,7 +668,10 @@ const SettingsPage = () => {
                 ".
               </Text>
               <hr></hr>
-              <Box as={'form'} onSubmit={handleSubmit}>
+              <Box
+                as={'form'}
+                // onSubmit={handleDeleteAccountSubmit}
+              >
                 <FormControl
                   required
                   sx={{

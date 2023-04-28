@@ -44,14 +44,57 @@ const PasswordResetPage = () => {
       !!username.trim() &&
         !!password.trim() &&
         !!confirmPassword.trim() &&
-        password === confirmPassword
+        password === confirmPassword &&
+        isValidPassword(password)
     );
-  }, [username, password]);
+  }, [username, password, confirmPassword]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await handleLoginSubmit(username, password, navigate);
     navigate('/login');
+  };
+
+  function isValidPassword(password: string) {
+    const hasNumber = /\d/;
+    const hasLowercase = /[a-z]/;
+    const minLengthWithRequirements = 8;
+    const minLength = 15;
+
+    if (password.length >= minLength) {
+      return true;
+    } else if (
+      password.length >= minLengthWithRequirements &&
+      hasNumber.test(password) &&
+      hasLowercase.test(password)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  function getColorAndWeight(validation: boolean) {
+    return {
+      color: validation ? 'success.fg' : 'danger.fg',
+      fontWeight: validation ? '' : 'bold',
+    };
+  }
+
+  function getMutedColor(condition: boolean) {
+    return condition
+      ? {
+          color: 'fg.muted',
+          fontWeight: '',
+        }
+      : {};
+  }
+
+  const validations = {
+    minLength: password.length >= 15,
+    minLengthWithRequirements:
+      password.length >= 8 && /\d/.test(password) && /[a-z]/.test(password),
+    hasNumber: /\d/.test(password),
+    hasLowercase: /[a-z]/.test(password),
   };
 
   if (loading) {
@@ -221,7 +264,10 @@ const PasswordResetPage = () => {
               </FormControl.Label>
               <TextInput
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setIsValid(isValidPassword(e.target.value));
+                }}
                 placeholder="Enter password"
                 sx={{
                   marginTop: 1,
@@ -248,7 +294,10 @@ const PasswordResetPage = () => {
                 </FormControl.Label>
                 <TextInput
                   type="password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    // setIsValid(isValidPassword(e.target.value));
+                  }}
                   placeholder="Confirm password"
                   sx={{
                     marginTop: 1,
@@ -264,16 +313,45 @@ const PasswordResetPage = () => {
                   fontSize: '12px',
                 }}
               >
+                {/* Password description */}
                 <Text as="p">
                   Make sure it's{' '}
-                  {/* add red color & bold text if validation of password failed. else add green color */}
-                  <Text>at least 15 characters</Text> OR{' '}
-                  {/* add red color & bold text if validation of password failed. else add green color */}
-                  <Text>at least 8 characters</Text>{' '}
-                  {/* add red color & bold text if validation of password failed. else add green color */}
-                  <Text>including a number</Text>{' '}
-                  {/* add red color & bold text if validation of password failed. else add green color */}
-                  <Text>and a lowercase letter</Text>.{' '}
+                  <Text
+                    sx={{
+                      ...getColorAndWeight(validations.minLength),
+                      ...getMutedColor(validations.minLengthWithRequirements),
+                    }}
+                  >
+                    at least 15 characters
+                  </Text>{' '}
+                  OR{' '}
+                  <Text
+                    sx={{
+                      ...getColorAndWeight(
+                        validations.minLengthWithRequirements
+                      ),
+                      ...getMutedColor(validations.minLength),
+                    }}
+                  >
+                    at least 8 characters
+                  </Text>{' '}
+                  <Text
+                    sx={{
+                      ...getColorAndWeight(validations.hasNumber),
+                      ...getMutedColor(validations.minLength),
+                    }}
+                  >
+                    including a number
+                  </Text>{' '}
+                  <Text
+                    sx={{
+                      ...getColorAndWeight(validations.hasLowercase),
+                      ...getMutedColor(validations.minLength),
+                    }}
+                  >
+                    and a lowercase letter
+                  </Text>
+                  .{' '}
                   <Link href="https://docs.github.com/articles/creating-a-strong-password">
                     Learn more
                   </Link>

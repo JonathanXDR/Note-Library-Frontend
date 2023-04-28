@@ -42,17 +42,6 @@ const PasswordResetPage = () => {
   const getMutedStyle = (condition: boolean) =>
     condition ? { color: 'fg.muted', fontWeight: '' } : {};
 
-  useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      handleCheckToken(token, navigate).finally(() => {
-        setLoading(false);
-      });
-    } else {
-      setLoading(false);
-    }
-  }, [navigate]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await handleLoginSubmit(username, password, navigate);

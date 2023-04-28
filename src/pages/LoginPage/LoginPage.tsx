@@ -31,12 +31,12 @@ const LoginPage = () => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      handleCheckToken(token, navigate).finally(() => {
+      handleCheckToken(token).finally(() => {
+        navigate('/');
         setLoading(false);
       });
-    } else {
-      setLoading(false);
     }
+    setLoading(false);
   }, [navigate]);
 
   useEffect(() => {

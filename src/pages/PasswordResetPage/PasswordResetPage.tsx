@@ -191,7 +191,12 @@ const PasswordResetPage = () => {
               borderRadius: 6,
             }}
           >
-            <FormControl required>
+            <FormControl
+              required
+              sx={{
+                marginBottom: 4,
+              }}
+            >
               <FormControl.Label
                 sx={{
                   marginBottom: 2,
@@ -208,13 +213,23 @@ const PasswordResetPage = () => {
                 placeholder="Enter username"
                 sx={{
                   marginTop: 1,
-                  marginBottom: 4,
                   width: '100%',
                   paddingY: '5px',
                 }}
               />
+              {/* Show if validation of this field failed */}
+              {!isValid && (
+                <FormControl.Validation variant="error">
+                  Is required
+                </FormControl.Validation>
+              )}
             </FormControl>
-            <FormControl required>
+            <FormControl
+              required
+              sx={{
+                marginBottom: 4,
+              }}
+            >
               <FormControl.Label
                 sx={{
                   marginBottom: 2,
@@ -232,18 +247,28 @@ const PasswordResetPage = () => {
                 placeholder="Enter password"
                 sx={{
                   marginTop: 1,
-                  marginBottom: 4,
                   width: '100%',
                   paddingY: '5px',
                 }}
               />
+              {/* Show if validation of this field failed */}
+              {!isValid && (
+                <FormControl.Validation variant="error">
+                  Is required
+                </FormControl.Validation>
+              )}
             </FormControl>
             <Box
               sx={{
                 position: 'relative',
               }}
             >
-              <FormControl required>
+              <FormControl
+                required
+                sx={{
+                  marginBottom: 4,
+                }}
+              >
                 <FormControl.Label
                   sx={{
                     marginBottom: 2,
@@ -257,16 +282,20 @@ const PasswordResetPage = () => {
                   type="password"
                   onChange={(e) => {
                     setConfirmPassword(e.target.value);
-                    // setIsValid(isValidPassword(e.target.value));
                   }}
                   placeholder="Confirm password"
                   sx={{
                     marginTop: 1,
-                    marginBottom: 4,
                     width: '100%',
                     paddingY: '5px',
                   }}
                 />
+                {/* Show if validation of this field failed */}
+                {!isValid && (
+                  <FormControl.Validation variant="error">
+                    Is required
+                  </FormControl.Validation>
+                )}
               </FormControl>
               <Text
                 sx={{

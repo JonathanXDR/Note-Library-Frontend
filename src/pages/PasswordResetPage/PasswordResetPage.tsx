@@ -6,16 +6,14 @@ import {
   Flash,
   FormControl,
   Heading,
-  IconButton,
-  PageLayout,
-  TextInput,
   Text,
   Link,
+  PageLayout,
+  TextInput,
 } from '@primer/react';
-import { StopIcon, XIcon } from '@primer/octicons-react';
+import { StopIcon } from '@primer/octicons-react';
 import { handleLoginSubmit, handleCheckToken } from '../../utils/auth.util';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import './PasswordResetPage.module.css';
 import LoginNavbar from '../../components/Navbar/LoginNavbar';
 import LoginFooter from '../../components/Footer/LoginFooter';
 
@@ -56,37 +54,28 @@ const PasswordResetPage = () => {
   };
 
   function isValidPassword(password: string) {
-    const hasNumber = /\d/;
-    const hasLowercase = /[a-z]/;
-    const minLengthWithRequirements = 8;
     const minLength = 15;
+    const minLengthWithRequirements = 8;
+    const hasNumber = /\d/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
 
-    if (password.length >= minLength) {
-      return true;
-    } else if (
-      password.length >= minLengthWithRequirements &&
-      hasNumber.test(password) &&
-      hasLowercase.test(password)
-    ) {
-      return true;
-    }
-    return false;
+    return (
+      password.length >= minLength ||
+      (password.length >= minLengthWithRequirements &&
+        hasNumber &&
+        hasLowercase)
+    );
   }
 
-  function getColorAndWeight(validation: boolean) {
+  function getValidationStyle(validation: boolean) {
     return {
       color: validation ? 'success.fg' : 'danger.fg',
       fontWeight: validation ? '' : 'bold',
     };
   }
 
-  function getMutedColor(condition: boolean) {
-    return condition
-      ? {
-          color: 'fg.muted',
-          fontWeight: '',
-        }
-      : {};
+  function getMutedStyle(condition: boolean) {
+    return condition ? { color: 'fg.muted', fontWeight: '' } : {};
   }
 
   const validations = {
@@ -318,8 +307,8 @@ const PasswordResetPage = () => {
                   Make sure it's{' '}
                   <Text
                     sx={{
-                      ...getColorAndWeight(validations.minLength),
-                      ...getMutedColor(validations.minLengthWithRequirements),
+                      ...getValidationStyle(validations.minLength),
+                      ...getMutedStyle(validations.minLengthWithRequirements),
                     }}
                   >
                     at least 15 characters
@@ -327,26 +316,26 @@ const PasswordResetPage = () => {
                   OR{' '}
                   <Text
                     sx={{
-                      ...getColorAndWeight(
+                      ...getValidationStyle(
                         validations.minLengthWithRequirements
                       ),
-                      ...getMutedColor(validations.minLength),
+                      ...getMutedStyle(validations.minLength),
                     }}
                   >
                     at least 8 characters
                   </Text>{' '}
                   <Text
                     sx={{
-                      ...getColorAndWeight(validations.hasNumber),
-                      ...getMutedColor(validations.minLength),
+                      ...getValidationStyle(validations.hasNumber),
+                      ...getMutedStyle(validations.minLength),
                     }}
                   >
                     including a number
                   </Text>{' '}
                   <Text
                     sx={{
-                      ...getColorAndWeight(validations.hasLowercase),
-                      ...getMutedColor(validations.minLength),
+                      ...getValidationStyle(validations.hasLowercase),
+                      ...getMutedStyle(validations.minLength),
                     }}
                   >
                     and a lowercase letter

@@ -220,6 +220,7 @@ const LoginPage: React.FC = () => {
               </FormControl>
 
               <FormControl>
+                <FormControl.Label visuallyHidden>Sign in</FormControl.Label>
                 <Button type="submit" variant="primary" block>
                   Sign in
                 </Button>

@@ -18,7 +18,6 @@ function AutoCompleteTokenInput({
   const selectedTokenIds = tokens.map((token) => token.id);
   const [selectedItemIds, setSelectedItemIds] =
     React.useState(selectedTokenIds);
-  const [loading, setLoading] = React.useState(true);
   const isItemSelected = (itemId: any) => selectedItemIds.includes(itemId);
 
   const onTokenRemove = (tokenId: any) => {
@@ -90,10 +89,8 @@ function AutoCompleteTokenInput({
       }));
 
       setNoteCollectionNotes(sortItems(noteTokens));
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching notes:', error);
-      setLoading(false);
     }
   };
 
@@ -133,7 +130,7 @@ function AutoCompleteTokenInput({
             )}
             // tokenComponent={}
             onTokenRemove={onTokenRemove}
-            loading={loading}
+            // loading={true}
             loaderPosition="leading"
             onChange={handleInputChange}
             // size="medium"

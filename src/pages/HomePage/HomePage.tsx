@@ -22,7 +22,6 @@ import { useNoteCollectionContext } from '../../contexts/noteCollection.context'
 
 import MainNavbar from '../../components/Navbar/MainNavbar';
 import GeneralFlash from '../../components/Flash/GeneralFlash';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import NoteItem from '../../components/Note/NoteItem';
 import NoteCollectionItem from '../../components/NoteCollection/NoteCollectionItem';
 import NoteDialog from '../../components/Note/NoteDialog';
@@ -33,10 +32,7 @@ import './HomePage.module.css';
 
 const HomePage: React.FC = () => {
   const [expanded, setExpanded] = React.useState<string[]>([]);
-
-  const { notesData, noteCollectionsData, loading, fetchAllData } =
-    useGeneralContext();
-
+  const { notesData, noteCollectionsData, fetchAllData } = useGeneralContext();
   const { noteDialogIsOpen, noteDialogType, openNoteDialog, closeNoteDialog } =
     useNoteContext();
 
@@ -131,10 +127,6 @@ const HomePage: React.FC = () => {
         </TreeView.Item>
       );
     });
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <PageLayout containerWidth="full" padding="none">

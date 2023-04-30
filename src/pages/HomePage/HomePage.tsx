@@ -14,8 +14,8 @@ import {
   ConfirmationDialog,
 } from '@primer/react';
 
-import { Note } from '../../types/Note/note.interface';
-import { NoteCollection } from '../../types/NoteCollection/noteCollection.interface';
+import { Note } from '../../types/note.interface';
+import { NoteCollection } from '../../types/noteCollection.interface';
 import { useGeneralContext } from '../../contexts/general.context';
 import { useNoteContext } from '../../contexts/note.context';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
   const renderFilteredNoteItems = () =>
     notesData
       .filter((note: Note) => !note.noteCollectionId)
-      .map((note: Note) => <NoteItem key={note.id} note={note} />);
+      .map((note: Note) => <NoteItem key={note.id} />);
 
   const renderFilteredNoteItemTrees = (filteredNotes: Note[]) =>
     filteredNotes.map((note) => (
@@ -58,9 +58,9 @@ const HomePage: React.FC = () => {
         <TreeView.LeadingVisual>
           <NoteIcon size={16} />
         </TreeView.LeadingVisual>
-        <NoteItem note={note} />
+        <NoteItem />
         {noteDialogIsOpen && noteDialogType !== 'delete' && (
-          <NoteDialog key={note.id} note={note} />
+          <NoteDialog key={note.id} />
         )}
 
         {noteDialogIsOpen && noteDialogType === 'delete' && (
@@ -102,13 +102,10 @@ const HomePage: React.FC = () => {
           <TreeView.LeadingVisual>
             <TreeView.DirectoryIcon />
           </TreeView.LeadingVisual>
-          <NoteCollectionItem noteCollection={noteCollection} />
+          <NoteCollectionItem />
           {noteCollectionDialogIsOpen &&
             noteCollectionDialogType !== 'delete' && (
-              <NoteCollectionDialog
-                key={noteCollection.id}
-                noteCollection={noteCollection}
-              />
+              <NoteCollectionDialog key={noteCollection.id} />
             )}
 
           {noteCollectionDialogIsOpen &&

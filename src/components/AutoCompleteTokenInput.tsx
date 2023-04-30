@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { notes } from '../services/http.service';
 import { Token } from '../types/token.interface';
 import { AutoCompleteTokenInputProps } from '../types/AutoCompleteTokenInputProps.interface';
-import { Note } from '../types/Note/note.interface';
+import { Note } from '../types/note.interface';
 
 function AutoCompleteTokenInput({
   initialNotes = [],

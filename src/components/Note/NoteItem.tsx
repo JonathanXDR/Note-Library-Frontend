@@ -1,13 +1,12 @@
 import { Box, Button, ButtonGroup, Text } from '@primer/react';
 import { PencilIcon, TrashIcon } from '@primer/octicons-react';
 import { Hidden } from '@primer/react/drafts';
-import { NoteItemProps } from '../../types/Note/noteItemProps.interface';
 
 import NoteActionMenu from './NoteActionMenu';
 import { useNoteContext } from '../../contexts/note.context';
 
-const NoteItem = ({ note }: NoteItemProps) => {
-  const { openNoteDialog } = useNoteContext();
+const NoteItem = () => {
+  const { openNoteDialog, selectedNote } = useNoteContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
@@ -28,10 +27,10 @@ const NoteItem = ({ note }: NoteItemProps) => {
     <Box sx={boxStyle}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Text fontWeight="bold" sx={textStyle}>
-          {note.title}
+          {selectedNote.title}
         </Text>
         <Text color="fg.subtle" sx={textStyle}>
-          {note.content}
+          {selectedNote.content}
         </Text>
       </Box>
 
@@ -55,7 +54,7 @@ const NoteItem = ({ note }: NoteItemProps) => {
       </Hidden>
 
       <Hidden when={['regular', 'wide']}>
-        <NoteActionMenu key={note.id} />
+        <NoteActionMenu key={selectedNote.id} />
       </Hidden>
     </Box>
   );

@@ -50,18 +50,16 @@ const HomePage: React.FC = () => {
   const renderFilteredNoteItems = () =>
     notesData
       .filter((note: Note) => !note.noteCollectionId)
-      .map((note: Note) => <NoteItem key={note.id} />);
+      .map((note: Note) => <NoteItem note={note} />);
 
   const renderFilteredNoteItemTrees = (filteredNotes: Note[]) =>
     filteredNotes.map((note) => (
-      <TreeView.Item id={note.id} key={note.id}>
+      <TreeView.Item id={note.id}>
         <TreeView.LeadingVisual>
           <NoteIcon size={16} />
         </TreeView.LeadingVisual>
-        <NoteItem />
-        {noteDialogIsOpen && noteDialogType !== 'delete' && (
-          <NoteDialog key={note.id} />
-        )}
+        <NoteItem note={note} />
+        {noteDialogIsOpen && noteDialogType !== 'delete' && <NoteDialog />}
 
         {noteDialogIsOpen && noteDialogType === 'delete' && (
           <ConfirmationDialog
@@ -84,7 +82,6 @@ const HomePage: React.FC = () => {
       return (
         <TreeView.Item
           id={noteCollection.id}
-          key={noteCollection.id}
           expanded={expanded.includes(noteCollection.id)}
           onExpandedChange={(isExpanded: boolean) => {
             if (isExpanded) {
@@ -102,11 +99,9 @@ const HomePage: React.FC = () => {
           <TreeView.LeadingVisual>
             <TreeView.DirectoryIcon />
           </TreeView.LeadingVisual>
-          <NoteCollectionItem />
+          <NoteCollectionItem noteCollection={noteCollection} />
           {noteCollectionDialogIsOpen &&
-            noteCollectionDialogType !== 'delete' && (
-              <NoteCollectionDialog key={noteCollection.id} />
-            )}
+            noteCollectionDialogType !== 'delete' && <NoteCollectionDialog />}
 
           {noteCollectionDialogIsOpen &&
             noteCollectionDialogType === 'delete' && (

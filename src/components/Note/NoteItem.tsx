@@ -4,9 +4,10 @@ import { Hidden } from '@primer/react/drafts';
 
 import NoteActionMenu from './NoteActionMenu';
 import { useNoteContext } from '../../contexts/note.context';
+import { Note } from '../../types/note.interface';
 
-const NoteItem = () => {
-  const { openNoteDialog, selectedNote } = useNoteContext();
+const NoteItem = ({ note }: any) => {
+  const { openNoteDialog, setSelectedNote } = useNoteContext();
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
@@ -27,10 +28,10 @@ const NoteItem = () => {
     <Box sx={boxStyle}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Text fontWeight="bold" sx={textStyle}>
-          {selectedNote.title}
+          {note.title}
         </Text>
         <Text color="fg.subtle" sx={textStyle}>
-          {selectedNote.content}
+          {note.content}
         </Text>
       </Box>
 
@@ -39,14 +40,20 @@ const NoteItem = () => {
           <Button
             leadingIcon={PencilIcon}
             variant="outline"
-            onClick={() => openNoteDialog('update')}
+            onClick={() => {
+              setSelectedNote(note);
+              openNoteDialog('update');
+            }}
           >
             Edit
           </Button>
           <Button
             leadingIcon={TrashIcon}
             variant="danger"
-            onClick={() => openNoteDialog('delete')}
+            onClick={() => {
+              setSelectedNote(note);
+              openNoteDialog('delete');
+            }}
           >
             Delete
           </Button>
@@ -54,7 +61,7 @@ const NoteItem = () => {
       </Hidden>
 
       <Hidden when={['regular', 'wide']}>
-        <NoteActionMenu key={selectedNote.id} />
+        <NoteActionMenu />
       </Hidden>
     </Box>
   );

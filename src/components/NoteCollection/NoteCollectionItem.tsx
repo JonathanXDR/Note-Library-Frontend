@@ -6,8 +6,8 @@ import NoteCollectionActionMenu from './NoteCollectionActionMenu';
 import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
 import { Note } from '../../types/note.interface';
 
-const NoteCollectionItem = () => {
-  const { openNoteCollectionDialog, selectedNoteCollection } =
+const NoteCollectionItem = ({ noteCollection }: any) => {
+  const { openNoteCollectionDialog, setSelectedNoteCollection } =
     useNoteCollectionContext();
 
   const textStyle = {
@@ -29,12 +29,10 @@ const NoteCollectionItem = () => {
     <Box sx={boxStyle}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Text fontWeight="bold" sx={textStyle}>
-          {selectedNoteCollection.title}
+          {noteCollection.title}
         </Text>
         <Text color="fg.subtle" sx={textStyle}>
-          {selectedNoteCollection.notes
-            .map((note: Note) => note.title)
-            .join(', ')}
+          {noteCollection.notes.map((note: Note) => note.title).join(', ')}
         </Text>
       </Box>
       <Box onClick={(e) => e.stopPropagation()}>
@@ -43,14 +41,20 @@ const NoteCollectionItem = () => {
             <Button
               leadingIcon={PencilIcon}
               variant="outline"
-              onClick={() => openNoteCollectionDialog('update')}
+              onClick={() => {
+                setSelectedNoteCollection(noteCollection);
+                openNoteCollectionDialog('update');
+              }}
             >
               Edit
             </Button>
             <Button
               leadingIcon={TrashIcon}
               variant="danger"
-              onClick={() => openNoteCollectionDialog('delete')}
+              onClick={() => {
+                setSelectedNoteCollection(noteCollection);
+                openNoteCollectionDialog('delete');
+              }}
             >
               Delete
             </Button>
@@ -58,7 +62,7 @@ const NoteCollectionItem = () => {
         </Hidden>
 
         <Hidden when={['regular', 'wide']}>
-          <NoteCollectionActionMenu key={selectedNoteCollection.id} />
+          <NoteCollectionActionMenu />
         </Hidden>
       </Box>
     </Box>

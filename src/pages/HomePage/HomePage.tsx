@@ -34,35 +34,14 @@ import './HomePage.module.css';
 const HomePage: React.FC = () => {
   const [expanded, setExpanded] = React.useState<string[]>([]);
   const { notesData, noteCollectionsData, fetchAllData } = useGeneralContext();
-  const {
-    noteDialogIsOpen,
-    noteDialogType,
-    openNoteDialog,
-    confirmDeleteNote,
-  } = useNoteContext();
+  const { noteDialogIsOpen, openNoteDialog } = useNoteContext();
 
-  const {
-    noteCollectionDialogIsOpen,
-    noteCollectionDialogType,
-    openNoteCollectionDialog,
-    confirmDeleteNoteCollection,
-  } = useNoteCollectionContext();
+  const { noteCollectionDialogIsOpen, openNoteCollectionDialog } =
+    useNoteCollectionContext();
 
   useEffect(() => {
     fetchAllData();
   }, []);
-
-  useEffect(() => {
-    if (noteDialogIsOpen && noteDialogType === 'delete') {
-      confirmDeleteNote();
-    }
-  }, [noteDialogIsOpen, noteDialogType]);
-
-  useEffect(() => {
-    if (noteCollectionDialogIsOpen && noteCollectionDialogType === 'delete') {
-      confirmDeleteNoteCollection();
-    }
-  }, [noteCollectionDialogIsOpen, noteCollectionDialogType]);
 
   const renderFilteredNoteItems = () =>
     notesData
@@ -76,7 +55,7 @@ const HomePage: React.FC = () => {
           <NoteIcon size={16} />
         </TreeView.LeadingVisual>
         <NoteItem note={note} />
-        {noteDialogIsOpen && noteDialogType !== 'delete' && <NoteDialog />}
+        {noteDialogIsOpen && <NoteDialog />}
       </TreeView.Item>
     ));
 
@@ -107,19 +86,9 @@ const HomePage: React.FC = () => {
             <TreeView.DirectoryIcon />
           </TreeView.LeadingVisual>
           <NoteCollectionItem noteCollection={noteCollection} />
-          {noteCollectionDialogIsOpen &&
-            noteCollectionDialogType !== 'delete' && <NoteCollectionDialog />}
 
-          {noteCollectionDialogIsOpen &&
-            noteCollectionDialogType === 'delete' && (
-              <ConfirmationDialog
-                title="Confirm action?"
-                onClose={() => console.log('Hello')}
-                confirmButtonType="danger"
-              >
-                Are you sure you want to delete this noteCollection?
-              </ConfirmationDialog>
-            )}
+          {noteCollectionDialogIsOpen && <NoteCollectionDialog />}
+
           <TreeView.SubTree>
             {renderFilteredNoteItemTrees(filteredNotes)}
           </TreeView.SubTree>

@@ -5,15 +5,7 @@ import {
   FileDirectoryIcon,
   NoteIcon,
 } from '@primer/octicons-react';
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  PageLayout,
-  TreeView,
-  ConfirmationDialog,
-  useConfirm,
-} from '@primer/react';
+import { Box, Button, ButtonGroup, PageLayout, TreeView } from '@primer/react';
 
 import { Note } from '../../types/note.interface';
 import { NoteCollection } from '../../types/noteCollection.interface';
@@ -41,7 +33,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     fetchAllData();
-  }, []);
+  }, [notesData, noteCollectionsData]);
 
   const renderFilteredNoteItems = () =>
     notesData

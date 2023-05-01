@@ -6,10 +6,10 @@ import {
   FormControl,
   IssueLabelToken,
   TextInputWithTokens,
+  Token,
 } from '@primer/react';
 import React from 'react';
 import { notes, noteCollections } from '../services/http.service';
-import { Token } from '../types/token.interface';
 import { Note } from '../types/note.interface';
 import { NoteCollection } from '../types/noteCollection.interface';
 import { useGeneralContext } from '../contexts/general.context';
@@ -24,27 +24,25 @@ function AutoCompleteTokenInput({ notes }: any) {
   // const [tokens, setTokens] = React.useState<Token[]>(initialTokens);
   const { fetchAllData } = useGeneralContext();
 
-  function getColorCircle(color: any) {
-    return function () {
-      return (
-        <Box
-          bg={color}
-          borderColor={color}
-          width={14}
-          height={14}
-          borderRadius={10}
-          margin="auto"
-          borderWidth="1px"
-          borderStyle="solid"
-        />
-      );
-    };
-  }
-
   const [tokens, setTokens] = React.useState([
-    { text: 'enhancement', id: 1, fillColor: '#a2eeef' },
-    { text: 'bug', id: 2, fillColor: '#d73a4a' },
-    { text: 'good first issue', id: 3, fillColor: '#0cf478' },
+    {
+      id: 1,
+      text: 'enhancement',
+      leadingVisual: AlertIcon,
+      sx: { color: 'attention.fg' },
+    },
+    {
+      id: 2,
+      text: 'bug',
+      leadingVisual: AlertIcon,
+      sx: { color: 'attention.fg' },
+    },
+    {
+      id: 3,
+      text: 'good first issue',
+      leadingVisual: AlertIcon,
+      sx: { color: 'attention.fg' },
+    },
   ]);
   const selectedTokenIds = tokens.map((token) => token.id);
   const [selectedItemIds, setSelectedItemIds] =
@@ -53,6 +51,15 @@ function AutoCompleteTokenInput({ notes }: any) {
     setTokens(tokens.filter((token) => token.id !== tokenId));
     setSelectedItemIds(selectedItemIds.filter((id) => id !== tokenId));
   };
+
+  const isItemSelected = (itemId: any) => selectedItemIds.includes(itemId);
+  const customSortFn = (itemIdA: any, itemIdB: any) =>
+    isItemSelected(itemIdA) === isItemSelected(itemIdB)
+      ? 0
+      : isItemSelected(itemIdA)
+      ? 1
+      : -1;
+
   const onSelectedChange = (newlySelectedItems: any) => {
     if (!Array.isArray(newlySelectedItems)) {
       return;
@@ -77,77 +84,79 @@ function AutoCompleteTokenInput({ notes }: any) {
       newlySelectedItems.map(({ id, text, metadata }) => ({
         id,
         text,
-        fillColor: metadata.fillColor,
+        leadingVisual: metadata.leadingVisual,
+        sx: metadata.sx,
       }))
     );
   };
 
   return (
-    <FormControl>
-      <FormControl.Label id="autocompleteLabel-customRenderedItem">
-        Pick labels
-      </FormControl.Label>
+    <Box
+      sx={{
+        width: '100%',
+      }}
+    >
       <Autocomplete>
         <Autocomplete.Input
           as={TextInputWithTokens}
           tokens={tokens}
-          tokenComponent={IssueLabelToken}
+          tokenComponent={Token}
           onTokenRemove={onTokenRemove}
         />
-        <Autocomplete.Overlay>
+        <Autocomplete.Overlay
+          sx={{
+            width: ['192px', '256px', '320px', '384px'],
+            zIndex: 1000,
+          }}
+        >
           <Autocomplete.Menu
             items={[
               {
-                leadingVisual: getColorCircle('#a2eeef'),
+                leadingVisual: AlertIcon,
                 text: 'enhancement',
                 id: 1,
-                metadata: { fillColor: '#a2eeef' },
+                metadata: {
+                  leadingVisual: AlertIcon,
+                  sx: { color: 'red' },
+                },
               },
               {
-                leadingVisual: getColorCircle('#d73a4a'),
+                leadingVisual: AlertIcon,
                 text: 'bug',
                 id: 2,
-                metadata: { fillColor: '#d73a4a' },
+                metadata: {
+                  leadingVisual: AlertIcon,
+                  sx: { color: 'red' },
+                },
               },
               {
-                leadingVisual: getColorCircle('#0cf478'),
+                leadingVisual: AlertIcon,
                 text: 'good first issue',
                 id: 3,
-                metadata: { fillColor: '#0cf478' },
+                metadata: {
+                  leadingVisual: '',
+                  sx: { color: '' },
+                },
               },
               {
-                leadingVisual: getColorCircle('#ffd78e'),
+                leadingVisual: AlertIcon,
                 text: 'design',
                 id: 4,
-                metadata: { fillColor: '#ffd78e' },
-              },
-              {
-                leadingVisual: getColorCircle('#ff0000'),
-                text: 'blocker',
-                id: 5,
-                metadata: { fillColor: '#ff0000' },
-              },
-              {
-                leadingVisual: getColorCircle('#a4f287'),
-                text: 'backend',
-                id: 6,
-                metadata: { fillColor: '#a4f287' },
-              },
-              {
-                leadingVisual: getColorCircle('#8dc6fc'),
-                text: 'frontend',
-                id: 7,
-                metadata: { fillColor: '#8dc6fc' },
+                metadata: {
+                  leadingVisual: '',
+                  sx: { color: '' },
+                },
               },
             ]}
             selectedItemIds={selectedItemIds}
             onSelectedChange={onSelectedChange}
+            sortOnCloseFn={customSortFn}
             selectionVariant="multiple"
             aria-labelledby="autocompleteLabel-customRenderedItem"
           />
         </Autocomplete.Overlay>
       </Autocomplete>
-    </FormControl>
+    </Box>
   );
 }
 

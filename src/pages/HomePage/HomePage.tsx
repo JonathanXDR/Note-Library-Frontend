@@ -33,7 +33,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     fetchAllData();
-  }, [notesData, noteCollectionsData]);
+  }, []);
 
   const renderFilteredNoteItems = () =>
     notesData
@@ -42,7 +42,7 @@ const HomePage: React.FC = () => {
 
   const renderFilteredNoteItemTrees = (filteredNotes: Note[]) =>
     filteredNotes.map((note) => (
-      <TreeView.Item id={note.id}>
+      <TreeView.Item id={note.id} key={note.id}>
         <TreeView.LeadingVisual>
           <NoteIcon size={16} />
         </TreeView.LeadingVisual>
@@ -59,6 +59,7 @@ const HomePage: React.FC = () => {
       return (
         <TreeView.Item
           id={noteCollection.id}
+          key={noteCollection.id}
           expanded={expanded.includes(noteCollection.id)}
           onExpandedChange={(isExpanded: boolean) => {
             if (isExpanded) {

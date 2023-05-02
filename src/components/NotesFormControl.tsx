@@ -115,7 +115,13 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
             items={allNotes.map((note: Note) => ({
               id: note.id,
               text: note.title,
-              leadingVisual:
+              // trailingVisual: () => (
+              //   <StyledOcticon
+              //     icon={AlertIcon}
+              //     sx={{ fill: 'currentcolor !important' }}
+              //   />
+              // ),
+              trailingVisual:
                 note.noteCollectionId !== null ? AlertIcon : undefined,
               sx: {
                 color:

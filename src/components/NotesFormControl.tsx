@@ -78,12 +78,16 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
     }
 
     setTokens(
-      newlySelectedItems.map(({ id, text, leadingVisual, sx }) => ({
-        id,
-        text,
-        leadingVisual,
-        sx,
-      }))
+      newlySelectedItems.map(({ id, text, sx }) => {
+        const note = allNotes.find((note) => note.id === id);
+        return {
+          id,
+          text,
+          leadingVisual:
+            note?.noteCollectionId !== null ? AlertIcon : undefined,
+          sx,
+        };
+      })
     );
   };
 

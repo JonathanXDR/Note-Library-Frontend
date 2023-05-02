@@ -114,7 +114,7 @@ function AutoCompleteTokenInput({ notes }: any) {
                 leadingVisual: () => (
                   <StyledOcticon
                     icon={AlertIcon}
-                    sx={{ fill: useImportantColor('attention.fg') }}
+                    sx={{ fill: 'currentcolor !important' }}
                   />
                 ),
                 sx: { color: 'attention.fg' },
@@ -125,7 +125,7 @@ function AutoCompleteTokenInput({ notes }: any) {
                 leadingVisual: () => (
                   <StyledOcticon
                     icon={AlertIcon}
-                    sx={{ fill: useImportantColor('attention.fg') }}
+                    sx={{ fill: 'currentcolor !important' }}
                   />
                 ),
                 sx: { color: 'attention.fg' },
@@ -136,7 +136,7 @@ function AutoCompleteTokenInput({ notes }: any) {
                 leadingVisual: () => (
                   <StyledOcticon
                     icon={AlertIcon}
-                    sx={{ fill: useImportantColor('attention.fg') }}
+                    sx={{ fill: 'currentcolor !important' }}
                   />
                 ),
                 sx: { color: 'attention.fg' },

@@ -1,10 +1,7 @@
 import {
-  AnchoredOverlay,
   Autocomplete,
   Box,
-  Button,
-  FormControl,
-  IssueLabelToken,
+  StyledOcticon,
   TextInputWithTokens,
   Token,
 } from '@primer/react';
@@ -22,7 +19,7 @@ function AutoCompleteTokenInput({ notes }: any) {
   //   assigned: note.noteCollectionId !== null,
   // }));
   // const [tokens, setTokens] = React.useState<Token[]>(initialTokens);
-  const { fetchAllData } = useGeneralContext();
+  const { fetchAllData, useImportantColor } = useGeneralContext();
 
   const [tokens, setTokens] = React.useState([
     {
@@ -81,11 +78,11 @@ function AutoCompleteTokenInput({ notes }: any) {
     }
 
     setTokens(
-      newlySelectedItems.map(({ id, text, metadata }) => ({
+      newlySelectedItems.map(({ id, text, leadingVisual, sx }) => ({
         id,
         text,
-        leadingVisual: metadata.leadingVisual,
-        sx: metadata.sx,
+        leadingVisual,
+        sx,
       }))
     );
   };
@@ -112,40 +109,37 @@ function AutoCompleteTokenInput({ notes }: any) {
           <Autocomplete.Menu
             items={[
               {
-                leadingVisual: AlertIcon,
-                text: 'enhancement',
                 id: 1,
-                metadata: {
-                  leadingVisual: AlertIcon,
-                  sx: { color: 'red' },
-                },
+                text: 'enhancement',
+                leadingVisual: () => (
+                  <StyledOcticon
+                    icon={AlertIcon}
+                    sx={{ fill: useImportantColor('attention.fg') }}
+                  />
+                ),
+                sx: { color: 'attention.fg' },
               },
               {
-                leadingVisual: AlertIcon,
-                text: 'bug',
                 id: 2,
-                metadata: {
-                  leadingVisual: AlertIcon,
-                  sx: { color: 'red' },
-                },
+                text: 'bug',
+                leadingVisual: () => (
+                  <StyledOcticon
+                    icon={AlertIcon}
+                    sx={{ fill: useImportantColor('attention.fg') }}
+                  />
+                ),
+                sx: { color: 'attention.fg' },
               },
               {
-                leadingVisual: AlertIcon,
-                text: 'good first issue',
                 id: 3,
-                metadata: {
-                  leadingVisual: '',
-                  sx: { color: '' },
-                },
-              },
-              {
-                leadingVisual: AlertIcon,
-                text: 'design',
-                id: 4,
-                metadata: {
-                  leadingVisual: '',
-                  sx: { color: '' },
-                },
+                text: 'good first issue',
+                leadingVisual: () => (
+                  <StyledOcticon
+                    icon={AlertIcon}
+                    sx={{ fill: useImportantColor('attention.fg') }}
+                  />
+                ),
+                sx: { color: 'attention.fg' },
               },
             ]}
             selectedItemIds={selectedItemIds}

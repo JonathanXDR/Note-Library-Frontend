@@ -2,9 +2,22 @@ import React, { createContext, useContext, useState } from 'react';
 import { Note } from '../types/note.interface';
 import { NoteCollection } from '../types/noteCollection.interface';
 import { noteCollections, notes } from '../services/http.service';
+import { useTheme } from '@primer/react';
 
 interface GeneralProviderProps extends React.PropsWithChildren<{}> {}
+
+const GeneralContext = createContext<GeneralContextData | null>(null);
+
+export const useImportantColor = (colorKey: string) => {
+  const theme = useTheme();
+  const colorValue = getProperty(theme, colorKey);
+
+  console.log(`${colorValue} !important`);
+  return `${colorValue} !important`;
+};
+
 interface GeneralContextData {
+  useImportantColor: (colorKey: string) => string;
   notesData: Note[];
   setNotesData: React.Dispatch<React.SetStateAction<Note[]>>;
   noteCollectionsData: NoteCollection[];
@@ -25,14 +38,27 @@ interface GeneralContextData {
   ) => void;
 }
 
-const GeneralContext = createContext<GeneralContextData | null>(null);
-
 export const useGeneralContext = () => {
   const context = useContext(GeneralContext);
   if (!context) {
     throw new Error('useGeneralContext must be used within a GeneralProvider');
   }
   return context;
+};
+
+const getProperty = (obj: any, path: string) => {
+  const pathArray = path.split('.');
+  let currentObj = obj;
+
+  for (let i = 0; i < pathArray.length; i++) {
+    if (currentObj[pathArray[i]] !== undefined) {
+      currentObj = currentObj[pathArray[i]];
+    } else {
+      return undefined;
+    }
+  }
+
+  return currentObj;
 };
 
 export const GeneralProvider: React.FC<GeneralProviderProps> = ({
@@ -81,6 +107,7 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   return (
     <GeneralContext.Provider
       value={{
+        useImportantColor,
         notesData,
         setNotesData,
         noteCollectionsData,

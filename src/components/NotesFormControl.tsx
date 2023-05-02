@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   Box,
+  FormControl,
   StyledOcticon,
   TextInputWithTokens,
   Token,
@@ -14,14 +15,18 @@ import { AlertIcon } from '@primer/octicons-react';
 import { useNoteContext } from '../contexts/note.context';
 import { useNoteCollectionContext } from '../contexts/noteCollection.context';
 
-function AutoCompleteTokenInput({ notes }: any) {
+// Notes for the current note collection - used for the tokens
+function NotesFormControl({ notes }: any) {
   // const initialTokens = notes.map((note: Note) => ({
   //   id: note.id,
   //   text: note.title,
   //   assigned: note.noteCollectionId !== null,
   // }));
   // const [tokens, setTokens] = React.useState<Token[]>(initialTokens);
+
+  // All notes from all note collections - used for the autocomplete menu
   const { fetchNotesData } = useNoteContext();
+
   const { fetchNoteCollectionsData } = useNoteCollectionContext();
 
   const [tokens, setTokens] = React.useState([
@@ -91,13 +96,13 @@ function AutoCompleteTokenInput({ notes }: any) {
   };
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-      }}
-    >
+    <FormControl>
+      <FormControl.Label>Notes</FormControl.Label>
       <Autocomplete>
         <Autocomplete.Input
+          sx={{
+            width: '100%',
+          }}
           as={TextInputWithTokens}
           tokens={tokens}
           tokenComponent={Token}
@@ -153,8 +158,19 @@ function AutoCompleteTokenInput({ notes }: any) {
           />
         </Autocomplete.Overlay>
       </Autocomplete>
-    </Box>
+
+      {/* Show this validation message, if there are notes, which already have a relation to another noteCollection */}
+      <FormControl.Validation
+        id="warning"
+        variant="warning"
+        sx={{
+          marginTop: 2,
+        }}
+      >
+        Previous assigned notes will be reassigned to this NoteCollection
+      </FormControl.Validation>
+    </FormControl>
   );
 }
 
-export default AutoCompleteTokenInput;
+export default NotesFormControl;

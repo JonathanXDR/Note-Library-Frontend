@@ -15,8 +15,12 @@ import { AlertIcon } from '@primer/octicons-react';
 import { useNoteContext } from '../contexts/note.context';
 import { useNoteCollectionContext } from '../contexts/noteCollection.context';
 
-// Notes for the current note collection - used for the tokens
-function NotesFormControl({ notes }: any) {
+// notes for the current note collection - used for the tokens
+function NotesFormControl({
+  currentNotes,
+  setCreatedNotes,
+  setUpdatedNotes,
+}: any) {
   // const initialTokens = notes.map((note: Note) => ({
   //   id: note.id,
   //   text: note.title,
@@ -27,9 +31,11 @@ function NotesFormControl({ notes }: any) {
   // All notes from all note collections - used for the autocomplete menu
   const { fetchNotesData } = useNoteContext();
 
-  const { fetchNoteCollectionsData } = useNoteCollectionContext();
+  const { fetchNoteCollectionsData, noteCollectionDialogType } =
+    useNoteCollectionContext();
 
   const [tokens, setTokens] = React.useState([
+    // show the already assigned notes for the current note collection here
     {
       id: 1,
       text: 'enhancement',
@@ -100,13 +106,18 @@ function NotesFormControl({ notes }: any) {
       <FormControl.Label>Notes</FormControl.Label>
       <Autocomplete>
         <Autocomplete.Input
-          sx={{
-            width: '100%',
-          }}
           as={TextInputWithTokens}
           tokens={tokens}
           tokenComponent={Token}
           onTokenRemove={onTokenRemove}
+          onChange={(e) =>
+            noteCollectionDialogType === 'create'
+              ? setCreatedNotes(e.target.value)
+              : setUpdatedNotes(e.target.value)
+          }
+          sx={{
+            width: '100%',
+          }}
         />
         <Autocomplete.Overlay
           sx={{
@@ -115,6 +126,7 @@ function NotesFormControl({ notes }: any) {
           }}
         >
           <Autocomplete.Menu
+            // show all notes from all note collections and show an AlertIcon if there are notes, which are already assigned to another note collection
             items={[
               {
                 id: 1,

@@ -127,7 +127,11 @@ function NoteCollectionDialog() {
                 sx={{ width: '100%', marginBottom: '4' }}
               />
             </FormControl>
-            <NotesFormControl notes={selectedNoteCollection.notes} />
+            <NotesFormControl
+              notes={selectedNoteCollection.notes}
+              setCreatedNotes={setCreatedNotes}
+              setUpdatedNotes={setUpdatedNotes}
+            />
           </>
         )}
       </Dialog>

@@ -6,7 +6,7 @@ import {
   TextInputWithTokens,
   Token,
 } from '@primer/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { notes, noteCollections } from '../services/http.service';
 import { Note } from '../types/note.interface';
 import { NoteCollection } from '../types/noteCollection.interface';
@@ -14,47 +14,33 @@ import { useGeneralContext } from '../contexts/general.context';
 import { AlertIcon } from '@primer/octicons-react';
 import { useNoteContext } from '../contexts/note.context';
 import { useNoteCollectionContext } from '../contexts/noteCollection.context';
+import { InputToken } from '../types/inputToken.interface';
 
-// notes for the current note collection - used for the tokens
-function NotesFormControl({
-  currentNotes,
-  setCreatedNotes,
-  setUpdatedNotes,
-}: any) {
-  // const initialTokens = notes.map((note: Note) => ({
-  //   id: note.id,
-  //   text: note.title,
-  //   assigned: note.noteCollectionId !== null,
-  // }));
-  // const [tokens, setTokens] = React.useState<Token[]>(initialTokens);
-
-  // All notes from all note collections - used for the autocomplete menu
+function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
   const { fetchNotesData } = useNoteContext();
-
   const { fetchNoteCollectionsData, noteCollectionDialogType } =
     useNoteCollectionContext();
 
-  const [tokens, setTokens] = React.useState([
-    // show the already assigned notes for the current note collection here
-    {
-      id: 1,
-      text: 'enhancement',
-      leadingVisual: AlertIcon,
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
+
+  useEffect(() => {
+    const fetchAllNotes = async () => {
+      const notesData = await fetchNotesData();
+      setAllNotes(notesData);
+    };
+    fetchAllNotes();
+  }, [fetchNotesData]);
+
+  // Set the initial tokens using the current notes
+  const [tokens, setTokens] = React.useState<InputToken[]>(
+    notes.map((note: Note) => ({
+      id: note.id,
+      text: note.title,
+      leadingVisual: note.noteCollectionId !== null ? AlertIcon : undefined,
       sx: { color: 'attention.fg' },
-    },
-    {
-      id: 2,
-      text: 'bug',
-      leadingVisual: AlertIcon,
-      sx: { color: 'attention.fg' },
-    },
-    {
-      id: 3,
-      text: 'good first issue',
-      leadingVisual: AlertIcon,
-      sx: { color: 'attention.fg' },
-    },
-  ]);
+    }))
+  );
+
   const selectedTokenIds = tokens.map((token) => token.id);
   const [selectedItemIds, setSelectedItemIds] =
     React.useState(selectedTokenIds);
@@ -126,42 +112,16 @@ function NotesFormControl({
           }}
         >
           <Autocomplete.Menu
-            // show all notes from all note collections and show an AlertIcon if there are notes, which are already assigned to another note collection
-            items={[
-              {
-                id: 1,
-                text: 'enhancement',
-                leadingVisual: () => (
-                  <StyledOcticon
-                    icon={AlertIcon}
-                    sx={{ fill: 'currentcolor !important' }}
-                  />
-                ),
-                sx: { color: 'attention.fg' },
+            items={allNotes.map((note: Note) => ({
+              id: note.id,
+              text: note.title,
+              leadingVisual:
+                note.noteCollectionId !== null ? AlertIcon : undefined,
+              sx: {
+                color:
+                  note.noteCollectionId !== null ? 'attention.fg' : 'inherit',
               },
-              {
-                id: 2,
-                text: 'bug',
-                leadingVisual: () => (
-                  <StyledOcticon
-                    icon={AlertIcon}
-                    sx={{ fill: 'currentcolor !important' }}
-                  />
-                ),
-                sx: { color: 'attention.fg' },
-              },
-              {
-                id: 3,
-                text: 'good first issue',
-                leadingVisual: () => (
-                  <StyledOcticon
-                    icon={AlertIcon}
-                    sx={{ fill: 'currentcolor !important' }}
-                  />
-                ),
-                sx: { color: 'attention.fg' },
-              },
-            ]}
+            }))}
             selectedItemIds={selectedItemIds}
             onSelectedChange={onSelectedChange}
             sortOnCloseFn={customSortFn}

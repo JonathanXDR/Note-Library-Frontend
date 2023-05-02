@@ -1,16 +1,12 @@
 import {
   Autocomplete,
-  Box,
   FormControl,
   StyledOcticon,
   TextInputWithTokens,
   Token,
 } from '@primer/react';
 import React, { useEffect, useState } from 'react';
-import { notes, noteCollections } from '../services/http.service';
 import { Note } from '../types/note.interface';
-import { NoteCollection } from '../types/noteCollection.interface';
-import { useGeneralContext } from '../contexts/general.context';
 import { AlertIcon } from '@primer/octicons-react';
 import { useNoteContext } from '../contexts/note.context';
 import { useNoteCollectionContext } from '../contexts/noteCollection.context';
@@ -31,13 +27,26 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
     fetchAllNotes();
   }, [fetchNotesData]);
 
+  const AlertIconComponent = () => (
+    <StyledOcticon
+      icon={AlertIcon}
+      sx={{
+        color: 'attention.fg',
+        fill: 'currentColor !important',
+      }}
+    />
+  );
+
   // Set the initial tokens using the current notes
   const [tokens, setTokens] = React.useState<InputToken[]>(
     notes.map((note: Note) => ({
       id: note.id,
       text: note.title,
-      leadingVisual: note.noteCollectionId !== null ? AlertIcon : undefined,
-      sx: { color: 'attention.fg' },
+      leadingVisual:
+        note?.noteCollectionId !== null ? AlertIconComponent : undefined,
+      sx: {
+        color: 'inherit',
+      },
     }))
   );
 
@@ -84,8 +93,10 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
           id,
           text,
           leadingVisual:
-            note?.noteCollectionId !== null ? AlertIcon : undefined,
-          sx,
+            note?.noteCollectionId !== null ? AlertIconComponent : undefined,
+          sx: {
+            color: 'inherit',
+          },
         };
       })
     );
@@ -120,21 +131,11 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
               id: note.id,
               text: note.title,
               trailingVisual:
-                note.noteCollectionId !== null ? (
-                  <StyledOcticon
-                    icon={AlertIcon}
-                    sx={{
-                      color:
-                        note.noteCollectionId !== null
-                          ? 'attention.fg'
-                          : 'inherit',
-                      fill: 'currentColor !important',
-                    }}
-                  />
-                ) : undefined,
+                note?.noteCollectionId !== null
+                  ? AlertIconComponent
+                  : undefined,
               sx: {
-                color:
-                  note.noteCollectionId !== null ? 'attention.fg' : 'inherit',
+                color: 'inherit',
               },
             }))}
             selectedItemIds={selectedItemIds}

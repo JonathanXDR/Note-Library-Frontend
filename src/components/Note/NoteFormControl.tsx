@@ -6,13 +6,18 @@ import {
   Token,
 } from '@primer/react';
 import React, { useEffect, useState } from 'react';
-import { Note } from '../types/note.interface';
+import { Note } from '../../types/note.interface';
 import { AlertIcon, CheckIcon } from '@primer/octicons-react';
-import { useNoteContext } from '../contexts/note.context';
-import { useNoteCollectionContext } from '../contexts/noteCollection.context';
-import { InputToken } from '../types/inputToken.interface';
+import { useNoteContext } from '../../contexts/note.context';
+import { useNoteCollectionContext } from '../../contexts/noteCollection.context';
+import { InputToken } from '../../types/inputToken.interface';
 
-function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
+function NoteFormControl({
+  notes,
+  notesValue,
+  setCreatedNotes,
+  setUpdatedNotes,
+}: any) {
   const { fetchNotesData } = useNoteContext();
   const { noteCollectionDialogType, selectedNoteCollection } =
     useNoteCollectionContext();
@@ -107,6 +112,7 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
       <FormControl.Label>Notes</FormControl.Label>
       <Autocomplete>
         <Autocomplete.Input
+          value={notesValue}
           as={TextInputWithTokens}
           tokens={tokens}
           tokenComponent={Token}
@@ -160,4 +166,4 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
   );
 }
 
-export default NotesFormControl;
+export default NoteFormControl;

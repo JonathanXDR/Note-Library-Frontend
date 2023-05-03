@@ -37,23 +37,13 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
     />
   );
 
-  const CheckIconOcticon = () => (
-    <StyledOcticon
-      icon={CheckIcon}
-      sx={{
-        color: 'success.fg',
-        fill: 'currentColor !important',
-      }}
-    />
-  );
-
   const [tokens, setTokens] = useState<InputToken[]>(
     notes.map((note: Note) => ({
       id: note.id,
       text: note.title,
       leadingVisual:
         note?.noteCollectionId === selectedNoteCollection.id
-          ? CheckIconOcticon
+          ? undefined
           : note?.noteCollectionId !== null
           ? AlertIconOcticon
           : undefined,
@@ -102,7 +92,7 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
           text,
           leadingVisual:
             note?.noteCollectionId === selectedNoteCollection.id
-              ? CheckIconOcticon
+              ? undefined
               : note?.noteCollectionId !== null
               ? AlertIconOcticon
               : undefined,
@@ -140,7 +130,7 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
               text: note.title,
               trailingVisual:
                 note?.noteCollectionId === selectedNoteCollection.id
-                  ? CheckIconOcticon
+                  ? undefined
                   : note?.noteCollectionId !== null
                   ? AlertIconOcticon
                   : undefined,

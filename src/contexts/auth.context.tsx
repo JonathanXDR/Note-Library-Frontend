@@ -18,8 +18,6 @@ interface AuthContextData {
     hasNumber: boolean;
     hasLowercase: boolean;
   };
-  getValidationStyle: (validation: boolean) => Object;
-  getMutedStyle: (condition: boolean) => Object;
   handleLoginSubmit: (
     username: string,
     password: string,
@@ -48,14 +46,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     hasNumber: false,
     hasLowercase: false,
   });
-
-  const getValidationStyle = (validation: boolean) => ({
-    color: validation ? 'success.fg' : 'danger.fg',
-    fontWeight: validation ? '' : 'bold',
-  });
-
-  const getMutedStyle = (condition: boolean) =>
-    condition ? { color: 'fg.muted', fontWeight: '' } : {};
 
   useEffect(() => {
     const has8chars = password.length >= 8;
@@ -120,8 +110,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         isValid,
         validations,
         handleLoginSubmit,
-        getValidationStyle,
-        getMutedStyle,
       }}
     >
       {children}

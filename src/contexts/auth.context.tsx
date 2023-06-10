@@ -53,8 +53,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const hasNumber = /\d/.test(password);
     const hasLowercase = /[a-z]/.test(password);
 
-    const passwordRegexOne = has8chars && hasNumber && hasLowercase;
+    let passwordRegexOne = has8chars && hasNumber && hasLowercase;
     const passwordRegexTwo = has15chars;
+
+    if (passwordRegexTwo) {
+      passwordRegexOne = false;
+    } else {
+      passwordRegexOne = has8chars && hasNumber && hasLowercase;
+    }
 
     setValidations({
       passwordRegexOne,

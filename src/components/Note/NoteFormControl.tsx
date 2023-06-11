@@ -104,7 +104,6 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
 
     const hasAssignedNotes = newTokens.some((token) => {
       const note = allNotes.find((note) => note.id === token.id);
-
       return (
         note?.noteCollectionId !== null &&
         note?.noteCollectionId !== selectedNoteCollection.id
@@ -115,6 +114,18 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
 
     setTokens(newTokens);
   };
+
+  useEffect(() => {
+    const hasAssignedNotes = tokens.some((token) => {
+      const note = allNotes.find((note) => note.id === token.id);
+      return (
+        note?.noteCollectionId !== null &&
+        note?.noteCollectionId !== selectedNoteCollection.id
+      );
+    });
+
+    setHasPreviouslyAssignedNotes(hasAssignedNotes);
+  }, [tokens, allNotes, selectedNoteCollection.id]);
 
   return (
     <FormControl>

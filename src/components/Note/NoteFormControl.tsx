@@ -66,6 +66,9 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
       ? 1
       : -1;
 
+  const [hasPreviouslyAssignedNotes, setHasPreviouslyAssignedNotes] =
+    useState(false);
+
   const handleSelectedChange = (newItems: any) => {
     if (!Array.isArray(newItems)) {
       return;
@@ -84,22 +87,33 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
       return;
     }
 
-    setTokens(
-      newItems.map(({ id, text }) => {
-        const note = allNotes.find((note) => note.id === id);
-        return {
-          id,
-          text,
-          leadingVisual:
-            note?.noteCollectionId === selectedNoteCollection.id
-              ? undefined
-              : note?.noteCollectionId !== null
-              ? AlertIconOcticon
-              : undefined,
-          sx: { color: 'inherit' },
-        };
-      })
-    );
+    const newTokens = newItems.map(({ id, text }) => {
+      const note = allNotes.find((note) => note.id === id);
+      return {
+        id,
+        text,
+        leadingVisual:
+          note?.noteCollectionId === selectedNoteCollection.id
+            ? undefined
+            : note?.noteCollectionId !== null
+            ? AlertIconOcticon
+            : undefined,
+        sx: { color: 'inherit' },
+      };
+    });
+
+    const hasAssignedNotes = newTokens.some((token) => {
+      const note = allNotes.find((note) => note.id === token.id);
+
+      return (
+        note?.noteCollectionId !== null &&
+        note?.noteCollectionId !== selectedNoteCollection.id
+      );
+    });
+
+    setHasPreviouslyAssignedNotes(hasAssignedNotes);
+
+    setTokens(newTokens);
   };
 
   return (
@@ -147,15 +161,17 @@ function NotesFormControl({ notes, setCreatedNotes, setUpdatedNotes }: any) {
         </Autocomplete.Overlay>
       </Autocomplete>
 
-      <FormControl.Validation
-        id="warning"
-        variant="warning"
-        sx={{
-          marginTop: 2,
-        }}
-      >
-        Previous assigned notes will be reassigned to this NoteCollection
-      </FormControl.Validation>
+      {hasPreviouslyAssignedNotes && (
+        <FormControl.Validation
+          id="warning"
+          variant="warning"
+          sx={{
+            marginTop: 2,
+          }}
+        >
+          Previous assigned notes will be reassigned to this NoteCollection
+        </FormControl.Validation>
+      )}
     </FormControl>
   );
 }

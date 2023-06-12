@@ -41,8 +41,6 @@ function NotesFormControl({
     />
   );
 
-  console.log(notesValue, 'notesValue');
-
   const notesToTokens = (notes: Note[]) =>
     notes.map((note: Note) => ({
       id: note.id,
@@ -140,7 +138,7 @@ function NotesFormControl({
       <Autocomplete>
         <Autocomplete.Input
           as={TextInputWithTokens}
-          tokens={notesValue}
+          tokens={tokens}
           tokenComponent={Token}
           onTokenRemove={removeToken}
           onChange={(e) =>

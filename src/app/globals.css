@@ -1,26 +1,370 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@layer base {
+  @import '@primer/primitives/dist/css/base/motion/motion.css';
+  @import '@primer/primitives/dist/css/base/size/size.css';
+  @import '@primer/primitives/dist/css/base/typography/typography.css';
+  @import '@primer/primitives/dist/css/functional/size/border.css';
+  @import '@primer/primitives/dist/css/functional/size/breakpoints.css';
+  @import '@primer/primitives/dist/css/functional/size/size-coarse.css';
+  @import '@primer/primitives/dist/css/functional/size/size-fine.css';
+  @import '@primer/primitives/dist/css/functional/size/size.css';
+  @import '@primer/primitives/dist/css/functional/size/viewport.css';
+  @import '@primer/primitives/dist/css/functional/themes/dark-colorblind.css';
+  @import '@primer/primitives/dist/css/functional/themes/dark-dimmed.css';
+  @import '@primer/primitives/dist/css/functional/themes/dark-high-contrast.css';
+  @import '@primer/primitives/dist/css/functional/themes/dark-tritanopia.css';
+  @import '@primer/primitives/dist/css/functional/themes/dark.css';
+  @import '@primer/primitives/dist/css/functional/themes/light-colorblind.css';
+  @import '@primer/primitives/dist/css/functional/themes/light-high-contrast.css';
+  @import '@primer/primitives/dist/css/functional/themes/light-tritanopia.css';
+  @import '@primer/primitives/dist/css/functional/themes/light.css';
+  @import '@primer/primitives/dist/css/functional/typography/typography.css';
+  @import '@primer/primitives/dist/css/primitives.css';
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* =================================================================== */
+  /* Colors */
+  /* =================================================================== */
+  
+  /* Foreground Colors */
+  --color-fg-accent: var(--fgColor-accent);
+  --color-fg-attention: var(--fgColor-attention);
+  --color-fg-black: var(--fgColor-black);
+  --color-fg-closed: var(--fgColor-closed);
+  --color-fg-danger: var(--fgColor-danger);
+  --color-fg-default: var(--fgColor-default);
+  --color-fg-disabled: var(--fgColor-disabled);
+  --color-fg-done: var(--fgColor-done);
+  --color-fg-link: var(--fgColor-link);
+  --color-fg-muted: var(--fgColor-muted);
+  --color-fg-neutral: var(--fgColor-neutral);
+  --color-fg-on-emphasis: var(--fgColor-onEmphasis);
+  --color-fg-on-inverse: var(--fgColor-onInverse);
+  --color-fg-open: var(--fgColor-open);
+  --color-fg-severe: var(--fgColor-severe);
+  --color-fg-sponsors: var(--fgColor-sponsors);
+  --color-fg-success: var(--fgColor-success);
+  --color-fg-upsell: var(--fgColor-upsell);
+  --color-fg-white: var(--fgColor-white);
+
+  /* Background Colors */
+  --color-bg-accent-emphasis: var(--bgColor-accent-emphasis);
+  --color-bg-accent-muted: var(--bgColor-accent-muted);
+  --color-bg-attention-emphasis: var(--bgColor-attention-emphasis);
+  --color-bg-attention-muted: var(--bgColor-attention-muted);
+  --color-bg-black: var(--bgColor-black);
+  --color-bg-closed-emphasis: var(--bgColor-closed-emphasis);
+  --color-bg-closed-muted: var(--bgColor-closed-muted);
+  --color-bg-danger-emphasis: var(--bgColor-danger-emphasis);
+  --color-bg-danger-muted: var(--bgColor-danger-muted);
+  --color-bg-default: var(--bgColor-default);
+  --color-bg-disabled: var(--bgColor-disabled);
+  --color-bg-done-emphasis: var(--bgColor-done-emphasis);
+  --color-bg-done-muted: var(--bgColor-done-muted);
+  --color-bg-emphasis: var(--bgColor-emphasis);
+  --color-bg-inset: var(--bgColor-inset);
+  --color-bg-inverse: var(--bgColor-inverse);
+  --color-bg-muted: var(--bgColor-muted);
+  --color-bg-neutral-emphasis: var(--bgColor-neutral-emphasis);
+  --color-bg-neutral-muted: var(--bgColor-neutral-muted);
+  --color-bg-open-emphasis: var(--bgColor-open-emphasis);
+  --color-bg-open-muted: var(--bgColor-open-muted);
+  --color-bg-severe-emphasis: var(--bgColor-severe-emphasis);
+  --color-bg-severe-muted: var(--bgColor-severe-muted);
+  --color-bg-sponsors-emphasis: var(--bgColor-sponsors-emphasis);
+  --color-bg-sponsors-muted: var(--bgColor-sponsors-muted);
+  --color-bg-success-emphasis: var(--bgColor-success-emphasis);
+  --color-bg-success-muted: var(--bgColor-success-muted);
+  --color-bg-transparent: var(--bgColor-transparent);
+  --color-bg-upsell-emphasis: var(--bgColor-upsell-emphasis);
+  --color-bg-upsell-muted: var(--bgColor-upsell-muted);
+  --color-bg-white: var(--bgColor-white);
+
+  /* Border Colors */
+  --color-border-accent-emphasis: var(--borderColor-accent-emphasis);
+  --color-border-accent-muted: var(--borderColor-accent-muted);
+  --color-border-attention-emphasis: var(--borderColor-attention-emphasis);
+  --color-border-attention-muted: var(--borderColor-attention-muted);
+  --color-border-closed-emphasis: var(--borderColor-closed-emphasis);
+  --color-border-closed-muted: var(--borderColor-closed-muted);
+  --color-border-danger-emphasis: var(--borderColor-danger-emphasis);
+  --color-border-danger-muted: var(--borderColor-danger-muted);
+  --color-border-default: var(--borderColor-default);
+  --color-border-disabled: var(--borderColor-disabled);
+  --color-border-done-emphasis: var(--borderColor-done-emphasis);
+  --color-border-done-muted: var(--borderColor-done-muted);
+  --color-border-emphasis: var(--borderColor-emphasis);
+  --color-border-muted: var(--borderColor-muted);
+  --color-border-neutral-emphasis: var(--borderColor-neutral-emphasis);
+  --color-border-neutral-muted: var(--borderColor-neutral-muted);
+  --color-border-open-emphasis: var(--borderColor-open-emphasis);
+  --color-border-open-muted: var(--borderColor-open-muted);
+  --color-border-severe-emphasis: var(--borderColor-severe-emphasis);
+  --color-border-severe-muted: var(--borderColor-severe-muted);
+  --color-border-sponsors-emphasis: var(--borderColor-sponsors-emphasis);
+  --color-border-sponsors-muted: var(--borderColor-sponsors-muted);
+  --color-border-success-emphasis: var(--borderColor-success-emphasis);
+  --color-border-success-muted: var(--borderColor-success-muted);
+  --color-border-translucent: var(--borderColor-translucent);
+  --color-border-transparent: var(--borderColor-transparent);
+  --color-border-upsell-emphasis: var(--borderColor-upsell-emphasis);
+  --color-border-upsell-muted: var(--borderColor-upsell-muted);
+
+  /* Data Visualization Colors */
+  --color-data-auburn-emphasis: var(--data-auburn-color-emphasis);
+  --color-data-auburn-muted: var(--data-auburn-color-muted);
+  --color-data-blue-emphasis: var(--data-blue-color-emphasis);
+  --color-data-blue-muted: var(--data-blue-color-muted);
+  --color-data-brown-emphasis: var(--data-brown-color-emphasis);
+  --color-data-brown-muted: var(--data-brown-color-muted);
+  --color-data-coral-emphasis: var(--data-coral-color-emphasis);
+  --color-data-coral-muted: var(--data-coral-color-muted);
+  --color-data-gray-emphasis: var(--data-gray-color-emphasis);
+  --color-data-gray-muted: var(--data-gray-color-muted);
+  --color-data-green-emphasis: var(--data-green-color-emphasis);
+  --color-data-green-muted: var(--data-green-color-muted);
+  --color-data-lemon-emphasis: var(--data-lemon-color-emphasis);
+  --color-data-lemon-muted: var(--data-lemon-color-muted);
+  --color-data-lime-emphasis: var(--data-lime-color-emphasis);
+  --color-data-lime-muted: var(--data-lime-color-muted);
+  --color-data-olive-emphasis: var(--data-olive-color-emphasis);
+  --color-data-olive-muted: var(--data-olive-color-muted);
+  --color-data-orange-emphasis: var(--data-orange-color-emphasis);
+  --color-data-orange-muted: var(--data-orange-color-muted);
+  --color-data-pine-emphasis: var(--data-pine-color-emphasis);
+  --color-data-pine-muted: var(--data-pine-color-muted);
+  --color-data-pink-emphasis: var(--data-pink-color-emphasis);
+  --color-data-pink-muted: var(--data-pink-color-muted);
+  --color-data-plum-emphasis: var(--data-plum-color-emphasis);
+  --color-data-plum-muted: var(--data-plum-color-muted);
+  --color-data-purple-emphasis: var(--data-purple-color-emphasis);
+  --color-data-purple-muted: var(--data-purple-color-muted);
+  --color-data-red-emphasis: var(--data-red-color-emphasis);
+  --color-data-red-muted: var(--data-red-color-muted);
+  --color-data-teal-emphasis: var(--data-teal-color-emphasis);
+  --color-data-teal-muted: var(--data-teal-color-muted);
+  --color-data-yellow-emphasis: var(--data-yellow-color-emphasis);
+  --color-data-yellow-muted: var(--data-yellow-color-muted);
+
+  /* Focus and Overlay Colors */
+  --color-focus-outline: var(--focus-outlineColor);
+  --color-overlay-backdrop: var(--overlay-backdrop-bgColor);
+  --color-overlay-bg: var(--overlay-bgColor);
+  --color-overlay-border: var(--overlay-borderColor);
+
+  /* =================================================================== */
+  /* Spacing */
+  /* =================================================================== */
+  
+  --spacing-0: 0;
+  --spacing-2: var(--base-size-2);
+  --spacing-4: var(--base-size-4);
+  --spacing-6: var(--base-size-6);
+  --spacing-8: var(--base-size-8);
+  --spacing-12: var(--base-size-12);
+  --spacing-16: var(--base-size-16);
+  --spacing-20: var(--base-size-20);
+  --spacing-24: var(--base-size-24);
+  --spacing-28: var(--base-size-28);
+  --spacing-32: var(--base-size-32);
+  --spacing-36: var(--base-size-36);
+  --spacing-40: var(--base-size-40);
+  --spacing-44: var(--base-size-44);
+  --spacing-48: var(--base-size-48);
+  --spacing-64: var(--base-size-64);
+  --spacing-80: var(--base-size-80);
+  --spacing-96: var(--base-size-96);
+  --spacing-112: var(--base-size-112);
+  --spacing-128: var(--base-size-128);
+
+  /* Stack spacing */
+  --spacing-stack-gap-condensed: var(--stack-gap-condensed);
+  --spacing-stack-gap-normal: var(--stack-gap-normal);
+  --spacing-stack-gap-spacious: var(--stack-gap-spacious);
+  --spacing-stack-padding-condensed: var(--stack-padding-condensed);
+  --spacing-stack-padding-normal: var(--stack-padding-normal);
+  --spacing-stack-padding-spacious: var(--stack-padding-spacious);
+
+  /* Control spacing */
+  --spacing-control-xsmall-gap: var(--control-xsmall-gap);
+  --spacing-control-xsmall-padding-block: var(--control-xsmall-paddingBlock);
+  --spacing-control-xsmall-padding-condensed: var(--control-xsmall-paddingInline-condensed);
+  --spacing-control-xsmall-padding-normal: var(--control-xsmall-paddingInline-normal);
+  --spacing-control-xsmall-padding-spacious: var(--control-xsmall-paddingInline-spacious);
+
+  /* Control stack spacing */
+  --spacing-controlstack-small-gap-condensed: var(--controlStack-small-gap-condensed);
+  --spacing-controlstack-small-gap-spacious: var(--controlStack-small-gap-spacious);
+  --spacing-controlstack-medium-gap-condensed: var(--controlStack-medium-gap-condensed);
+  --spacing-controlstack-medium-gap-spacious: var(--controlStack-medium-gap-spacious);
+  --spacing-controlstack-large-gap-auto: var(--controlStack-large-gap-auto);
+  --spacing-controlstack-large-gap-condensed: var(--controlStack-large-gap-condensed);
+  --spacing-controlstack-large-gap-spacious: var(--controlStack-large-gap-spacious);
+
+  /* Overlay spacing */
+  --spacing-overlay-offset: var(--overlay-offset);
+  --spacing-overlay-padding-condensed: var(--overlay-padding-condensed);
+  --spacing-overlay-padding-normal: var(--overlay-padding-normal);
+  --spacing-overlay-padding-block-condensed: var(--overlay-paddingBlock-condensed);
+  --spacing-overlay-padding-block-normal: var(--overlay-paddingBlock-normal);
+
+  /* =================================================================== */
+  /* Typography */
+  /* =================================================================== */
+
+  /* Font families */
+  --font-mono: var(--fontStack-monospace);
+  --font-sans: var(--fontStack-sansSerif);
+  --font-sans-display: var(--fontStack-sansSerifDisplay);
+  --font-system: var(--fontStack-system);
+
+  /* Font weights */
+  --font-weight-light: var(--base-text-weight-light);
+  --font-weight-normal: var(--base-text-weight-normal);
+  --font-weight-medium: var(--base-text-weight-medium);
+  --font-weight-semibold: var(--base-text-weight-semibold);
+
+  /* Text sizes */
+  --text-display: var(--text-display-size);
+  --text-title-large: var(--text-title-size-large);
+  --text-title-medium: var(--text-title-size-medium);
+  --text-title-small: var(--text-title-size-small);
+  --text-subtitle: var(--text-subtitle-size);
+  --text-body-large: var(--text-body-size-large);
+  --text-body-medium: var(--text-body-size-medium);
+  --text-body-small: var(--text-body-size-small);
+  --text-caption: var(--text-caption-size);
+  --text-code-block: var(--text-codeBlock-size);
+  --text-code-inline: var(--text-codeInline-size);
+
+  /* Line heights */
+  --leading-display: var(--text-display-lineHeight);
+  --leading-title-large: var(--text-title-lineHeight-large);
+  --leading-title-medium: var(--text-title-lineHeight-medium);
+  --leading-title-small: var(--text-title-lineHeight-small);
+  --leading-subtitle: var(--text-subtitle-lineHeight);
+  --leading-body-large: var(--text-body-lineHeight-large);
+  --leading-body-medium: var(--text-body-lineHeight-medium);
+  --leading-body-small: var(--text-body-lineHeight-small);
+  --leading-caption: var(--text-caption-lineHeight);
+  --leading-code-block: var(--text-codeBlock-lineHeight);
+
+  /* =================================================================== */
+  /* Breakpoints */
+  /* =================================================================== */
+  
+  --breakpoint-xs: var(--breakpoint-xsmall);
+  --breakpoint-sm: var(--breakpoint-small);
+  --breakpoint-md: var(--breakpoint-medium);
+  --breakpoint-lg: var(--breakpoint-large);
+  --breakpoint-xl: var(--breakpoint-xlarge);
+  --breakpoint-2xl: var(--breakpoint-xxlarge);
+
+  /* =================================================================== */
+  /* Container sizes */
+  /* =================================================================== */
+  
+  --container-xsmall: var(--overlay-width-xsmall);
+  --container-small: var(--overlay-width-small);
+  --container-medium: var(--overlay-width-medium);
+  --container-large: var(--overlay-width-large);
+  --container-xlarge: var(--overlay-width-xlarge);
+
+  /* Container heights */
+  --container-height-small: var(--overlay-height-small);
+  --container-height-medium: var(--overlay-height-medium);
+  --container-height-large: var(--overlay-height-large);
+  --container-height-xlarge: var(--overlay-height-xlarge);
+
+  /* =================================================================== */
+  /* Border radius */
+  /* =================================================================== */
+  
+  --radius-small: var(--borderRadius-small);
+  --radius-medium: var(--borderRadius-medium);
+  --radius-large: var(--borderRadius-large);
+  --radius-full: var(--borderRadius-full);
+  --radius-overlay: var(--overlay-borderRadius);
+
+  /* =================================================================== */
+  /* Borders */
+  /* =================================================================== */
+  
+  /* Border widths - custom namespace since Tailwind doesn't have this */
+  --border-width-default: var(--borderWidth-default);
+  --border-width-thin: var(--borderWidth-thin);
+  --border-width-thick: var(--borderWidth-thick);
+  --border-width-thicker: var(--borderWidth-thicker);
+
+  /* Box shadow borders */
+  --box-shadow-border-thin: var(--boxShadow-thin);
+  --box-shadow-border-thick: var(--boxShadow-thick);
+  --box-shadow-border-thicker: var(--boxShadow-thicker);
+
+  /* =================================================================== */
+  /* Shadows */
+  /* =================================================================== */
+  
+  --shadow-floating-small: var(--shadow-floating-small);
+  --shadow-floating-medium: var(--shadow-floating-medium);
+  --shadow-floating-large: var(--shadow-floating-large);
+  --shadow-floating-xlarge: var(--shadow-floating-xlarge);
+  --shadow-floating-legacy: var(--shadow-floating-legacy);
+  --shadow-resting-xsmall: var(--shadow-resting-xsmall);
+  --shadow-resting-small: var(--shadow-resting-small);
+  --shadow-resting-medium: var(--shadow-resting-medium);
+  
+  --inset-shadow-default: var(--shadow-inset);
+
+  /* =================================================================== */
+  /* Focus styles */
+  /* =================================================================== */
+  
+  /* Custom namespace for outline */
+  --outline-focus-width: var(--outline-focus-width);
+  --outline-focus-offset: var(--outline-focus-offset);
+
+  /* =================================================================== */
+  /* Control sizes */
+  /* =================================================================== */
+  
+  /* Custom namespace for control-specific sizes */
+  --control-xsmall-size: var(--control-xsmall-size);
+  --control-xsmall-line-box-height: var(--control-xsmall-lineBoxHeight);
+  
+  /* =================================================================== */
+  /* Display line box height */
+  /* =================================================================== */
+  
+  /* Custom namespace */
+  --text-display-line-box-height: var(--text-display-lineBoxHeight);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* =================================================================== */
+/* Custom variants for viewport ranges */
+/* =================================================================== */
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@custom-variant viewport-landscape (var(--viewportRange-landscape));
+@custom-variant viewport-narrow (var(--viewportRange-narrow));
+@custom-variant viewport-narrow-landscape (var(--viewportRange-narrowLandscape));
+@custom-variant viewport-portrait (var(--viewportRange-portrait));
+@custom-variant viewport-regular (var(--viewportRange-regular));
+@custom-variant viewport-wide (var(--viewportRange-wide));
+
+/* =================================================================== */
+/* Custom utilities
+/* =================================================================== */
+@utility text-* {
+  color: --value(--color-fg-*);
+}
+@utility bg-* {
+  background-color: --value(--color-bg-*);
+}
+@utility border-* {
+  border-color: --value(--color-border-*);
+}
+@utility data-* {
+  color: --value(--color-data-*);
 }

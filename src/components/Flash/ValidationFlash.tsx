@@ -1,21 +1,21 @@
-import { StopIcon } from '@primer/octicons-react';
-import { Box, Flash, Link, Text } from '@primer/react';
-import React from 'react';
+import { StopIcon } from '@primer/octicons-react'
+import { Box, Flash, Link, Text } from '@primer/react'
+import React from 'react'
 
 export interface ValidationField {
-  key: string;
-  title: string;
-  ref: React.RefObject<HTMLInputElement>;
+  key: string
+  title: string
+  ref: React.RefObject<HTMLInputElement>
 }
 
 interface ValidationFlashProps {
-  fields: ValidationField[];
+  fields: ValidationField[]
 }
 
 const ValidationFlash: React.FC<ValidationFlashProps> = ({ fields }) => {
   const handleClick = (inputRef: React.RefObject<HTMLInputElement>) => {
-    inputRef.current?.focus();
-  };
+    inputRef.current?.focus()
+  }
 
   return (
     <Flash variant="danger">
@@ -68,7 +68,7 @@ const ValidationFlash: React.FC<ValidationFlashProps> = ({ fields }) => {
         </Box>
       </Box>
     </Flash>
-  );
-};
+  )
+}
 
-export default ValidationFlash;
+export default ValidationFlash

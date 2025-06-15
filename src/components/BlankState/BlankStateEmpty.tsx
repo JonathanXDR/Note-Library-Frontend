@@ -1,10 +1,10 @@
-import { useNoteCollectionContext } from '@/contexts/note-collection.context';
-import { useNoteContext } from '@/contexts/note.context';
-import { Box, Button, Heading } from '@primer/react';
+import { useNoteCollectionContext } from '@/contexts/note-collection.context'
+import { useNoteContext } from '@/contexts/note.context'
+import { Box, Button, Heading } from '@primer/react'
 
 function BlankStateEmpty() {
-  const { openNoteDialog } = useNoteContext();
-  const { openNoteCollectionDialog } = useNoteCollectionContext();
+  const { openNoteDialog } = useNoteContext()
+  const { openNoteCollectionDialog } = useNoteCollectionContext()
 
   return (
     <Box
@@ -65,7 +65,7 @@ function BlankStateEmpty() {
         </Box>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default BlankStateEmpty;
+export default BlankStateEmpty

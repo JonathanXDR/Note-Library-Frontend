@@ -1,15 +1,15 @@
-import { useNoteContext } from '@/contexts/note.context';
-import { Note } from '@/types/note.interface';
+import { useNoteContext } from '@/contexts/note.context'
+import { Note } from '@/types/note.interface'
 import {
   KebabHorizontalIcon,
   PencilIcon,
   TrashIcon,
-} from '@primer/octicons-react';
-import { ActionList, ActionMenu, IconButton } from '@primer/react';
+} from '@primer/octicons-react'
+import { ActionList, ActionMenu, IconButton } from '@primer/react'
 
 function NoteActionMenu({ note }: { note: Note }) {
   const { openNoteDialog, setSelectedNote, confirmDeleteNote } =
-    useNoteContext();
+    useNoteContext()
 
   return (
     <>
@@ -26,8 +26,8 @@ function NoteActionMenu({ note }: { note: Note }) {
           <ActionList>
             <ActionList.Item
               onSelect={() => {
-                setSelectedNote(note);
-                openNoteDialog('update');
+                setSelectedNote(note)
+                openNoteDialog('update')
               }}
             >
               <ActionList.LeadingVisual>
@@ -47,8 +47,8 @@ function NoteActionMenu({ note }: { note: Note }) {
             <ActionList.Item
               variant="danger"
               onSelect={() => {
-                setSelectedNote(note);
-                confirmDeleteNote(note);
+                setSelectedNote(note)
+                confirmDeleteNote(note)
               }}
             >
               <ActionList.LeadingVisual>
@@ -61,7 +61,7 @@ function NoteActionMenu({ note }: { note: Note }) {
         </ActionMenu.Overlay>
       </ActionMenu>
     </>
-  );
+  )
 }
 
-export default NoteActionMenu;
+export default NoteActionMenu

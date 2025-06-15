@@ -1,9 +1,14 @@
-import { useNoteCollectionContext } from '@/contexts/note-collection.context';
-import { Button, FormControl, TextInput } from '@primer/react';
-import { Dialog, DialogButtonProps } from '@primer/react/drafts';
-import { useState } from 'react';
-import { Note } from '../../types/note.interface';
-import NotesFormControl from '../Note/NoteFormControl';
+import { useNoteCollectionContext } from '@/contexts/note-collection.context'
+import {
+  Button,
+  Dialog,
+  DialogButtonProps,
+  FormControl,
+  TextInput,
+} from '@primer/react'
+import { useState } from 'react'
+import { Note } from '../../types/note.interface'
+import NotesFormControl from '../Note/NoteFormControl'
 
 function NoteCollectionDialog() {
   const {
@@ -13,49 +18,45 @@ function NoteCollectionDialog() {
     handleCreateNoteCollection,
     handleUpdateNoteCollection,
     handleDeleteNoteCollection,
-  } = useNoteCollectionContext();
+  } = useNoteCollectionContext()
 
-  const [updatedTitle, setUpdatedTitle] = useState(
-    selectedNoteCollection.title
-  );
-  const [updatedNotes, setUpdatedNotes] = useState(
-    selectedNoteCollection.notes
-  );
+  const [updatedTitle, setUpdatedTitle] = useState(selectedNoteCollection.title)
+  const [updatedNotes, setUpdatedNotes] = useState(selectedNoteCollection.notes)
 
-  const [createdTitle, setCreatedTitle] = useState('');
-  const [createdNotes, setCreatedNotes] = useState([] as Note[]);
+  const [createdTitle, setCreatedTitle] = useState('')
+  const [createdNotes, setCreatedNotes] = useState([] as Note[])
 
   const handleCancel = () => {
-    setUpdatedTitle(selectedNoteCollection.title);
-    setUpdatedNotes(selectedNoteCollection.notes);
-    closeNoteCollectionDialog();
-  };
+    setUpdatedTitle(selectedNoteCollection.title)
+    setUpdatedNotes(selectedNoteCollection.notes)
+    closeNoteCollectionDialog()
+  }
 
   const getDialogTitle = () => {
     switch (noteCollectionDialogType) {
       case 'create':
-        return 'Create Note Collection';
+        return 'Create Note Collection'
       case 'update':
-        return 'Edit Note Collection';
+        return 'Edit Note Collection'
       case 'delete':
-        return 'Delete Note Collection';
+        return 'Delete Note Collection'
       default:
-        return '';
+        return ''
     }
-  };
+  }
 
   const getDialogSubtitle = () => {
     switch (noteCollectionDialogType) {
       case 'create':
-        return 'Organize your notes by creating a collection';
+        return 'Organize your notes by creating a collection'
       case 'update':
-        return 'Modify and manage your note collections';
+        return 'Modify and manage your note collections'
       case 'delete':
-        return 'Delete a collection and its associated notes';
+        return 'Delete a collection and its associated notes'
       default:
-        return '';
+        return ''
     }
-  };
+  }
 
   const getFooterButtons = (): DialogButtonProps[] => {
     switch (noteCollectionDialogType) {
@@ -68,7 +69,7 @@ function NoteCollectionDialog() {
             onClick: () =>
               handleCreateNoteCollection(createdTitle, createdNotes),
           },
-        ];
+        ]
       case 'update':
         return [
           { content: 'Cancel', onClick: handleCancel },
@@ -82,7 +83,7 @@ function NoteCollectionDialog() {
                 updatedNotes
               ),
           },
-        ];
+        ]
       case 'delete':
         return [
           { content: 'Cancel', onClick: handleCancel },
@@ -92,16 +93,16 @@ function NoteCollectionDialog() {
             onClick: () =>
               handleDeleteNoteCollection(selectedNoteCollection.id),
           },
-        ];
+        ]
       default:
-        return [];
+        return []
     }
-  };
+  }
 
   const titleValue =
-    noteCollectionDialogType === 'create' ? createdTitle : updatedTitle;
+    noteCollectionDialogType === 'create' ? createdTitle : updatedTitle
   const notesValue =
-    noteCollectionDialogType === 'create' ? createdNotes : updatedNotes;
+    noteCollectionDialogType === 'create' ? createdNotes : updatedNotes
 
   return (
     <Button onClick={(e) => e.stopPropagation()}>
@@ -141,7 +142,7 @@ function NoteCollectionDialog() {
         )}
       </Dialog>
     </Button>
-  );
+  )
 }
 
-export default NoteCollectionDialog;
+export default NoteCollectionDialog

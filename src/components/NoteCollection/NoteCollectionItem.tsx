@@ -1,27 +1,26 @@
-import { useNoteCollectionContext } from '@/contexts/note-collection.context';
-import { PencilIcon, TrashIcon } from '@primer/octicons-react';
-import { Box, Button, ButtonGroup, Text } from '@primer/react';
-import { Hidden } from '@primer/react/drafts';
-import { NoteCollection } from '../../types/note-collection.interface';
-import { Note } from '../../types/note.interface';
-import NoteCollectionActionMenu from './NoteCollectionActionMenu';
+import { useNoteCollectionContext } from '@/contexts/note-collection.context'
+import { PencilIcon, TrashIcon } from '@primer/octicons-react'
+import { Box, Button, ButtonGroup, Text } from '@primer/react'
+import { NoteCollection } from '../../types/note-collection.interface'
+import { Note } from '../../types/note.interface'
+import NoteCollectionActionMenu from './NoteCollectionActionMenu'
 
 const NoteCollectionItem = ({
   noteCollection,
 }: {
-  noteCollection: NoteCollection;
+  noteCollection: NoteCollection
 }) => {
   const {
     openNoteCollectionDialog,
     setSelectedNoteCollection,
     confirmDeleteNoteCollection,
-  } = useNoteCollectionContext();
+  } = useNoteCollectionContext()
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-  };
+  }
 
   const boxStyle = {
     width: '100%',
@@ -30,7 +29,7 @@ const NoteCollectionItem = ({
     alignItems: 'center',
     paddingBlock: 8,
     paddingInline: 12,
-  };
+  }
 
   return (
     <Box sx={boxStyle}>
@@ -48,8 +47,8 @@ const NoteCollectionItem = ({
             <Button
               leadingVisual={PencilIcon}
               onClick={() => {
-                setSelectedNoteCollection(noteCollection);
-                openNoteCollectionDialog('update');
+                setSelectedNoteCollection(noteCollection)
+                openNoteCollectionDialog('update')
               }}
             >
               Edit
@@ -58,8 +57,8 @@ const NoteCollectionItem = ({
               leadingVisual={TrashIcon}
               variant="danger"
               onClick={() => {
-                setSelectedNoteCollection(noteCollection);
-                confirmDeleteNoteCollection(noteCollection);
+                setSelectedNoteCollection(noteCollection)
+                confirmDeleteNoteCollection(noteCollection)
               }}
             >
               Delete
@@ -72,7 +71,7 @@ const NoteCollectionItem = ({
         </Hidden>
       </Button>
     </Box>
-  );
-};
+  )
+}
 
-export default NoteCollectionItem;
+export default NoteCollectionItem

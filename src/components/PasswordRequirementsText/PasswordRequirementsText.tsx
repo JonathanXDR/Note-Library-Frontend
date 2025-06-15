@@ -1,21 +1,21 @@
-import { useAuthContext } from '@/contexts/auth.context';
-import { Link, Text } from '@primer/react';
+import { useAuthContext } from '@/contexts/auth.context'
+import { Link, Text } from '@primer/react'
 
 const PasswordRequirementsText = () => {
-  const { validations } = useAuthContext();
+  const { validations } = useAuthContext()
 
   const getStyles = (validation: boolean, condition: boolean) => ({
     ...getValidationStyle(validation),
     ...getMutedStyle(condition),
-  });
+  })
 
   const getValidationStyle = (validation: boolean) => ({
     color: validation ? 'success.fg' : 'danger.fg',
     fontWeight: validation ? '' : 'bold',
-  });
+  })
 
   const getMutedStyle = (condition: boolean) =>
-    condition ? { color: 'fg.muted', fontWeight: '' } : {};
+    condition ? { color: 'fg.muted', fontWeight: '' } : {}
 
   return (
     <Text
@@ -66,7 +66,7 @@ const PasswordRequirementsText = () => {
         .
       </p>
     </Text>
-  );
-};
+  )
+}
 
-export default PasswordRequirementsText;
+export default PasswordRequirementsText

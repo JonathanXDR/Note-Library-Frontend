@@ -1,5 +1,5 @@
-import { CloudOfflineIcon } from '@primer/octicons-react';
-import { Box, Button, Heading } from '@primer/react';
+import { CloudOfflineIcon } from '@primer/octicons-react'
+import { Box, Button, Heading } from '@primer/react'
 
 function BlankStateBackendError() {
   return (
@@ -33,7 +33,7 @@ function BlankStateBackendError() {
         </div>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default BlankStateBackendError;
+export default BlankStateBackendError

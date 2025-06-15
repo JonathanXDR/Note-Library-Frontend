@@ -1,6 +1,6 @@
-import { MarkGithubIcon } from '@primer/octicons-react';
-import { Header, Octicon } from '@primer/react';
-import AccountActionMenu from '../AccountActionMenu';
+import { MarkGithubIcon } from '@primer/octicons-react'
+import { Header } from '@primer/react'
+import AccountActionMenu from '../AccountActionMenu'
 
 const MainNavbar = () => {
   return (
@@ -15,7 +15,7 @@ const MainNavbar = () => {
             },
           }}
         >
-          <Octicon icon={MarkGithubIcon} size={32} sx={{ marginRight: 2 }} />
+          <MarkGithubIcon size={32} className="mr-2" />
           <span>GitHub</span>
         </Header.Link>
       </Header.Item>
@@ -36,7 +36,7 @@ const MainNavbar = () => {
         <AccountActionMenu />
       </Header.Item>
     </Header>
-  );
-};
+  )
+}
 
-export default MainNavbar;
+export default MainNavbar

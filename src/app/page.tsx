@@ -1,53 +1,52 @@
-'use client';
-
-import BlankStateEmpty from '@/components/BlankState/BlankStateEmpty';
-import BlankStateSystemError from '@/components/BlankState/BlankStateSystemError';
-import GeneralFlash from '@/components/Flash/GeneralFlash';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import MainNavbar from '@/components/Navbar/MainNavbar';
-import NoteDialog from '@/components/Note/NoteDialog';
-import NoteItem from '@/components/Note/NoteItem';
-import NoteCollectionDialog from '@/components/NoteCollection/NoteCollectionDialog';
-import NoteCollectionItem from '@/components/NoteCollection/NoteCollectionItem';
-import { useGeneralContext } from '@/contexts/general.context';
-import { useNoteCollectionContext } from '@/contexts/note-collection.context';
-import { useNoteContext } from '@/contexts/note.context';
-import { NoteCollection } from '@/types/note-collection.interface';
-import { Note } from '@/types/note.interface';
+'use client'
+import BlankStateEmpty from '@/components/BlankState/BlankStateEmpty'
+import BlankStateSystemError from '@/components/BlankState/BlankStateSystemError'
+import GeneralFlash from '@/components/Flash/GeneralFlash'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import MainNavbar from '@/components/Navbar/MainNavbar'
+import NoteDialog from '@/components/Note/NoteDialog'
+import NoteItem from '@/components/Note/NoteItem'
+import NoteCollectionDialog from '@/components/NoteCollection/NoteCollectionDialog'
+import NoteCollectionItem from '@/components/NoteCollection/NoteCollectionItem'
+import { useGeneralContext } from '@/contexts/general.context'
+import { useNoteCollectionContext } from '@/contexts/note-collection.context'
+import { useNoteContext } from '@/contexts/note.context'
+import { NoteCollection } from '@/types/note-collection.interface'
+import { Note } from '@/types/note.interface'
 import {
   ChevronDownIcon,
   ChevronRightIcon,
   FileDirectoryIcon,
   NoteIcon,
-} from '@primer/octicons-react';
-import { Box, Button, ButtonGroup, PageLayout, TreeView } from '@primer/react';
-import React, { useEffect, useState } from 'react';
+} from '@primer/octicons-react'
+import { Box, Button, ButtonGroup, PageLayout, TreeView } from '@primer/react'
+import React, { useEffect, useState } from 'react'
 
 const HomePage: React.FC = () => {
-  const { loading, setLoading } = useGeneralContext();
-  const [expanded, setExpanded] = useState<string[]>([]);
-  const { notesData } = useGeneralContext();
-  const { fetchNotesData, noteDialogIsOpen, openNoteDialog } = useNoteContext();
+  const { loading, setLoading } = useGeneralContext()
+  const [expanded, setExpanded] = useState<string[]>([])
+  const { notesData } = useGeneralContext()
+  const { fetchNotesData, noteDialogIsOpen, openNoteDialog } = useNoteContext()
   const {
     fetchNoteCollectionsData,
     noteCollectionDialogIsOpen,
     openNoteCollectionDialog,
-  } = useNoteCollectionContext();
-  const { noteCollectionsData } = useGeneralContext();
+  } = useNoteCollectionContext()
+  const { noteCollectionsData } = useGeneralContext()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchNotesData();
-        await fetchNoteCollectionsData();
-        setLoading(false);
+        await fetchNotesData()
+        await fetchNoteCollectionsData()
+        setLoading(false)
       } catch (error) {
-        <BlankStateSystemError httpError={error as Record<string, unknown>} />;
+        ;<BlankStateSystemError httpError={error as Record<string, unknown>} />
       }
-    };
+    }
 
-    fetchData();
-  }, [fetchNotesData, fetchNoteCollectionsData, setLoading]);
+    fetchData()
+  }, [fetchNotesData, fetchNoteCollectionsData, setLoading])
 
   const renderFilteredNoteItems = () =>
     notesData
@@ -59,7 +58,7 @@ const HomePage: React.FC = () => {
           </TreeView.LeadingVisual>
           <NoteItem note={note} />
         </TreeView.Item>
-      ));
+      ))
 
   const renderFilteredNoteItemTrees = (filteredNotes: Note[]) =>
     filteredNotes.map((note) => (
@@ -77,13 +76,13 @@ const HomePage: React.FC = () => {
           <NoteItem note={note} />
         </TreeView.Item>
       </Box>
-    ));
+    ))
 
   const renderNoteCollections = () =>
     noteCollectionsData.map((noteCollection: NoteCollection) => {
       const filteredNotes = notesData.filter(
         (note: Note) => note.noteCollectionId === noteCollection.id
-      );
+      )
 
       return (
         <TreeView.Item
@@ -95,11 +94,11 @@ const HomePage: React.FC = () => {
               setExpanded((prevExpanded) => [
                 ...prevExpanded,
                 noteCollection.id,
-              ]);
+              ])
             } else {
               setExpanded((prevExpanded) =>
                 prevExpanded.filter((id) => id !== noteCollection.id)
-              );
+              )
             }
           }}
         >
@@ -111,11 +110,11 @@ const HomePage: React.FC = () => {
             {renderFilteredNoteItemTrees(filteredNotes)}
           </TreeView.SubTree>
         </TreeView.Item>
-      );
-    });
+      )
+    })
 
   if (loading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner />
   }
 
   return (
@@ -213,7 +212,7 @@ const HomePage: React.FC = () => {
         </PageLayout.Content>
       </PageLayout>
     </>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

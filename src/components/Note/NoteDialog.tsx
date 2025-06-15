@@ -1,7 +1,13 @@
-import { useNoteContext } from '@/contexts/note.context';
-import { Button, FormControl, TextInput, Textarea } from '@primer/react';
-import { Dialog, DialogButtonProps } from '@primer/react/drafts';
-import { useState } from 'react';
+import { useNoteContext } from '@/contexts/note.context'
+import {
+  Button,
+  Dialog,
+  DialogButtonProps,
+  FormControl,
+  TextInput,
+  Textarea,
+} from '@primer/react'
+import { useState } from 'react'
 
 function NoteDialog() {
   const {
@@ -12,44 +18,44 @@ function NoteDialog() {
     handleCreateNote,
     handleUpdateNote,
     handleDeleteNote,
-  } = useNoteContext();
+  } = useNoteContext()
 
-  const [updatedTitle, setUpdatedTitle] = useState(selectedNote.title);
-  const [updatedContent, setUpdatedContent] = useState(selectedNote.content);
-  const [createdTitle, setCreatedTitle] = useState('');
-  const [createdContent, setCreatedContent] = useState('');
+  const [updatedTitle, setUpdatedTitle] = useState(selectedNote.title)
+  const [updatedContent, setUpdatedContent] = useState(selectedNote.content)
+  const [createdTitle, setCreatedTitle] = useState('')
+  const [createdContent, setCreatedContent] = useState('')
 
   const handleCancel = () => {
-    setUpdatedTitle(selectedNote.title);
-    setUpdatedContent(selectedNote.content);
-    closeNoteDialog();
-  };
+    setUpdatedTitle(selectedNote.title)
+    setUpdatedContent(selectedNote.content)
+    closeNoteDialog()
+  }
 
   const getDialogTitle = () => {
     switch (noteDialogType) {
       case 'create':
-        return 'Create note';
+        return 'Create note'
       case 'update':
-        return 'Edit note';
+        return 'Edit note'
       case 'delete':
-        return 'Delete note';
+        return 'Delete note'
       default:
-        return '';
+        return ''
     }
-  };
+  }
 
   const getDialogSubtitle = () => {
     switch (noteDialogType) {
       case 'create':
-        return 'Compose a new note to save your ideas';
+        return 'Compose a new note to save your ideas'
       case 'update':
-        return 'Edit and enhance your existing note';
+        return 'Edit and enhance your existing note'
       case 'delete':
-        return 'Remove a note you no longer need';
+        return 'Remove a note you no longer need'
       default:
-        return '';
+        return ''
     }
-  };
+  }
 
   const getFooterButtons = (): DialogButtonProps[] => {
     switch (noteDialogType) {
@@ -64,7 +70,7 @@ function NoteDialog() {
             buttonType: 'primary' as const,
             onClick: () => handleCreateNote(createdTitle, createdContent),
           },
-        ];
+        ]
       case 'update':
         return [
           { content: 'Cancel', onClick: handleCancel },
@@ -74,7 +80,7 @@ function NoteDialog() {
             onClick: () =>
               handleUpdateNote(selectedNote.id, updatedTitle, updatedContent),
           },
-        ];
+        ]
       case 'delete':
         return [
           {
@@ -86,15 +92,15 @@ function NoteDialog() {
             buttonType: 'danger' as const,
             onClick: () => handleDeleteNote(selectedNote.id),
           },
-        ];
+        ]
       default:
-        return [];
+        return []
     }
-  };
+  }
 
-  const titleValue = noteDialogType === 'create' ? createdTitle : updatedTitle;
+  const titleValue = noteDialogType === 'create' ? createdTitle : updatedTitle
   const contentValue =
-    noteDialogType === 'create' ? createdContent : updatedContent;
+    noteDialogType === 'create' ? createdContent : updatedContent
 
   return (
     <Button onClick={(e) => e.stopPropagation()}>
@@ -136,7 +142,7 @@ function NoteDialog() {
         </FormControl>
       </Dialog>
     </Button>
-  );
+  )
 }
 
-export default NoteDialog;
+export default NoteDialog

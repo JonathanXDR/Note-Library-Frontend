@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const noteSchema = z.object({
   title: z
@@ -11,6 +11,6 @@ export const noteSchema = z.object({
     .trim()
     .min(1, 'Content is required')
     .max(10000, 'Content must be 10000 characters or less'),
-});
+})
 
-export type NoteSchema = z.infer<typeof noteSchema>;
+export type NoteSchema = z.infer<typeof noteSchema>

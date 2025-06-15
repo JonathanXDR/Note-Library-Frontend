@@ -10,9 +10,9 @@ import {
   StarIcon,
   TrashIcon,
   TypographyIcon,
-} from '@primer/octicons-react';
-import { ActionList, ActionMenu, Text, UnderlineNav } from '@primer/react';
-import React from 'react';
+} from '@primer/octicons-react'
+import { ActionList, ActionMenu, Text, UnderlineNav } from '@primer/react'
+import React from 'react'
 
 function UnderlineNavItem() {
   const items = [
@@ -21,23 +21,23 @@ function UnderlineNavItem() {
     { navigation: 'Notes', icon: NoteIcon, counter: 3 },
     { navigation: 'Starred', icon: StarIcon, counter: 4 },
     { navigation: 'Trash', icon: TrashIcon, counter: 9 },
-  ];
+  ]
   const typeOptions = [
     { icon: AppsIcon, name: 'All' },
     { icon: GlobeIcon, name: 'Public' },
     { icon: LockIcon, name: 'Private' },
-  ];
+  ]
   const sortOptions = [
     { icon: FlameIcon, name: 'Importance' },
     { icon: CalendarIcon, name: 'Due Date' },
     { icon: TypographyIcon, name: 'Alphabetically' },
     { icon: HistoryIcon, name: 'Creation Date' },
-  ];
-  const [selectedNavIndex, setSelectedNavIndex] = React.useState(0);
-  const [selectedTypeIndex, setSelectedTypeIndex] = React.useState(0);
-  const [selectedSortIndex, setSelectedSortIndex] = React.useState(1);
-  const selectedType = typeOptions[selectedTypeIndex];
-  const selectedSort = sortOptions[selectedSortIndex];
+  ]
+  const [selectedNavIndex, setSelectedNavIndex] = React.useState(0)
+  const [selectedTypeIndex, setSelectedTypeIndex] = React.useState(0)
+  const [selectedSortIndex, setSelectedSortIndex] = React.useState(1)
+  const selectedType = typeOptions[selectedTypeIndex]
+  const selectedSort = sortOptions[selectedSortIndex]
   return (
     <UnderlineNav
       sx={{
@@ -51,8 +51,8 @@ function UnderlineNavItem() {
           aria-current={index === selectedNavIndex ? 'page' : undefined}
           counter={item.counter}
           onSelect={(e) => {
-            setSelectedNavIndex(index);
-            e.preventDefault();
+            setSelectedNavIndex(index)
+            e.preventDefault()
           }}
           sx={{
             ':hover': {
@@ -150,7 +150,7 @@ function UnderlineNavItem() {
       </UnderlineNav.Item>
       {/* </Hidden> */}
     </UnderlineNav>
-  );
+  )
 }
 
-export default UnderlineNavItem;
+export default UnderlineNavItem

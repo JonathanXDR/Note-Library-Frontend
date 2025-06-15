@@ -1,14 +1,14 @@
-'use client';
+'use client'
 import ValidationFlash, {
   ValidationField,
-} from '@/components/Flash/ValidationFlash';
-import LoginFooter from '@/components/Footer/LoginFooter';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import LoginNavbar from '@/components/Navbar/LoginNavbar';
-import PasswordRequirementsText from '@/components/PasswordRequirementsText/PasswordRequirementsText';
-import { useAuthContext } from '@/contexts/auth.context';
-import { useGeneralContext } from '@/contexts/general.context';
-import { useValidationContext } from '@/contexts/validation.context';
+} from '@/components/Flash/ValidationFlash'
+import LoginFooter from '@/components/Footer/LoginFooter'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import LoginNavbar from '@/components/Navbar/LoginNavbar'
+import PasswordRequirementsText from '@/components/PasswordRequirementsText/PasswordRequirementsText'
+import { useAuthContext } from '@/contexts/auth.context'
+import { useGeneralContext } from '@/contexts/general.context'
+import { useValidationContext } from '@/contexts/validation.context'
 import {
   Box,
   Button,
@@ -18,31 +18,43 @@ import {
   PageLayout,
   Text,
   TextInput,
-} from '@primer/react';
-import { useRouter } from 'next/navigation';
-import React, { useRef, useState } from 'react';
-import './main.css';
+} from '@primer/react'
+import { useRouter } from 'next/navigation'
+import React, { RefObject, useRef, useState } from 'react'
+import './main.css'
 
 const SignUp = () => {
-  const { loading } = useGeneralContext();
-  const router = useRouter();
+  const { loading } = useGeneralContext()
+  const router = useRouter()
 
-  const [username, setUsername] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
+  const [username, setUsername] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [age, setAge] = useState('')
+  const [gender, setGender] = useState('')
 
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const firstNameRef = useRef<HTMLInputElement>(null);
-  const lastNameRef = useRef<HTMLInputElement>(null);
-  const ageRef = useRef<HTMLInputElement>(null);
-  const genderRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(
+    null
+  ) as RefObject<HTMLInputElement>
+  const passwordRef = useRef<HTMLInputElement>(
+    null
+  ) as RefObject<HTMLInputElement>
+  const confirmPasswordRef = useRef<HTMLInputElement>(
+    null
+  ) as RefObject<HTMLInputElement>
+  const firstNameRef = useRef<HTMLInputElement>(
+    null
+  ) as RefObject<HTMLInputElement>
+  const lastNameRef = useRef<HTMLInputElement>(
+    null
+  ) as RefObject<HTMLInputElement>
+  const ageRef = useRef<HTMLInputElement>(null) as RefObject<HTMLInputElement>
+  const genderRef = useRef<HTMLInputElement>(
+    null
+  ) as RefObject<HTMLInputElement>
 
   const { password, setPassword, confirmPassword, setConfirmPassword } =
-    useAuthContext();
+    useAuthContext()
 
   const { handleFormSubmit, hasError, errorCount } =
     useValidationContext().useInputValidation([
@@ -53,7 +65,7 @@ const SignUp = () => {
       lastNameRef,
       ageRef,
       genderRef,
-    ]);
+    ])
 
   const fields: ValidationField[] = [
     { key: 'username', title: 'Username', ref: usernameRef },
@@ -67,17 +79,17 @@ const SignUp = () => {
       title: 'Confirm password',
       ref: confirmPasswordRef,
     },
-  ];
+  ]
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     await handleFormSubmit(async () => {
-      router.push('/login');
-    });
-  };
+      router.push('/login')
+    })
+  }
 
   if (loading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner />
   }
 
   return (
@@ -170,7 +182,7 @@ const SignUp = () => {
                 type="text"
                 // loading={true}
                 onChange={(e) => {
-                  setUsername(e.target.value);
+                  setUsername(e.target.value)
                 }}
                 placeholder="Enter username"
                 block
@@ -213,7 +225,7 @@ const SignUp = () => {
                   ref={firstNameRef}
                   type="text"
                   onChange={(e) => {
-                    setFirstName(e.target.value);
+                    setFirstName(e.target.value)
                   }}
                   placeholder="Enter firstname"
                   block
@@ -247,7 +259,7 @@ const SignUp = () => {
                   ref={lastNameRef}
                   type="text"
                   onChange={(e) => {
-                    setLastName(e.target.value);
+                    setLastName(e.target.value)
                   }}
                   placeholder="Enter lastname"
                   block
@@ -291,7 +303,7 @@ const SignUp = () => {
                   ref={ageRef}
                   type="text"
                   onChange={(e) => {
-                    setAge(e.target.value);
+                    setAge(e.target.value)
                   }}
                   placeholder="Enter age"
                   block
@@ -325,7 +337,7 @@ const SignUp = () => {
                   ref={genderRef}
                   type="text"
                   onChange={(e) => {
-                    setGender(e.target.value);
+                    setGender(e.target.value)
                   }}
                   placeholder="Enter gender"
                   block
@@ -457,7 +469,7 @@ const SignUp = () => {
         <LoginFooter />
       </PageLayout.Footer>
     </PageLayout>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp

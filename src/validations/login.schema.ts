@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const loginSchema = z.object({
   username: z
@@ -11,6 +11,6 @@ export const loginSchema = z.object({
     .trim()
     .min(8, 'Password must be at least 8 characters')
     .max(100, 'Password must be 100 characters or less'),
-});
+})
 
-export type LoginSchema = z.infer<typeof loginSchema>;
+export type LoginSchema = z.infer<typeof loginSchema>

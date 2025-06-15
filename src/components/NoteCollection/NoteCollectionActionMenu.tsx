@@ -1,22 +1,22 @@
-import { useNoteCollectionContext } from '@/contexts/note-collection.context';
-import { NoteCollection } from '@/types/note-collection.interface';
+import { useNoteCollectionContext } from '@/contexts/note-collection.context'
+import { NoteCollection } from '@/types/note-collection.interface'
 import {
   KebabHorizontalIcon,
   PencilIcon,
   TrashIcon,
-} from '@primer/octicons-react';
-import { ActionList, ActionMenu, IconButton } from '@primer/react';
+} from '@primer/octicons-react'
+import { ActionList, ActionMenu, IconButton } from '@primer/react'
 
 function NoteCollectionActionMenu({
   noteCollection,
 }: {
-  noteCollection: NoteCollection;
+  noteCollection: NoteCollection
 }) {
   const {
     openNoteCollectionDialog,
     setSelectedNoteCollection,
     confirmDeleteNoteCollection,
-  } = useNoteCollectionContext();
+  } = useNoteCollectionContext()
   return (
     <>
       <ActionMenu>
@@ -32,8 +32,8 @@ function NoteCollectionActionMenu({
           <ActionList>
             <ActionList.Item
               onSelect={() => {
-                setSelectedNoteCollection(noteCollection);
-                openNoteCollectionDialog('update');
+                setSelectedNoteCollection(noteCollection)
+                openNoteCollectionDialog('update')
               }}
             >
               <ActionList.LeadingVisual>
@@ -53,8 +53,8 @@ function NoteCollectionActionMenu({
             <ActionList.Item
               variant="danger"
               onSelect={() => {
-                setSelectedNoteCollection(noteCollection);
-                confirmDeleteNoteCollection(noteCollection);
+                setSelectedNoteCollection(noteCollection)
+                confirmDeleteNoteCollection(noteCollection)
               }}
             >
               <ActionList.LeadingVisual>
@@ -67,7 +67,7 @@ function NoteCollectionActionMenu({
         </ActionMenu.Overlay>
       </ActionMenu>
     </>
-  );
+  )
 }
 
-export default NoteCollectionActionMenu;
+export default NoteCollectionActionMenu

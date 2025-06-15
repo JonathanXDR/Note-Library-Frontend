@@ -1,74 +1,71 @@
-'use client';
-
-import { NoteCollection } from '@/types/note-collection.interface';
-import { Note } from '@/types/note.interface';
-import React, { createContext, useContext, useState } from 'react';
+'use client'
+import { NoteCollection } from '@/types/note-collection.interface'
+import { Note } from '@/types/note.interface'
+import React, { createContext, useContext, useState } from 'react'
 
 interface GeneralProviderProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 interface GeneralContextData {
-  notesData: Note[];
-  setNotesData: React.Dispatch<React.SetStateAction<Note[]>>;
-  noteCollectionsData: NoteCollection[];
-  setNoteCollectionsData: React.Dispatch<
-    React.SetStateAction<NoteCollection[]>
-  >;
-  loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  flashVisible: boolean;
-  setFlashVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  flashVariant: 'default' | 'success' | 'warning' | 'danger';
-  flashMessage: string;
-  flashCloseButton: boolean;
+  notesData: Note[]
+  setNotesData: React.Dispatch<React.SetStateAction<Note[]>>
+  noteCollectionsData: NoteCollection[]
+  setNoteCollectionsData: React.Dispatch<React.SetStateAction<NoteCollection[]>>
+  loading: boolean
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  flashVisible: boolean
+  setFlashVisible: React.Dispatch<React.SetStateAction<boolean>>
+  flashVariant: 'default' | 'success' | 'warning' | 'danger'
+  flashMessage: string
+  flashCloseButton: boolean
   handleFlash: (
     variant: 'default' | 'success' | 'warning' | 'danger',
     message: string,
     closeButton?: boolean
-  ) => void;
+  ) => void
 }
 
-const GeneralContext = createContext<GeneralContextData | null>(null);
+const GeneralContext = createContext<GeneralContextData | null>(null)
 
 export const useGeneralContext = () => {
-  const context = useContext(GeneralContext);
+  const context = useContext(GeneralContext)
   if (!context) {
-    throw new Error('useGeneralContext must be used within a GeneralProvider');
+    throw new Error('useGeneralContext must be used within a GeneralProvider')
   }
-  return context;
-};
+  return context
+}
 
 export const GeneralProvider: React.FC<GeneralProviderProps> = ({
   children,
 }) => {
-  const [notesData, setNotesData] = useState<Note[]>([]);
+  const [notesData, setNotesData] = useState<Note[]>([])
   const [noteCollectionsData, setNoteCollectionsData] = useState<
     NoteCollection[]
-  >([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  >([])
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const [flashVisible, setFlashVisible] = useState(false);
+  const [flashVisible, setFlashVisible] = useState(false)
   const [flashVariant, setFlashVariant] = useState<
     'default' | 'success' | 'warning' | 'danger'
-  >('default');
-  const [flashMessage, setFlashMessage] = useState('');
-  const [flashCloseButton, setFlashCloseButton] = useState(false);
+  >('default')
+  const [flashMessage, setFlashMessage] = useState('')
+  const [flashCloseButton, setFlashCloseButton] = useState(false)
 
   const handleFlash = (
     variant: 'default' | 'success' | 'warning' | 'danger',
     message: string,
     closeButton?: boolean
   ) => {
-    setFlashVisible(true);
-    setFlashVariant(variant);
-    setFlashMessage(message);
-    setFlashCloseButton(closeButton || false);
+    setFlashVisible(true)
+    setFlashVariant(variant)
+    setFlashMessage(message)
+    setFlashCloseButton(closeButton || false)
 
     setTimeout(() => {
-      setFlashVisible(false);
-    }, 10000);
-  };
+      setFlashVisible(false)
+    }, 10000)
+  }
 
   return (
     <GeneralContext.Provider
@@ -89,5 +86,5 @@ export const GeneralProvider: React.FC<GeneralProviderProps> = ({
     >
       {children}
     </GeneralContext.Provider>
-  );
-};
+  )
+}

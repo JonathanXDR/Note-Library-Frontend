@@ -1,4 +1,4 @@
-import { Box, Link } from '@primer/react';
+import { Box, Link } from '@primer/react'
 
 const LoginFooter = () => {
   return (
@@ -43,7 +43,7 @@ const LoginFooter = () => {
         </Link>
       </div>
     </Box>
-  );
-};
+  )
+}
 
-export default LoginFooter;
+export default LoginFooter

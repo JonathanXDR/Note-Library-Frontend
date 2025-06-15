@@ -1,32 +1,32 @@
-'use client';
-import BlankStateSystemError from '@/components/BlankState/BlankStateSystemError';
-import LoginFooter from '@/components/Footer/LoginFooter';
-import LoginNavbar from '@/components/Navbar/LoginNavbar';
-import { useAuthContext } from '@/contexts/auth.context';
-import { logout } from '@/services/auth.service';
-import { Box, Button, FormControl, Heading, PageLayout } from '@primer/react';
-import React, { useEffect } from 'react';
-import './main.css';
+'use client'
+import BlankStateSystemError from '@/components/BlankState/BlankStateSystemError'
+import LoginFooter from '@/components/Footer/LoginFooter'
+import LoginNavbar from '@/components/Navbar/LoginNavbar'
+import { useAuthContext } from '@/contexts/auth.context'
+import { logout } from '@/services/auth.service'
+import { Box, Button, FormControl, Heading, PageLayout } from '@primer/react'
+import React, { useEffect } from 'react'
+import './main.css'
 
 const Logout = () => {
-  const { handleCheckToken } = useAuthContext();
+  const { handleCheckToken } = useAuthContext()
 
   useEffect(() => {
     try {
-      const token = localStorage.getItem('access_token');
+      const token = localStorage.getItem('access_token')
       if (token) {
-        handleCheckToken(token).finally(() => {});
+        handleCheckToken(token).finally(() => {})
       } else {
       }
     } catch (error) {
-      <BlankStateSystemError httpError={error as Record<string, unknown>} />;
+      ;<BlankStateSystemError httpError={error as Record<string, unknown>} />
     }
-  });
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    logout();
-  };
+    e.preventDefault()
+    logout()
+  }
 
   return (
     <PageLayout
@@ -105,7 +105,7 @@ const Logout = () => {
         <LoginFooter />
       </PageLayout.Footer>
     </PageLayout>
-  );
-};
+  )
+}
 
-export default Logout;
+export default Logout

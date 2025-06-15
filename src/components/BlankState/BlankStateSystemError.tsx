@@ -1,4 +1,4 @@
-import { AlertIcon, CheckIcon, CopyIcon } from '@primer/octicons-react';
+import { AlertIcon, CheckIcon, CopyIcon } from '@primer/octicons-react'
 import {
   Box,
   Button,
@@ -8,46 +8,46 @@ import {
   Text,
   TreeView,
   useDetails,
-} from '@primer/react';
-import { Tooltip } from '@primer/react/next';
-import { useState } from 'react';
+} from '@primer/react'
+import { Tooltip } from '@primer/react/next'
+import { useState } from 'react'
 
 interface BlankStateSystemErrorProps {
-  httpError?: Record<string, unknown>;
+  httpError?: Record<string, unknown>
 }
 
 function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
-  const { open, setOpen } = useDetails({ closeOnOutsideClick: false });
-  const [copied, setCopied] = useState<string | null>(null);
+  const { open, setOpen } = useDetails({ closeOnOutsideClick: false })
+  const [copied, setCopied] = useState<string | null>(null)
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(
     {}
-  );
+  )
 
   const copyToClipboard = async (text: string, id: string) => {
     try {
-      await navigator.clipboard.writeText(text);
-      setCopied(id);
+      await navigator.clipboard.writeText(text)
+      setCopied(id)
       setTimeout(() => {
-        setCopied(null);
-      }, 2000);
+        setCopied(null)
+      }, 2000)
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      console.error('Failed to copy text: ', err)
     }
-  };
+  }
 
   const handleExpansionChange = (id: string, expanded: boolean) => {
     setExpandedItems((prevExpandedItems) => ({
       ...prevExpandedItems,
       [id]: expanded,
-    }));
-  };
+    }))
+  }
 
   const renderErrorTree = (
     key: string,
     value: unknown,
     idPrefix: string = ''
   ) => {
-    const itemId = `error-${idPrefix}`;
+    const itemId = `error-${idPrefix}`
 
     const renderItem = () => (
       <Box
@@ -111,7 +111,7 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
           />
         </Tooltip>
       </Box>
-    );
+    )
 
     if (typeof value === 'object' && value !== null) {
       return (
@@ -126,14 +126,12 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
           <pre>{key}: </pre>
           <TreeView.SubTree>
             {Object.entries(value).map(([subKey, subValue], index) => {
-              const newIdPrefix = idPrefix
-                ? `${idPrefix}-${index}`
-                : `${index}`;
-              return renderErrorTree(subKey, subValue, newIdPrefix);
+              const newIdPrefix = idPrefix ? `${idPrefix}-${index}` : `${index}`
+              return renderErrorTree(subKey, subValue, newIdPrefix)
             })}
           </TreeView.SubTree>
         </TreeView.Item>
-      );
+      )
     } else {
       return (
         <TreeView.Item
@@ -146,9 +144,9 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
         >
           {renderItem()}
         </TreeView.Item>
-      );
+      )
     }
-  };
+  }
 
   return (
     <Box
@@ -214,7 +212,7 @@ function BlankStateSystemError({ httpError }: BlankStateSystemErrorProps) {
         )}
       </Box>
     </Box>
-  );
+  )
 }
 
-export default BlankStateSystemError;
+export default BlankStateSystemError

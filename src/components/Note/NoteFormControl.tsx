@@ -1,55 +1,53 @@
-import { useNoteCollectionContext } from '@/contexts/note-collection.context';
-import { useNoteContext } from '@/contexts/note.context';
-import { AlertFillIcon } from '@primer/octicons-react';
+import { useNoteCollectionContext } from '@/contexts/note-collection.context'
+import { useNoteContext } from '@/contexts/note.context'
+import { AlertFillIcon } from '@primer/octicons-react'
 import {
   Autocomplete,
   FormControl,
-  Octicon,
   Text,
   TextInputWithTokens,
   Token,
-} from '@primer/react';
-import { useEffect, useState } from 'react';
-import { InputToken } from '../../types/input-token.interface';
-import { Note } from '../../types/note.interface';
-import BlankStateSystemError from '../BlankState/BlankStateSystemError';
+} from '@primer/react'
+import { useEffect, useState } from 'react'
+import { InputToken } from '../../types/input-token.interface'
+import { Note } from '../../types/note.interface'
+import BlankStateSystemError from '../BlankState/BlankStateSystemError'
 
 function NotesFormControl({
   notesValue,
   setCreatedNotes,
   setUpdatedNotes,
 }: {
-  notesValue: Note[] | string;
-  setCreatedNotes: (notes: Note[]) => void;
-  setUpdatedNotes: (notes: Note[]) => void;
+  notesValue: Note[] | string
+  setCreatedNotes: (notes: Note[]) => void
+  setUpdatedNotes: (notes: Note[]) => void
 }) {
-  const { fetchNotesData } = useNoteContext();
+  const { fetchNotesData } = useNoteContext()
   const { noteCollectionDialogType, selectedNoteCollection } =
-    useNoteCollectionContext();
+    useNoteCollectionContext()
 
-  const [allNotes, setAllNotes] = useState<Note[]>([]);
+  const [allNotes, setAllNotes] = useState<Note[]>([])
 
   useEffect(() => {
     try {
       const fetchAllNotes = async () => {
-        const notesData = await fetchNotesData();
-        setAllNotes(notesData);
-      };
-      fetchAllNotes();
+        const notesData = await fetchNotesData()
+        setAllNotes(notesData)
+      }
+      fetchAllNotes()
     } catch (error) {
-      <BlankStateSystemError httpError={error} />;
+      ;<BlankStateSystemError httpError={error} />
     }
-  }, [fetchNotesData]);
+  }, [fetchNotesData])
 
   const AlertIconOcticon = () => (
-    <Octicon
-      icon={AlertFillIcon}
+    <AlertFillIcon
       sx={{
         color: 'attention.fg',
         fill: 'currentColor !important',
       }}
     />
-  );
+  )
 
   const notesToTokens = (notes: Note[] | string) =>
     typeof notes === 'string'
@@ -64,55 +62,55 @@ function NotesFormControl({
                 ? AlertIconOcticon
                 : undefined,
           sx: { color: 'inherit' },
-        }));
+        }))
 
-  console.log('notesValue', notesValue);
-  const [tokens, setTokens] = useState<InputToken[]>(notesToTokens(notesValue));
+  console.log('notesValue', notesValue)
+  const [tokens, setTokens] = useState<InputToken[]>(notesToTokens(notesValue))
 
-  const selectedIds = tokens.map((token) => token.id);
-  const [selectedItemIds, setSelectedItemIds] = useState(selectedIds);
+  const selectedIds = tokens.map((token) => token.id)
+  const [selectedItemIds, setSelectedItemIds] = useState(selectedIds)
   const removeToken = (tokenId: string) => {
-    setTokens(tokens.filter((token) => token.id !== tokenId));
-    setSelectedItemIds(selectedItemIds.filter((id) => id !== tokenId));
-  };
+    setTokens(tokens.filter((token) => token.id !== tokenId))
+    setSelectedItemIds(selectedItemIds.filter((id) => id !== tokenId))
+  }
 
-  const isSelected = (itemId: string) => selectedItemIds.includes(itemId);
+  const isSelected = (itemId: string) => selectedItemIds.includes(itemId)
   const sortFn = (itemIdA: string, itemIdB: string) =>
     isSelected(itemIdA) === isSelected(itemIdB)
       ? 0
       : isSelected(itemIdA)
         ? 1
-        : -1;
+        : -1
 
   const [hasPreviouslyAssignedNotes, setHasPreviouslyAssignedNotes] =
-    useState(false);
+    useState(false)
 
   const handleSelectedChange = (newItems: Note[]) => {
     if (!Array.isArray(newItems)) {
-      return;
+      return
     }
 
-    setSelectedItemIds(newItems.map((item) => item.id));
+    setSelectedItemIds(newItems.map((item) => item.id))
 
     if (noteCollectionDialogType === 'create') {
-      setCreatedNotes(newItems);
+      setCreatedNotes(newItems)
     } else {
-      setUpdatedNotes(newItems);
+      setUpdatedNotes(newItems)
     }
 
     if (newItems.length < selectedItemIds.length) {
-      const newItemIds = newItems.map(({ id }) => id);
-      const removedIds = selectedIds.filter((id) => !newItemIds.includes(id));
+      const newItemIds = newItems.map(({ id }) => id)
+      const removedIds = selectedIds.filter((id) => !newItemIds.includes(id))
 
       for (const removedId of removedIds) {
-        removeToken(removedId);
+        removeToken(removedId)
       }
 
-      return;
+      return
     }
 
     const newTokens = newItems.map(({ id, title }) => {
-      const note = allNotes.find((note) => note.id === id);
+      const note = allNotes.find((note) => note.id === id)
       return {
         id,
         text: title,
@@ -123,37 +121,37 @@ function NotesFormControl({
               ? AlertIconOcticon
               : undefined,
         sx: { color: 'inherit' },
-      };
-    });
+      }
+    })
 
     const hasAssignedNotes = newTokens.some((token) => {
-      const note = allNotes.find((note) => note.id === token.id);
+      const note = allNotes.find((note) => note.id === token.id)
       return (
         note?.noteCollectionId !== null &&
         note?.noteCollectionId !== selectedNoteCollection.id
-      );
-    });
+      )
+    })
 
-    setHasPreviouslyAssignedNotes(hasAssignedNotes);
+    setHasPreviouslyAssignedNotes(hasAssignedNotes)
 
-    setTokens(newTokens);
-  };
+    setTokens(newTokens)
+  }
 
   useEffect(() => {
     try {
       const hasAssignedNotes = tokens.some((token) => {
-        const note = allNotes.find((note) => note.id === token.id);
+        const note = allNotes.find((note) => note.id === token.id)
         return (
           note?.noteCollectionId !== null &&
           note?.noteCollectionId !== selectedNoteCollection.id
-        );
-      });
+        )
+      })
 
-      setHasPreviouslyAssignedNotes(hasAssignedNotes);
+      setHasPreviouslyAssignedNotes(hasAssignedNotes)
     } catch (error) {
-      <BlankStateSystemError httpError={error} />;
+      ;<BlankStateSystemError httpError={error} />
     }
-  }, [tokens, allNotes, selectedNoteCollection.id]);
+  }, [tokens, allNotes, selectedNoteCollection.id])
 
   return (
     <FormControl>
@@ -169,7 +167,7 @@ function NotesFormControl({
           onChange={(e) => {
             noteCollectionDialogType === 'create'
               ? setCreatedNotes(e.target.value)
-              : setUpdatedNotes(e.target.value);
+              : setUpdatedNotes(e.target.value)
           }}
         />
         <Autocomplete.Overlay
@@ -209,8 +207,7 @@ function NotesFormControl({
             fontWeight: 'bold',
           }}
         >
-          <Octicon
-            icon={AlertFillIcon}
+          <AlertFillIcon
             sx={{
               color: 'attention.fg',
               fill: 'currentColor !important',
@@ -220,7 +217,7 @@ function NotesFormControl({
         </Text>
       )}
     </FormControl>
-  );
+  )
 }
 
-export default NotesFormControl;
+export default NotesFormControl

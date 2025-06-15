@@ -1,16 +1,16 @@
-import { useGeneralContext } from '@/contexts/general.context';
-import { AlertIcon, CheckIcon, XIcon } from '@primer/octicons-react';
+import { useGeneralContext } from '@/contexts/general.context'
+import { AlertIcon, CheckIcon, XIcon } from '@primer/octicons-react'
 import {
   Flash,
   IconButton,
   Octicon,
   OcticonProps,
   Spinner,
-} from '@primer/react';
+} from '@primer/react'
 
 const GeneralNotification = () => {
   const { flashVisible, setFlashVisible, flashVariant, flashMessage } =
-    useGeneralContext();
+    useGeneralContext()
 
   const renderNotificationContent = () => {
     const iconMap = {
@@ -19,26 +19,25 @@ const GeneralNotification = () => {
       danger: XIcon,
       warning: AlertIcon,
       loading: <Spinner size="small" />,
-    };
+    }
 
-    const Icon = iconMap[flashVariant];
+    const Icon = iconMap[flashVariant]
 
     return (
       <div>
         {Icon && <Octicon icon={Icon as OcticonProps['icon']} />}
         {flashMessage}
       </div>
-    );
-  };
+    )
+  }
 
   const XIconOcticon = () => (
-    <Octicon
-      icon={XIcon}
+    <XIcon
       sx={{
         margin: '0 !important',
       }}
     />
-  );
+  )
 
   return (
     <>
@@ -64,7 +63,7 @@ const GeneralNotification = () => {
         </Flash>
       )}
     </>
-  );
-};
+  )
+}
 
-export default GeneralNotification;
+export default GeneralNotification

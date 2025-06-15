@@ -1,19 +1,18 @@
-import { useNoteContext } from '@/contexts/note.context';
-import { Note } from '@/types/note.interface';
-import { PencilIcon, TrashIcon } from '@primer/octicons-react';
-import { Box, Button, ButtonGroup, Text } from '@primer/react';
-import { Hidden } from '@primer/react/drafts';
-import NoteActionMenu from './NoteActionMenu';
+import { useNoteContext } from '@/contexts/note.context'
+import { Note } from '@/types/note.interface'
+import { PencilIcon, TrashIcon } from '@primer/octicons-react'
+import { Box, Button, ButtonGroup, Text } from '@primer/react'
+import NoteActionMenu from './NoteActionMenu'
 
 const NoteItem = ({ note }: { note: Note }) => {
   const { openNoteDialog, setSelectedNote, confirmDeleteNote } =
-    useNoteContext();
+    useNoteContext()
 
   const textStyle = {
     width: ['150px', '300px', '450px', '600px'],
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-  };
+  }
 
   const boxStyle = {
     width: '100%',
@@ -22,7 +21,7 @@ const NoteItem = ({ note }: { note: Note }) => {
     alignItems: 'center',
     paddingY: '8px',
     paddingX: '12px',
-  };
+  }
 
   return (
     <Box sx={boxStyle}>
@@ -40,8 +39,8 @@ const NoteItem = ({ note }: { note: Note }) => {
           <Button
             leadingVisual={PencilIcon}
             onClick={() => {
-              setSelectedNote(note);
-              openNoteDialog('update');
+              setSelectedNote(note)
+              openNoteDialog('update')
             }}
           >
             Edit
@@ -50,8 +49,8 @@ const NoteItem = ({ note }: { note: Note }) => {
             leadingVisual={TrashIcon}
             variant="danger"
             onClick={() => {
-              setSelectedNote(note);
-              confirmDeleteNote(note);
+              setSelectedNote(note)
+              confirmDeleteNote(note)
             }}
           >
             Delete
@@ -63,7 +62,7 @@ const NoteItem = ({ note }: { note: Note }) => {
         <NoteActionMenu note={note} />
       </Hidden>
     </Box>
-  );
-};
+  )
+}
 
-export default NoteItem;
+export default NoteItem

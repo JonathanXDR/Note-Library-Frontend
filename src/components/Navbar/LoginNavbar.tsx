@@ -1,5 +1,5 @@
-import { MarkGithubIcon } from '@primer/octicons-react';
-import { Link } from '@primer/react';
+import { MarkGithubIcon } from '@primer/octicons-react'
+import { Link } from '@primer/react'
 
 const LoginNavbar = () => {
   return (
@@ -11,7 +11,7 @@ const LoginNavbar = () => {
     >
       <MarkGithubIcon size={48} />
     </Link>
-  );
-};
+  )
+}
 
-export default LoginNavbar;
+export default LoginNavbar

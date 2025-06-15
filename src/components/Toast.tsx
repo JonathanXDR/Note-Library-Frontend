@@ -1,5 +1,5 @@
-import { useGeneralContext } from '@/contexts/general.context';
-import { AlertIcon, CheckIcon, InfoIcon, XIcon } from '@primer/octicons-react';
+import { useGeneralContext } from '@/contexts/general.context'
+import { AlertIcon, CheckIcon, InfoIcon, XIcon } from '@primer/octicons-react'
 import {
   Box,
   IconButton,
@@ -7,7 +7,7 @@ import {
   OcticonProps,
   Spinner,
   Text,
-} from '@primer/react';
+} from '@primer/react'
 
 function Toast() {
   const {
@@ -15,7 +15,7 @@ function Toast() {
     setNotificationVisible,
     notificationVariant,
     notificationMessage,
-  } = useGeneralContext();
+  } = useGeneralContext()
 
   const variantMap = {
     default: {
@@ -27,9 +27,9 @@ function Toast() {
     // danger: { icon: StopIcon, color: 'danger.emphasis' },
     warning: { icon: AlertIcon, color: 'attention.emphasis' },
     loading: { icon: <Spinner size="small" />, color: 'neutral.emphasis' },
-  };
+  }
 
-  const variant = variantMap[notificationVariant];
+  const variant = variantMap[notificationVariant]
 
   return (
     <>
@@ -155,7 +155,7 @@ function Toast() {
         </Box>
       )}
     </>
-  );
+  )
 }
 
-export default Toast;
+export default Toast

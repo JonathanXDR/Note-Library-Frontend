@@ -1,4 +1,4 @@
 export interface InputToken {
-  id: string;
-  text: string;
+  id: string
+  text: string
 }

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const noteCollectionSchema = z.object({
   title: z
@@ -11,6 +11,6 @@ export const noteCollectionSchema = z.object({
     .trim()
     .max(10000, 'Notes must be 10000 characters or less')
     .optional(),
-});
+})
 
-export type NoteCollectionSchema = z.infer<typeof noteCollectionSchema>;
+export type NoteCollectionSchema = z.infer<typeof noteCollectionSchema>

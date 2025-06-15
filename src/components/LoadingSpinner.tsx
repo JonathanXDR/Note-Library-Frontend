@@ -1,4 +1,4 @@
-import { Box, Spinner } from '@primer/react';
+import { Box, Spinner } from '@primer/react'
 
 function LoadingSpinner() {
   return (
@@ -14,7 +14,7 @@ function LoadingSpinner() {
     >
       <Spinner />
     </Box>
-  );
+  )
 }
 
-export default LoadingSpinner;
+export default LoadingSpinner

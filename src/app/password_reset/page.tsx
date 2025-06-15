@@ -1,8 +1,8 @@
-'use client';
-import LoginFooter from '@/components/Footer/LoginFooter';
-import LoginNavbar from '@/components/Navbar/LoginNavbar';
-import PasswordRequirementsText from '@/components/PasswordRequirementsText/PasswordRequirementsText';
-import { useAuthContext } from '@/contexts/auth.context';
+'use client'
+import LoginFooter from '@/components/Footer/LoginFooter'
+import LoginNavbar from '@/components/Navbar/LoginNavbar'
+import PasswordRequirementsText from '@/components/PasswordRequirementsText/PasswordRequirementsText'
+import { useAuthContext } from '@/contexts/auth.context'
 import {
   Box,
   Button,
@@ -10,28 +10,28 @@ import {
   Heading,
   PageLayout,
   TextInput,
-} from '@primer/react';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import './main.css';
+} from '@primer/react'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
+import './main.css'
 
 const PasswordReset = () => {
-  const router = useRouter();
-  const [username, setUsername] = useState('');
-  const { setPassword, setConfirmPassword, isValid } = useAuthContext();
+  const router = useRouter()
+  const [username, setUsername] = useState('')
+  const { setPassword, setConfirmPassword, isValid } = useAuthContext()
 
   const getValidationStyle = (validation: boolean) => ({
     color: validation ? 'success.fg' : 'danger.fg',
     fontWeight: validation ? '' : 'bold',
-  });
+  })
 
   const getMutedStyle = (condition: boolean) =>
-    condition ? { color: 'fg.muted', fontWeight: '' } : {};
+    condition ? { color: 'fg.muted', fontWeight: '' } : {}
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push('/login');
-  };
+    e.preventDefault()
+    router.push('/login')
+  }
 
   return (
     <PageLayout
@@ -154,7 +154,7 @@ const PasswordReset = () => {
               <TextInput
                 type="password"
                 onChange={(e) => {
-                  setPassword(e.target.value);
+                  setPassword(e.target.value)
                 }}
                 placeholder="Enter password"
                 block
@@ -193,7 +193,7 @@ const PasswordReset = () => {
                 <TextInput
                   type="password"
                   onChange={(e) => {
-                    setConfirmPassword(e.target.value);
+                    setConfirmPassword(e.target.value)
                   }}
                   placeholder="Confirm password"
                   block
@@ -239,7 +239,7 @@ const PasswordReset = () => {
         <LoginFooter />
       </PageLayout.Footer>
     </PageLayout>
-  );
-};
+  )
+}
 
-export default PasswordReset;
+export default PasswordReset

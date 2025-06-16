@@ -1,4 +1,3 @@
-import { AnalyticsContext } from '@github-ui/analytics-provider/context'
 import React from 'react'
 import { ErrorContext } from '../utils/failbot'
 import { ErrorPage } from './ErrorPage'
@@ -52,7 +51,7 @@ class BasicErrorBoundary extends React.Component<
     if (typeof this.props.onError === 'function') {
       this.props.onError(error, context)
     } else {
-      defaultOnError(error, context)
+      defaultOnError(error)
     }
   }
 
@@ -68,13 +67,11 @@ class BasicErrorBoundary extends React.Component<
 }
 
 export function ErrorBoundary(props: ErrorBoundaryProps) {
-  const context = React.useContext(AnalyticsContext)
-  const appName = props.appName || context?.appName
-  return <BasicErrorBoundary {...props} appName={appName} />
+  return <BasicErrorBoundary {...props} appName={props.appName} />
 }
 
-function defaultOnError(error: Error, context: ErrorContext = {}) {
+function defaultOnError(error: Error) {
   setTimeout(() => {
-    reportError(error, context)
+    reportError(error)
   })
 }

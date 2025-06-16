@@ -8,18 +8,16 @@ type SSRSafeLocation = Pick<
 const forceServer =
   typeof FORCE_SERVER_ENV !== 'undefined' ? FORCE_SERVER_ENV : false
 
-// eslint-disable-next-line ssr-friendly/no-dom-globals-in-module-scope
 export const ssrSafeDocument =
   typeof document === 'undefined' || forceServer ? undefined : document
-// eslint-disable-next-line ssr-friendly/no-dom-globals-in-module-scope
+
 export const ssrSafeWindow =
   typeof window === 'undefined' || forceServer ? undefined : window
-// eslint-disable-next-line ssr-friendly/no-dom-globals-in-module-scope
+
 export const ssrSafeHistory =
   typeof history === 'undefined' || forceServer ? undefined : history
 
 export const ssrSafeLocation: SSRSafeLocation =
-  // eslint-disable-next-line ssr-friendly/no-dom-globals-in-module-scope
   typeof location === 'undefined' || forceServer
     ? { pathname: '', origin: '', search: '', hash: '', href: '' }
     : location

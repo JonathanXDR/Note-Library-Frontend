@@ -1,5 +1,5 @@
 import { useLayoutEffect as unsafe_useLayoutEffect, useEffect } from 'react'
-import { ssrSafeWindow } from '../ssr-utils/ssr-globals'
+import { ssrSafeWindow } from '../utils/ssr-globals'
 
 /**
  * Provides a safe version of `useLayoutEffect` that calls to `useEffect` on the server.

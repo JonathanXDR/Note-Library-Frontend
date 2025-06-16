@@ -1,5 +1,5 @@
-import { reportError } from '../failbot/failbot'
-import { ssrSafeWindow } from '../ssr-utils/ssr-globals'
+import { reportError } from './failbot'
+import { ssrSafeWindow } from './ssr-globals'
 
 ssrSafeWindow?.addEventListener('error', (event) => {
   if (event.error) {

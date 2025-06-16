@@ -1,6 +1,5 @@
-import { isFeatureEnabled } from '@github-ui/feature-flags'
 import { useEffect, useState } from 'react'
-import { ssrSafeDocument } from '../ssr-utils/ssr-globals'
+import { ssrSafeDocument } from '../utils/ssr-globals'
 
 export interface ColorModeOptions {
   colorMode?: string
@@ -41,17 +40,13 @@ function getColorModesSSR() {
 
 function useColorModes() {
   const { documentElement } = ssrSafeDocument!
-  // eslint-disable-next-line github/no-dataset
+
   const [colorMode, setColorMode] = useState(() =>
     getColorModes(documentElement.dataset)
   )
-  const newHighContrastThemesEnabled =
-    isFeatureEnabled('primer_primitives_experimental') &&
-    isFeatureEnabled('appearance_settings')
 
   useEffect(() => {
     // Update color modes any time color mode attributes change on the base html document element
-    // eslint-disable-next-line github/no-dataset
     const observer = new MutationObserver(() =>
       setColorMode(getColorModes(documentElement.dataset))
     )
@@ -68,15 +63,11 @@ function useColorModes() {
     return () => observer.disconnect()
   }, [documentElement])
 
-  if (newHighContrastThemesEnabled) {
-    return {
-      ...colorMode,
-      dayScheme: getColorScheme(colorMode.dayScheme),
-      nightScheme: getColorScheme(colorMode.nightScheme),
-    }
+  return {
+    ...colorMode,
+    dayScheme: getColorScheme(colorMode.dayScheme),
+    nightScheme: getColorScheme(colorMode.nightScheme),
   }
-
-  return colorMode
 }
 
 const newHighContrastSupportedThemes = new Set([

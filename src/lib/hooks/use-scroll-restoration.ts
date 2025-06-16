@@ -1,6 +1,6 @@
 import type { Position } from '@github/turbo/dist/types/core/types'
-import { ssrSafeLocation, ssrSafeWindow } from '../ssr-utils/ssr-globals'
 import { noop } from '../utils/noop'
+import { ssrSafeLocation } from '../utils/ssr-globals'
 import { useLayoutEffect } from './use-layout-effect'
 
 const scrollMap = new Map<string, Position>()

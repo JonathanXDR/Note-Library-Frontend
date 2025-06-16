@@ -1,7 +1,7 @@
-import { useLayoutEffect } from '@github-ui/use-layout-effect'
 import type { History, Location } from '@remix-run/router'
 import { Router } from 'react-router-dom'
 import { NavigatorRouter } from '../contexts/NavigatorRouter'
+import { useLayoutEffect } from '../hooks/use-layout-effect'
 import { useNavigationFocus } from '../hooks/use-navigation-focus'
 import { useNavigator } from '../hooks/use-navigator'
 import {

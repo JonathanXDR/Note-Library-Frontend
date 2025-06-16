@@ -3,7 +3,6 @@ import {
   type PropsWithPartialAnchor,
   type ReactPartialAnchorProps,
 } from '@github-ui/react-core/react-partial-anchor'
-import { useClickAnalytics } from '@github-ui/use-analytics'
 import {
   CodeIcon,
   CodespacesIcon,
@@ -20,20 +19,8 @@ import {
 } from '@primer/octicons-react'
 import { ActionList, ActionMenu, Spinner } from '@primer/react'
 import { Tooltip } from '@primer/react/next'
-import {
-  lazy,
-  Suspense,
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-  type ComponentProps,
-} from 'react'
-import type { CreateIssueDialogProps } from './CreateIssueDialog'
-
+import { useEffect, useId, useState, type ComponentProps } from 'react'
 import styles from './GlobalCreateMenu.module.css'
-
-const LazyCreateIssueDialog = lazy(() => import('./CreateIssueDialog'))
 
 interface GlobalCreateMenuBaseProps extends ReactPartialAnchorProps {
   createRepo?: boolean
@@ -52,7 +39,7 @@ interface GlobalCreateMenuBaseProps extends ReactPartialAnchorProps {
   side?: ComponentProps<typeof ActionMenu.Overlay>['side']
   isOpen?: boolean
   setIsOpen?: (value: boolean) => void
-  environment?: CreateIssueDialogProps['environment']
+  // environment?: CreateIssueDialogProps['environment']
 }
 
 interface LegacyProjectProps {
@@ -91,18 +78,11 @@ function CreateMenuLinkItem({
   label,
   href,
   LeadingVisual,
-  analyticsLabel,
 }: CreateMenuItemProps & {
   href: string
 }) {
-  const { sendClickAnalyticsEvent } = useClickAnalytics()
-
-  const handleClick = useCallback(() => {
-    sendClickAnalyticsEvent(analyticsPayload({ label, analyticsLabel }))
-  }, [label, analyticsLabel, sendClickAnalyticsEvent])
-
   return (
-    <ActionList.LinkItem href={href} onClick={handleClick}>
+    <ActionList.LinkItem href={href}>
       <ActionList.LeadingVisual>
         <LeadingVisual />
       </ActionList.LeadingVisual>
@@ -113,21 +93,12 @@ function CreateMenuLinkItem({
 
 function CreateMenuItem({
   label,
-  onClick,
   LeadingVisual,
-  analyticsLabel,
 }: CreateMenuItemProps & {
   onClick: () => void
 }) {
-  const { sendClickAnalyticsEvent } = useClickAnalytics()
-
-  const handleClick = useCallback(() => {
-    sendClickAnalyticsEvent(analyticsPayload({ label, analyticsLabel }))
-    onClick()
-  }, [label, analyticsLabel, sendClickAnalyticsEvent, onClick])
-
   return (
-    <ActionList.Item onSelect={handleClick}>
+    <ActionList.Item>
       <ActionList.LeadingVisual>
         <LeadingVisual />
       </ActionList.LeadingVisual>
@@ -177,7 +148,7 @@ function GlobalCreateMenuOverlay({
 
   return (
     <>
-      {createIssue && createIssueIntent && (
+      {/* {createIssue && createIssueIntent && (
         <Suspense>
           <LazyCreateIssueDialog
             isVisible={isCreateIssueVisible}
@@ -189,7 +160,7 @@ function GlobalCreateMenuOverlay({
             environment={environment}
           />
         </Suspense>
-      )}
+      )} */}
       <ActionMenu.Overlay side={side}>
         <ActionList>
           {createIssue && (

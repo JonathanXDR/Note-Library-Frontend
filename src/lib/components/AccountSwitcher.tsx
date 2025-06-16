@@ -9,7 +9,7 @@ import { Blankslate } from '@primer/react/experimental'
 import { useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { GitHubAvatar } from '../components/GitHubAvatar'
-import { ssrSafeLocation } from '../ssr-utils/ssr-globals'
+import { ssrSafeLocation } from '../utils/ssr-globals'
 import type { SetError } from './ErrorDialog'
 
 export interface StashedAccount {

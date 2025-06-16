@@ -37,13 +37,12 @@ import {
   type DialogProps,
 } from '@primer/react/experimental'
 import { memo, type ReactNode, useCallback, useEffect, useState } from 'react'
-
 import { GitHubAvatar } from '../components/GitHubAvatar'
 import { LoadingSkeleton } from '../components/LoadingSkeleton'
-import { GlobalCreateMenuProps } from '../global-create-menu/GlobalCreateMenu'
 import { AccountSwitcher, type AccountSwitcherProps } from './AccountSwitcher'
 import { Emoji } from './Emoji'
 import { ErrorDialog, type ErrorDialogProps } from './ErrorDialog'
+import { GlobalCreateMenuItem, GlobalCreateMenuProps } from './GlobalCreateMenu'
 import drawerStyles from './GlobalUserNavDrawer.module.css'
 import styles from './styles.module.css'
 import { type UserStatus, UserStatusDialog } from './UserStatusDialog'
@@ -143,11 +142,7 @@ type UserStatusItemProps = {
 function NavLink({
   href,
   icon,
-  analyticsCategory = 'Global navigation',
-  analyticsAction,
-  analyticsLabel,
   children,
-  extraOnClick,
 }: {
   href: string
   icon: Icon
@@ -159,25 +154,8 @@ function NavLink({
   /** click handler to fire in addition to the automatic analytics event built into NavLink */
   extraOnClick?: () => void
 }) {
-  const { sendClickAnalyticsEvent } = useClickAnalytics()
-  const onClick = useCallback(() => {
-    sendClickAnalyticsEvent({
-      category: analyticsCategory,
-      action: analyticsAction,
-      label: analyticsLabel,
-    })
-
-    extraOnClick?.()
-  }, [
-    sendClickAnalyticsEvent,
-    extraOnClick,
-    analyticsCategory,
-    analyticsAction,
-    analyticsLabel,
-  ])
-
   return (
-    <ActionList.LinkItem href={href} onClick={onClick}>
+    <ActionList.LinkItem href={href}>
       <ActionList.LeadingVisual>
         <Octicon icon={icon} />
       </ActionList.LeadingVisual>
@@ -230,7 +208,6 @@ function UpgradeNavItem(props: UpgradeNavItemProps) {
         analyticsLabel="ref_loc:side_panel;ref_cta:try_enterprise"
       >
         Try Enterprise
-        {/* eslint-disable-next-line primer-react/direct-slot-children */}
         <ActionList.TrailingVisual>
           <Label variant="primary">Free</Label>
         </ActionList.TrailingVisual>
@@ -546,7 +523,6 @@ function GlobalUserNavDrawerDialog(
               )}
             {lazyDfdNewTasksData?.enableDfdNewTasksExperiment &&
               lazyDfdNewTasksData?.showDfdNewTasksVariant === 1 && (
-                /* eslint-disable-next-line primer-react/direct-slot-children */
                 <ActionList.TrailingVisual>
                   <span data-analytics-visible='{"category":"dfd_nav_new_tasks_nudge_1","action":"visible","group":"engage"}' />
 

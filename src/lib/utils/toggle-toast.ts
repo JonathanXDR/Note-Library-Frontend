@@ -1,6 +1,6 @@
 let toastReference: HTMLElement | null
 
-export function toggleToast(html?: string, options?: {closeAfter: number}) {
+export function toggleToast(html?: string, options?: { closeAfter: number }) {
   removeToast()
   if (!html) return
 
@@ -10,17 +10,14 @@ export function toggleToast(html?: string, options?: {closeAfter: number}) {
 
   const close = element.querySelector('button')
   if (close) {
-    close.addEventListener('click', removeToast, {once: true})
+    close.addEventListener('click', removeToast, { once: true })
   }
 
   document.addEventListener('keydown', (event: KeyboardEvent) => {
     // TODO: Refactor to use data-hotkey
-    /* eslint eslint-comments/no-use: off */
-    /* eslint-disable @github-ui/ui-commands/no-manual-shortcut-logic */
     if (event.key === 'Escape') {
       if (removeToast()) event.stopImmediatePropagation()
     }
-    /* eslint-enable @github-ui/ui-commands/no-manual-shortcut-logic */
   })
 
   toastReference = element

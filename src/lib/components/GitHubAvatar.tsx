@@ -1,6 +1,6 @@
 import { Avatar, type AvatarProps } from '@primer/react'
 import { forwardRef, useMemo } from 'react'
-import { ssrSafeLocation } from './ssr-utils/ssr-globals'
+import { ssrSafeLocation } from '../utils/ssr-globals'
 
 export type GitHubAvatarProps = AvatarProps
 

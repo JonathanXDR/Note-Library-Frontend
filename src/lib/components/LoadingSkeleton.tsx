@@ -115,7 +115,3 @@ export const LoadingSkeleton = styled(Box)<LoadingSkeletonProps>`
   }};
   ${sx}
 `
-
-try {
-  LoadingSkeleton.displayName ||= 'LoadingSkeleton'
-} catch {}

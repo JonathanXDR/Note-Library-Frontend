@@ -1,20 +1,19 @@
+'use client'
+
 import type { ReactNode } from 'react'
-import { Outlet } from 'react-router-dom'
-import { usePublishPayload } from './use-publish-payload'
 
 /**
- * Wraps an optional App component around the outlet.
+ * Wraps an optional App component around the children.
+ * In Next.js, this is typically used in layout components.
  */
-export function AppWrapper({ App }: { App?: AppComponentType }) {
-  usePublishPayload()
-
-  return App ? (
-    <App>
-      <Outlet />
-    </App>
-  ) : (
-    <Outlet />
-  )
+export function AppWrapper({
+  App,
+  children,
+}: {
+  App?: AppComponentType
+  children: ReactNode
+}) {
+  return App ? <App>{children}</App> : <>{children}</>
 }
 
 export type AppComponentType = React.ComponentType<{ children?: ReactNode }>

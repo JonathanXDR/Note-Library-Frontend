@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import { ssrSafeDocument } from '../utils/ssr-globals'
 

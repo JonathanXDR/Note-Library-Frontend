@@ -1,4 +1,5 @@
-import { verifiedFetch } from '@github-ui/verified-fetch'
+'use client'
+
 import {
   ArrowSwitchIcon,
   PersonAddIcon,
@@ -6,11 +7,11 @@ import {
 } from '@primer/octicons-react'
 import { ActionList, ActionMenu, IconButton, Spinner } from '@primer/react'
 import { Blankslate } from '@primer/react/experimental'
+import { usePathname } from 'next/navigation'
 import { useMemo, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { GitHubAvatar } from '../components/GitHubAvatar'
 import { ssrSafeLocation } from '../utils/ssr-globals'
 import type { SetError } from './ErrorDialog'
+import { GitHubAvatar } from './GitHubAvatar'
 
 export interface StashedAccount {
   login: string
@@ -202,17 +203,15 @@ function InactiveStashedAccountItem({
   account: StashedAccount
   loginAccountPath: string
 }) {
-  const location = useLocation()
-  const href = useMemo(() => {
-    // I want the location.key here in order to recompute on location changes
-    void location.key
+  const pathname = usePathname()
 
+  const href = useMemo(() => {
     const ssrSafeLocationString = ssrSafeLocation.toString()
     const url = new URL(loginAccountPath, ssrSafeLocationString)
     url.searchParams.set('login', account.login)
-    url.searchParams.set('return_to', ssrSafeLocationString)
+    url.searchParams.set('return_to', pathname)
     return url.toString()
-  }, [loginAccountPath, account.login, location.key])
+  }, [loginAccountPath, account.login, pathname])
 
   return (
     <ActionList.LinkItem href={href}>
@@ -238,7 +237,8 @@ async function switchAccount(
     const body = new FormData()
     body.append('user_session_id', String(userSessionId))
     body.append('from', 'nav_panel')
-    const response = await verifiedFetch(switchAccountPath, {
+
+    const response = await fetch(switchAccountPath, {
       method: 'POST',
       body,
       headers: {

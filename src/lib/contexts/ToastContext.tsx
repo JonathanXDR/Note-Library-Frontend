@@ -1,3 +1,5 @@
+'use client'
+
 import { useSafeTimeout } from '@primer/react'
 import {
   createContext,

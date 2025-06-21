@@ -1,6 +1,11 @@
+'use client'
+
 import { Heading } from '@primer/react'
-import { PageError } from '../types/app-routing-types'
-import styles from './ErrorPage.module.css'
+
+export interface PageError {
+  httpStatus?: number
+  type: 'fetchError' | 'httpError' | 'badResponseError'
+}
 
 const errorMessages: { [httpStatus: number]: string } = {
   404: 'Didn’t find anything here!',
@@ -13,10 +18,24 @@ export function ErrorPage({ httpStatus, type }: PageError) {
       ? 'Looks like network is down!'
       : errorMessages[httpStatus || 500]
   return (
-    <Heading as="h1" tabIndex={-1} className={styles.Heading}>
+    <Heading
+      as="h1"
+      tabIndex={-1}
+      // className={styles.Heading}
+    >
       Error
-      {httpStatus ? <div className={styles.Status}>{httpStatus}</div> : null}
-      <div className={styles.Message}>{message}</div>
+      {httpStatus ? (
+        <div
+        // className={styles.Status}
+        >
+          {httpStatus}
+        </div>
+      ) : null}
+      <div
+      // className={styles.Message}
+      >
+        {message}
+      </div>
     </Heading>
   )
 }

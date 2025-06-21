@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect } from 'react'
 import { useToastContext } from '../contexts/ToastContext'
 import { EXPECTED_ERRORS } from '../utils/expected-errors'

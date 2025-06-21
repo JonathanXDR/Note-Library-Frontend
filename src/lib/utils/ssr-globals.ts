@@ -6,7 +6,9 @@ type SSRSafeLocation = Pick<
 
 // In some cases, we want to force the server environment to be used in the browser. This is useful for testing/profiling
 const forceServer =
-  typeof FORCE_SERVER_ENV !== 'undefined' ? FORCE_SERVER_ENV : false
+  typeof process.env.FORCE_SERVER !== 'undefined'
+    ? process.env.FORCE_SERVER
+    : false
 
 export const ssrSafeDocument =
   typeof document === 'undefined' || forceServer ? undefined : document

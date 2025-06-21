@@ -1,12 +1,5 @@
-import { IncludeFragment } from '@github-ui/include-fragment-react'
-import {
-  type PropsWithPartialAnchor,
-  type ReactPartialAnchorProps,
-  useExternalAnchor,
-} from '@github-ui/react-core/react-partial-anchor'
-import { UnsafeHTMLDiv } from '@github-ui/safe-html/UnsafeHTML'
-import { testIdProps } from '@github-ui/test-id-props'
-import { useClickAnalytics } from '@github-ui/use-analytics'
+'use client'
+
 import {
   AlertIcon,
   BeakerIcon,
@@ -37,13 +30,13 @@ import {
   type DialogProps,
 } from '@primer/react/experimental'
 import { memo, type ReactNode, useCallback, useEffect, useState } from 'react'
-import { GitHubAvatar } from '../components/GitHubAvatar'
-import { LoadingSkeleton } from '../components/LoadingSkeleton'
 import { AccountSwitcher, type AccountSwitcherProps } from './AccountSwitcher'
 import { Emoji } from './Emoji'
 import { ErrorDialog, type ErrorDialogProps } from './ErrorDialog'
+import { GitHubAvatar } from './GitHubAvatar'
 import { GlobalCreateMenuItem, GlobalCreateMenuProps } from './GlobalCreateMenu'
 import drawerStyles from './GlobalUserNavDrawer.module.css'
+import { LoadingSkeleton } from './LoadingSkeleton'
 import styles from './styles.module.css'
 import { type UserStatus, UserStatusDialog } from './UserStatusDialog'
 
@@ -70,8 +63,7 @@ const fetchDfdTasksData = async (): Promise<LazyDfdNewTasksData> => {
 }
 
 export interface GlobalUserNavDrawerProps
-  extends ReactPartialAnchorProps,
-    Omit<AccountSwitcherProps, 'stashedAccounts' | 'setError'> {
+  extends Omit<AccountSwitcherProps, 'stashedAccounts' | 'setError'> {
   owner: {
     login: string
     name: string
@@ -150,8 +142,6 @@ function NavLink({
   analyticsAction: string
   analyticsLabel?: string
   children: ReactNode
-
-  /** click handler to fire in addition to the automatic analytics event built into NavLink */
   extraOnClick?: () => void
 }) {
   return (
@@ -170,7 +160,7 @@ const UserStatusNavItem = memo(function UserStatusNavItem({
 }: UserStatusItemProps) {
   return (
     <ActionList.Item
-      {...testIdProps('global-user-nav-set-status-item')}
+      data-testid="global-user-nav-set-status-item"
       onSelect={onClick}
     >
       <ActionList.LeadingVisual>
@@ -181,9 +171,11 @@ const UserStatusNavItem = memo(function UserStatusNavItem({
         )}
       </ActionList.LeadingVisual>
       {lazyLoadItemData ? (
-        <UnsafeHTMLDiv
+        <div
           className={styles.emojiContainer}
-          html={lazyLoadItemData.userStatus.messageHtml || 'Set status'}
+          dangerouslySetInnerHTML={{
+            __html: lazyLoadItemData.userStatus.messageHtml || 'Set status',
+          }}
         />
       ) : (
         <LoadingSkeleton height="md" />
@@ -208,6 +200,7 @@ function UpgradeNavItem(props: UpgradeNavItemProps) {
         analyticsLabel="ref_loc:side_panel;ref_cta:try_enterprise"
       >
         Try Enterprise
+        {/* eslint-disable-next-line primer-react/direct-slot-children */}
         <ActionList.TrailingVisual>
           <Label variant="primary">Free</Label>
         </ActionList.TrailingVisual>
@@ -233,6 +226,16 @@ function FeaturePreviewDialog({
   onClose: () => void
   login: string
 }) {
+  const [content, setContent] = useState<string | null>(null)
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    fetch(`/users/${login}/feature_previews`)
+      .then((res) => res.text())
+      .then(setContent)
+      .catch(() => setError(true))
+  }, [login])
+
   return (
     <Dialog
       title="Feature preview dialog"
@@ -240,20 +243,19 @@ function FeaturePreviewDialog({
       renderBody={() => {
         return (
           <Dialog.Body className="p-0">
-            <IncludeFragment src={`/users/${login}/feature_previews`}>
-              <p className="text-center mt-3" data-hide-on-error>
-                <Spinner />
-              </p>
-              <p
-                className="flash flash-error mb-0 mt-2"
-                data-show-on-error
-                hidden
-              >
+            {content ? (
+              <div dangerouslySetInnerHTML={{ __html: content }} />
+            ) : error ? (
+              <p className="flash flash-error mb-0 mt-2">
                 <AlertIcon />
                 Sorry, something went wrong and we were not able to fetch the
                 feature previews
               </p>
-            </IncludeFragment>
+            ) : (
+              <p className="text-center mt-3">
+                <Spinner />
+              </p>
+            )}
           </Dialog.Body>
         )
       }}
@@ -286,15 +288,10 @@ function GlobalUserNavDrawerDialog(
     useState(false)
   const { onClose, owner } = props
   const profilePath = `/${owner.login}`
-  const { sendClickAnalyticsEvent } = useClickAnalytics()
 
   const openUserStatusDialog = useCallback(() => {
     setShowUserStatusDialog(true)
-    sendClickAnalyticsEvent({
-      category: 'Global navigation',
-      action: 'USER_STATUS',
-    })
-  }, [sendClickAnalyticsEvent])
+  }, [])
 
   const onUserStatusClosed = useCallback(
     async (statusPromise?: Promise<UserStatus> | string) => {
@@ -315,13 +312,10 @@ function GlobalUserNavDrawerDialog(
     },
     [lazyLoadItemData]
   )
+
   const openFeaturePreviewDialog = useCallback(() => {
     setShowFeaturePreviewDialog(true)
-    sendClickAnalyticsEvent({
-      category: 'Global navigation',
-      action: 'FEATURE_PREVIEW',
-    })
-  }, [sendClickAnalyticsEvent])
+  }, [])
 
   useEffect(() => {
     if (!lazyLoadItemData) {
@@ -499,33 +493,12 @@ function GlobalUserNavDrawerDialog(
             analyticsCategory="enterprises_more_discoverable"
             analyticsAction="click_your_enterprises"
             analyticsLabel="ref_loc:side_panel;ref_cta:your_enterprises;is_navigation_redesign:true"
-            extraOnClick={() => {
-              // Piggy back onto the NavLinks onClick, so that clicking either the visual button or just clicking the
-              // NavLink normally will result in a Nudge analytics event in addition to the standard Nav analytics event
-              if (
-                lazyDfdNewTasksData?.enableDfdNewTasksExperiment &&
-                lazyDfdNewTasksData?.showDfdNewTasksVariant === 1
-              ) {
-                sendClickAnalyticsEvent({
-                  location: 'global_user_nav_drawer',
-                  category: 'dfd_nav_new_tasks_nudge_1',
-                  action: 'new_task',
-                  tag: 'a',
-                  group: 'engage',
-                })
-              }
-            }}
           >
             Your enterprises
             {lazyDfdNewTasksData?.enableDfdNewTasksExperiment &&
-              lazyDfdNewTasksData?.showDfdNewTasksVariant === 0 && (
-                <span data-analytics-visible='{"category":"dfd_nav_new_tasks_nudge_0","action":"visible","group":"engage"}' />
-              )}
-            {lazyDfdNewTasksData?.enableDfdNewTasksExperiment &&
               lazyDfdNewTasksData?.showDfdNewTasksVariant === 1 && (
+                // eslint-disable-next-line primer-react/direct-slot-children
                 <ActionList.TrailingVisual>
-                  <span data-analytics-visible='{"category":"dfd_nav_new_tasks_nudge_1","action":"visible","group":"engage"}' />
-
                   <Label variant="done">New task</Label>
                 </ActionList.TrailingVisual>
               )}
@@ -625,39 +598,6 @@ function GlobalUserNavDrawerDialog(
   )
 }
 
-function ExternallyAnchoredGlobalUserNavDrawer(
-  props: PropsWithPartialAnchor<GlobalUserNavDrawerProps>
-) {
-  const {
-    open,
-    setOpen,
-    ref: anchorRef,
-  } = useExternalAnchor(props.reactPartialAnchor)
-  const onClose = useCallback(() => {
-    setOpen(false)
-    setTimeout(() => {
-      // Dialog will soon support `returnFocusRef`, which should be used instead
-      anchorRef.current?.focus()
-    })
-  }, [setOpen, anchorRef])
-
-  if (open) {
-    return <GlobalUserNavDrawerDialog {...props} onClose={onClose} />
-  }
-
-  return <></>
-}
-
 export function GlobalUserNavDrawer(props: GlobalUserNavDrawerProps) {
-  if (props.reactPartialAnchor) {
-    return (
-      <ExternallyAnchoredGlobalUserNavDrawer
-        {...props}
-        reactPartialAnchor={props.reactPartialAnchor}
-      />
-    )
-  }
-
-  // If no anchor is provided, assume the drawer state is externally controlled
   return <GlobalUserNavDrawerDialog {...props} />
 }

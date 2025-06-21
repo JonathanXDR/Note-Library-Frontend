@@ -1,3 +1,5 @@
+'use client'
+
 import { AlertIcon } from '@primer/octicons-react'
 import { Blankslate, Dialog } from '@primer/react/experimental'
 

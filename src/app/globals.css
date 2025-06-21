@@ -255,12 +255,13 @@
   /* Breakpoints */
   /* =================================================================== */
   
-  --breakpoint-xs: var(--breakpoint-xsmall);
-  --breakpoint-sm: var(--breakpoint-small);
-  --breakpoint-md: var(--breakpoint-medium);
-  --breakpoint-lg: var(--breakpoint-large);
-  --breakpoint-xl: var(--breakpoint-xlarge);
-  --breakpoint-2xl: var(--breakpoint-xxlarge);
+  /* Manually define breakpoints since Tailwind can't resolve variables directly */
+  --breakpoint-xs: 20rem;
+  --breakpoint-sm: 34rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 63.25rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 87.5rem;
 
   /* =================================================================== */
   /* Container sizes */

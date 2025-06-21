@@ -1,3 +1,5 @@
+'use client'
+
 import { useContext } from 'react'
 import {
   InternalToastsContext,
@@ -22,7 +24,6 @@ export function Toasts() {
         <Toast
           message={toastInfo.message}
           icon={toastInfo.icon}
-          // eslint-disable-next-line @eslint-react/no-array-index-key
           key={index}
           timeToLive={TOAST_SHOW_TIME}
           type={toastInfo.type}

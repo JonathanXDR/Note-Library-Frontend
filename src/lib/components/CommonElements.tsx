@@ -1,3 +1,5 @@
+'use client'
+
 import { SSRErrorToast } from './SSRErrorToast'
 import { Toasts } from './Toasts'
 

@@ -1,6 +1,8 @@
-import {CheckIcon, StopIcon, InfoIcon} from '@primer/octicons-react'
-import {Portal, useSafeTimeout} from '@primer/react'
-import React, {useEffect, type ReactNode, type ReactElement} from 'react'
+'use client'
+
+import { CheckIcon, InfoIcon, StopIcon } from '@primer/octicons-react'
+import { Portal, useSafeTimeout } from '@primer/react'
+import React, { useEffect, type ReactElement, type ReactNode } from 'react'
 
 export type ToastType = 'info' | 'success' | 'error'
 export type ToastRole = 'alert' | 'status' | 'log'
@@ -31,9 +33,15 @@ const typeIcon: Record<ToastType, ReactElement> = {
  * within GitHub.
  * {@link https://github.com/github/accessibility/issues/4414 Reasons why toasts are a high-risk pattern}.
  */
-export const Toast: React.FC<ToastProps> = ({message, timeToLive, icon, type = 'info', role = 'log'}) => {
+export const Toast: React.FC<ToastProps> = ({
+  message,
+  timeToLive,
+  icon,
+  type = 'info',
+  role = 'log',
+}) => {
   const [isVisible, setIsVisible] = React.useState(true)
-  const {safeSetTimeout} = useSafeTimeout()
+  const { safeSetTimeout } = useSafeTimeout()
 
   useEffect(() => {
     if (!timeToLive) return
@@ -56,5 +64,3 @@ export const Toast: React.FC<ToastProps> = ({message, timeToLive, icon, type = '
     </Portal>
   )
 }
-
-try{ Toast.displayName ||= 'Toast' } catch {}

@@ -1,3 +1,5 @@
+'use client'
+
 import { useLayoutEffect as unsafe_useLayoutEffect, useEffect } from 'react'
 import { ssrSafeWindow } from '../utils/ssr-globals'
 

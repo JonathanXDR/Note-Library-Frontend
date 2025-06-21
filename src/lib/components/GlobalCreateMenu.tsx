@@ -1,8 +1,5 @@
-import {
-  useExternalAnchor,
-  type PropsWithPartialAnchor,
-  type ReactPartialAnchorProps,
-} from '@github-ui/react-core/react-partial-anchor'
+'use client'
+
 import {
   CodeIcon,
   CodespacesIcon,
@@ -22,7 +19,7 @@ import { Tooltip } from '@primer/react/next'
 import { useEffect, useId, useState, type ComponentProps } from 'react'
 import styles from './GlobalCreateMenu.module.css'
 
-interface GlobalCreateMenuBaseProps extends ReactPartialAnchorProps {
+interface GlobalCreateMenuBaseProps {
   createRepo?: boolean
   importRepo?: boolean
   createOrg?: boolean
@@ -63,17 +60,6 @@ interface CreateMenuItemProps {
   analyticsLabel?: string
 }
 
-function analyticsPayload({
-  label,
-  analyticsLabel,
-}: Pick<CreateMenuItemProps, 'label' | 'analyticsLabel'>) {
-  return {
-    category: 'SiteHeaderComponent',
-    action: 'add_dropdown',
-    label: analyticsLabel || label.toLowerCase(),
-  }
-}
-
 function CreateMenuLinkItem({
   label,
   href,
@@ -94,11 +80,12 @@ function CreateMenuLinkItem({
 function CreateMenuItem({
   label,
   LeadingVisual,
+  onClick,
 }: CreateMenuItemProps & {
   onClick: () => void
 }) {
   return (
-    <ActionList.Item>
+    <ActionList.Item onSelect={onClick}>
       <ActionList.LeadingVisual>
         <LeadingVisual />
       </ActionList.LeadingVisual>
@@ -124,17 +111,21 @@ function GlobalCreateMenuOverlay({
   spark,
   gist,
   org,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   owner,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   repo,
   isOpen = false,
-  // eslint-disable-next-line @eslint-react/no-unstable-default-props
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setIsOpen = () => {},
-  environment,
+  // environment,
 }: GlobalCreateMenuProps) {
   const [isCreateIssueVisible, setIsCreateIssueVisible] = useState(false)
   // Has the `LazyCreateIssueDialog` loaded? We use this to know when to enable the "New issue" menu item
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isCreateIssueLoaded, setIsCreateIssueLoaded] = useState(false)
   // Defer lazy loading the CreateIssueDialog until the first time the menu is opened
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [createIssueIntent, setCreateIssueIntent] = useState(isOpen)
   useEffect(() => {
     if (isOpen) {
@@ -281,28 +272,13 @@ function GlobalCreateMenuOverlay({
   )
 }
 
-function ExternallyAnchoredGlobalCreateMenu(
-  props: PropsWithPartialAnchor<GlobalCreateMenuProps>
-) {
-  const {
-    ref: anchorRef,
-    open,
-    setOpen,
-  } = useExternalAnchor(props.reactPartialAnchor)
-
-  return (
-    <ActionMenu anchorRef={anchorRef} open={open} onOpenChange={setOpen}>
-      <GlobalCreateMenuOverlay {...props} isOpen={open} setIsOpen={setOpen} />
-    </ActionMenu>
-  )
-}
-
-function GlobalCreateMenuWithAnchor(props: GlobalCreateMenuProps) {
+export function GlobalCreateMenu(props: GlobalCreateMenuProps) {
   const toolTipId = `global-create-menu-tooltip-${useId()}`
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <ActionMenu open={isOpen} onOpenChange={setIsOpen}>
+      {/* eslint-disable-next-line primer-react/a11y-tooltip-interactive-trigger */}
       <Tooltip text="Create New..." type="label" id={toolTipId}>
         <ActionMenu.Button leadingVisual={PlusIcon}>{''}</ActionMenu.Button>
       </Tooltip>
@@ -313,19 +289,6 @@ function GlobalCreateMenuWithAnchor(props: GlobalCreateMenuProps) {
       />
     </ActionMenu>
   )
-}
-
-export function GlobalCreateMenu(props: GlobalCreateMenuProps) {
-  if (props.reactPartialAnchor) {
-    return (
-      <ExternallyAnchoredGlobalCreateMenu
-        {...props}
-        reactPartialAnchor={props.reactPartialAnchor}
-      />
-    )
-  }
-
-  return <GlobalCreateMenuWithAnchor {...props} />
 }
 
 export function GlobalCreateMenuItem(props: GlobalCreateMenuProps) {

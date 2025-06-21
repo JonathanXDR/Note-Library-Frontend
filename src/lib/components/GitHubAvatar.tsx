@@ -1,3 +1,5 @@
+'use client'
+
 import { Avatar, type AvatarProps } from '@primer/react'
 import { forwardRef, useMemo } from 'react'
 import { ssrSafeLocation } from '../utils/ssr-globals'

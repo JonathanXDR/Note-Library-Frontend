@@ -2,6 +2,7 @@ import { CommonElements } from '@/components/CommonElements'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { BaseProviders } from '@/providers/BaseProviders'
 import type { Metadata } from 'next'
+import PageLayoutProvider from '../providers/PageLayoutProvider'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -17,10 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="w-full h-full">
       <body className="w-full h-full">
-        <BaseProviders appName="GitHub Notes">
+        <BaseProviders>
           <ErrorBoundary>
             <CommonElements />
-            {children}
+            <PageLayoutProvider>{children}</PageLayoutProvider>
           </ErrorBoundary>
         </BaseProviders>
       </body>

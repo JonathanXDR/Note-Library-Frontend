@@ -1,6 +1,6 @@
-import { CommonElements } from '@/lib/components/CommonElements'
-import { ErrorBoundary } from '@/lib/components/ErrorBoundary'
-import { BaseProviders } from '@/lib/providers/BaseProviders'
+import { CommonElements } from '@/components/CommonElements'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { BaseProviders } from '@/providers/BaseProviders'
 import type { Metadata } from 'next'
 import './globals.css'
 

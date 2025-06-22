@@ -1,20 +1,15 @@
 'use client'
 
 import { BaseStyles, ThemeProvider } from '@primer/react'
-import type { ReactNode } from 'react'
+import type { PropsWithChildren } from 'react'
 import { ToastContextProvider } from '../contexts/ToastContext'
 import useColorModes from '../hooks/use-color-modes'
-
-interface Props {
-  appName: string
-  children?: ReactNode
-}
 
 /**
  * This component provides the _base_ context for both apps and partials.
  * It should provide everything needed to render with styles, themes, and i18n.
  */
-export function BaseProviders({ appName, children }: Props) {
+export function BaseProviders({ children }: PropsWithChildren) {
   const { colorMode, dayScheme, nightScheme } = useColorModes()
 
   return (

@@ -19,7 +19,7 @@ export function BaseProviders({ children }: PropsWithChildren) {
       nightScheme={nightScheme}
       preventSSRMismatch
     >
-      <BaseStyles className="w-full h-full">
+      <BaseStyles className="w-full h-full text-fg-default bg-default">
         <ToastContextProvider>{children}</ToastContextProvider>
       </BaseStyles>
     </ThemeProvider>

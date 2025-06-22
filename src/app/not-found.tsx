@@ -1,4 +1,6 @@
-import { ErrorPage } from '../lib/components/ErrorPage'
+'use client'
+
+import { ErrorPage } from '@/components/ErrorPage'
 
 export default function NotFound() {
   return <ErrorPage type="httpError" />

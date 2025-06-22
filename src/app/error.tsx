@@ -1,6 +1,6 @@
 'use client'
 
-import { ErrorPage } from '../lib/components/ErrorPage'
+import { ErrorPage } from '@/components/ErrorPage'
 
 export default function Error() {
   return <ErrorPage type="badResponseError" />

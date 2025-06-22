@@ -1,7 +1,6 @@
 import { Button, Heading } from '@primer/react'
-import React from 'react'
 
-const HomePage: React.FC = () => {
+export default function HomePage() {
   return (
     <div className="p-64 w-full h-full">
       <Heading as="h1">Welcome to the Home Page</Heading>
@@ -12,5 +11,3 @@ const HomePage: React.FC = () => {
     </div>
   )
 }
-
-export default HomePage
